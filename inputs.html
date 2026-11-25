@@ -164,6 +164,67 @@
   .ichip:hover{border-color:var(--navy)}
   .ichip i{width:9px;height:9px;border-radius:50%;flex:none}
 
+  .mand.fn .mnum{font-size:1.05rem;width:auto;background:var(--red-soft);color:var(--red);border-radius:12px;padding:12px;font-family:var(--sans);font-weight:900;letter-spacing:.04em}
+  .subhead{font-size:.74rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:40px 0 16px;display:flex;align-items:center;gap:14px}
+  .subhead::after{content:"";flex:1;height:1px;background:var(--line-2)}
+
+  /* Jump bar */
+  .jump{background:#fff;border-bottom:1px solid var(--line)}
+  .jump .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+  .jump a{text-decoration:none;font-size:.8rem;font-weight:700;color:var(--ink-2);padding:7px 12px;border-radius:8px;white-space:nowrap}
+  .jump a:hover{background:var(--blue-soft);color:var(--ink)}
+  .jump a b{color:var(--red);margin-right:6px}
+
+  /* Deliverables */
+  .deliv{display:grid;grid-template-columns:1.55fr 1fr;gap:20px;align-items:start}
+  .dcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .dhead{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .dhead h3{font-family:var(--serif);font-size:1.3rem}
+  .dhead .cad{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+  .mnav{display:flex;align-items:center;gap:6px}
+  .mnav button{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--line-2);background:#fff;font-weight:800;font-size:1rem;line-height:1}
+  .mnav button:hover{border-color:var(--navy)}
+  .mnav span{min-width:150px;text-align:center;font-weight:800;font-size:.95rem}
+  .mrow{display:grid;grid-template-columns:1fr auto;gap:8px 20px;padding:16px 24px;border-bottom:1px solid var(--line);align-items:center}
+  .mrow h4{font-size:1rem;font-weight:750}
+  .mrow p{color:var(--muted);font-size:.86rem;margin-top:3px}
+  .mrow .ichips{margin-top:8px}
+  .ichip.sm{font-size:.74rem;padding:3px 10px}
+  .hist{padding:16px 24px 20px;background:#FAFBFC}
+  .hist .lbl{margin-bottom:10px}
+  .hgrid{display:grid;grid-template-columns:minmax(150px,1.4fr) repeat(6,1fr);gap:6px;align-items:center;font-size:.76rem}
+  .hgrid .mh{text-align:center;color:var(--muted);font-weight:700}
+  .hgrid .mh.cur{color:var(--navy);font-weight:900}
+  .hgrid .rn{color:var(--ink-2);font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hgrid .sq{height:20px;border-radius:5px;background:var(--line)}
+  .hgrid .sq.progress{background:var(--gold)} .hgrid .sq.ready{background:var(--green)}
+  .hgrid .sq.curcol{outline:2px solid var(--navy);outline-offset:1px}
+  .arow{padding:16px 24px;border-bottom:1px solid var(--line)}
+  .arow:last-child{border-bottom:0}
+  .arow h4{font-size:.98rem;font-weight:750;margin-bottom:8px}
+  .dnote{font-size:.8rem;color:var(--muted);padding:12px 24px;background:#FAFBFC;border-top:1px solid var(--line)}
+
+  /* Functions */
+  .pdarea{padding:14px 28px;background:var(--navy);color:#fff;font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+  .pdarea small{color:#94A3B8;letter-spacing:.04em;text-transform:none;font-weight:600;font-size:.78rem}
+
+  /* Principles */
+  .pr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .prc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:8px;border-top:4px solid var(--green)}
+  .prc.tense{border-top-color:var(--gold)}
+  .prc .n{font-family:var(--serif);font-weight:700;color:var(--muted);font-size:.95rem}
+  .prc h4{font-family:var(--serif);font-size:1.12rem}
+  .prc p{color:var(--ink-2);font-size:.86rem;flex:1}
+  .tension{margin-top:20px;background:var(--gold-soft);border:1px solid #F6D7A7;border-left:6px solid var(--gold);border-radius:var(--radius);padding:22px 26px}
+  .tension h3{font-family:var(--serif);font-size:1.25rem;color:#78350F}
+  .tension ol{margin-top:12px;display:grid;gap:12px;counter-reset:t}
+  .tension li{display:grid;grid-template-columns:28px 1fr;gap:10px;font-size:.92rem;color:var(--ink-2);counter-increment:t}
+  .tension li::before{content:counter(t);width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;font-weight:800;font-size:.76rem;display:grid;place-items:center}
+  .tension li b{color:var(--ink)}
+  .sugg{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line-2);border-radius:6px;padding:3px 8px;margin-top:12px}
+
+  @media (max-width:1060px){ .deliv{grid-template-columns:1fr} .pr{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:640px){ .pr{grid-template-columns:1fr} .hgrid{grid-template-columns:minmax(90px,1fr) repeat(6,1fr)} .mrow{grid-template-columns:1fr;padding:16px 20px} .pdarea{padding:12px 20px} }
   @media (max-width:1060px){ .scope{grid-template-columns:1fr} .fw{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:640px){ .fw{grid-template-columns:1fr} .pdrow{grid-template-columns:1fr;gap:10px;padding:16px 20px} }
 
@@ -250,6 +311,18 @@
   </div>
 </header>
 
+<nav class="jump" aria-label="On this page">
+  <div class="wrap">
+    <a href="#scope"><b>§</b>Mandate</a>
+    <a href="#papers"><b>§</b>Priority Papers</a>
+    <a href="#deliverables"><b>§4</b>Deliverables</a>
+    <a href="#policydev"><b>§3</b>Functions</a>
+    <a href="#principles"><b>§5</b>Guiding Principles</a>
+    <a href="#next"><b>→</b>Next Up</a>
+    <a href="#mandates"><b>☰</b>All Inputs</a>
+  </div>
+</nav>
+
 <main>
   <section id="scope">
     <div class="wrap">
@@ -285,14 +358,53 @@
     </div>
   </section>
 
+  <section id="deliverables">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">§4 Deliverables</span>
+        <h2>What the Sub-Committee must produce, and when</h2>
+        <p>Monthly deliverables are tracked month by month. Annual deliverables are tracked as inputs. As-required deliverables link to the templates and inputs that let us produce them quickly.</p>
+      </div>
+      <div class="deliv">
+        <div class="dcard" id="monthly"></div>
+        <div class="dcard">
+          <div class="dhead"><div><div class="cad">As Required</div><h3>Ready-to-produce deliverables</h3></div></div>
+          <div id="asreq"></div>
+          <p class="dnote">Speed depends on preparation. Each deliverable is only as fast as the templates and inputs behind it.</p>
+        </div>
+      </div>
+      <div class="subhead">Annually</div>
+      <div class="mlist" id="alist"></div>
+    </div>
+  </section>
+
   <section id="policydev">
     <div class="wrap">
       <div class="sh">
-        <span class="kicker">Policy Development Duties</span>
-        <h2>How my inputs fulfil each duty</h2>
-        <p>Each Policy Development duty from the Terms of Reference, with the inputs that deliver it. The dot shows each input's current status. Click one to jump to it.</p>
+        <span class="kicker">§3 Functions</span>
+        <h2>How my inputs fulfil each function</h2>
+        <p>Every duty under the four functions in the Terms of Reference, with the inputs that deliver it. The dot shows each input's status. Click one to jump to it.</p>
       </div>
       <div class="pd" id="pd"></div>
+    </div>
+  </section>
+
+  <section id="principles">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">§5 Guiding Principles</span>
+        <h2>How our priorities reflect the Committee's doctrines</h2>
+        <p>Each governing doctrine, with the 2028 priorities that express it. Amber cards mark doctrines where a proposal may pull against the principle. Those tensions should be resolved before the chapter goes to leadership.</p>
+      </div>
+      <div class="pr" id="pr"></div>
+      <div class="tension">
+        <h3>Tensions to resolve before sign-off</h3>
+        <ol>
+          <li><span><b>Markets First / Innovation Through Freedom vs mandates.</b> Data-localisation rules (Priority 1) and procurement quotas (Priority 6) can raise costs or limit choice. Options: tiered, risk-based localisation (Decision Question 2), and time-bound, performance-based preferences for Ghanaian firms instead of fixed quotas.</span></li>
+          <li><span><b>Smaller, Faster, Smarter Government vs new institutions.</b> A forensics laboratory, cyber courts and sovereign cloud could read as government growth. Option: house them within existing institutions (CSA, Judiciary, existing data centres) and show the efficiency gains.</span></li>
+        </ol>
+      </div>
+      <span class="sugg">Suggested alignment · for committee review</span>
     </div>
   </section>
 
@@ -311,7 +423,7 @@
     <div class="wrap">
       <div class="sh">
         <span class="kicker">By Mandate</span>
-        <h2>My inputs under each Terms of Reference duty</h2>
+        <h2>All my inputs, by duty and function</h2>
         <p>Click a status to move it on: To prepare → In progress → Ready. Notes are saved in this browser.</p>
       </div>
       <div class="fbar">
@@ -417,7 +529,57 @@ const PAPERS = [
    ]}
 ];
 PAPERS[1].kicker += " · Suggested list, confirm with chair";
-const GROUPS = [...PAPERS, ...M];
+const ANNUAL = [
+  {n:"AN", fn:true, label:"Annual", kicker:"§4 Deliverables · Annually", title:"Annual deliverables", tor:"Strategic priorities and workplan; Legislative and regulatory review.",
+   items:[
+     {id:"a1", t:"Strategic priorities & annual workplan", d:"The Sub-Committee's priorities for the year, with deliverables, owners and dates. The seven 2028 priorities and this tracker are the starting point.", s:"progress", links:[["7 priorities","manifesto.html#priorities"]]},
+     {id:"a2", t:"Annual legislative & regulatory review", d:"A yearly review of Act 1038, Act 843, CSA directives and BoG payment-system rules: what changed, what works, and what we recommend. Built from the legislation tracker.", s:"todo", links:[["Legislation tracker","#item-2a"]]}
+   ]}
+];
+const FUNCS = [
+  {n:"SM", fn:true, label:"Sector Monitoring", kicker:"§3 Function · Sector Monitoring", title:"Sector monitoring", tor:"Monitor sector performance; review government policies, programs and expenditures; benchmark against international best practice; identify emerging risks and opportunities.",
+   items:[
+     {id:"s1", t:"Cyber spending review", d:"Review public spending on cybersecurity: the CSA's budget allocation, Cybersecurity Fund flows, and ministry spending on imported security licences and hardware. Feeds Priorities 3 and 6.", s:"todo", links:[["Priority 3","manifesto.html#p3"]]},
+     {id:"s2", t:"International benchmark", d:"Compare Ghana with African peers and global leaders using the ITU Global Cybersecurity Index and selected country case studies on CII protection, incident response, data sovereignty and workforce.", s:"todo", links:[]}
+   ]},
+  {n:"SC", fn:true, label:"Strategic Communications", kicker:"§3 Function · Strategic Communications", title:"Strategic communications", tor:"Provide technical input for public statements; support rapid response; simplify complex policy issues for public understanding.",
+   items:[
+     {id:"c1", t:"Fact sheet & approved key lines", d:"One page of verified figures and approved lines that spokespersons can quote safely. Only figures checked against BoG and CSA sources.", s:"todo", links:[["Evidence pack","#item-4a"]]},
+     {id:"c2", t:"Rapid response protocol & template", d:"Who drafts, who signs off, the agreed turnaround time, and ready templates for likely events: a major data breach, a scam wave, a utility or payment outage.", s:"todo", links:[]},
+     {id:"c3", t:"Plain-language explainers", d:"One-page explainers on data sovereignty, critical infrastructure and sovereign cloud, written for the public and suitable for translation into local languages.", s:"todo", links:[["Impact simulator","index.html#simulator"]]},
+     {id:"c4", t:"Technical advisory memo template", d:"A standard short format for advising leadership on a technical question: issue, facts, options, recommendation.", s:"todo", links:[]}
+   ]},
+  {n:"KM", fn:true, label:"Knowledge Management", kicker:"§3 Function · Knowledge Management", title:"Knowledge management", tor:"Maintain a repository of research, reports, legislation and policy resources; document lessons learned; share knowledge across subcommittees.",
+   items:[
+     {id:"k1", t:"Research & legislation repository", d:"A shared, indexed folder of Acts (1038, 843), CSA directives, BoG and CSA reports, past papers and this prototype, each with source link and date.", s:"todo", links:[]},
+     {id:"k2", t:"Lessons-learned log", d:"A short record after each paper, consultation or rapid response: what worked, and what to change next time.", s:"todo", links:[]},
+     {id:"k3", t:"Cross-subcommittee sharing", d:"Agree with the chair what to share and with whom, starting with the co-authors of the joint E5-S1 paper.", s:"todo", links:[["E5-S1 scope","#item-e1"]]}
+   ]}
+];
+const GROUPS = [...PAPERS, ...ANNUAL, ...M, ...FUNCS];
+
+const MONTHLY = [
+  {id:"mu", t:"Sector monitoring update", d:"Developments, data releases, government actions and spending this month.", from:["2c","2a","s1"]},
+  {id:"mi", t:"Emerging issues brief", d:"New threats, risks and opportunities, and what they mean for our positions.", from:["3a","3c"]},
+  {id:"ms", t:"Stakeholder engagement report", d:"Who we met, what we heard, and where consensus is moving.", from:["5b","5c"]}
+];
+const AS_REQ = [
+  ["Rapid response briefs", ["c2","c1"]],
+  ["Public statements", ["c1","c3","7c"]],
+  ["Technical advisory memoranda", ["c4","4c"]],
+  ["Manifesto contributions", ["7a","7b"]]
+];
+const PRINCIPLES = [
+  {t:"Technology as Economic Freedom", p:[5,7], d:"Safe mobile money and digital commerce let every Ghanaian take part in the economy, and cyber careers open new income."},
+  {t:"Smaller, Faster, Smarter Government", p:[2,3], d:"Shared sovereign cloud cuts duplicated systems. A transparent, ring-fenced fund replaces ad-hoc budgets.", tense:true},
+  {t:"National Productivity Transformation", p:[4,7], d:"Reliable power, payments and telecoms keep the economy running. A skilled workforce raises productivity."},
+  {t:"Markets First, Government Enables", p:[6,7], d:"Government acts as anchor customer and standard-setter, so Ghanaian firms can compete and grow.", tense:true},
+  {t:"Digitalization for Every Ghanaian", p:[5], d:"Local-language alerts and the 292 channel bring protection to rural, elderly and low-literacy users."},
+  {t:"Innovation Through Freedom", p:[6], d:"Open tenders and local R&D support let Ghanaian startups build and sell cyber products.", tense:true},
+  {t:"National Digital Sovereignty", p:[1,2,4], d:"Ghanaian data and critical infrastructure held under Ghanaian law and control."},
+  {t:"Merit, Competence, and Excellence", p:[7,5], d:"Skills-based, certified pathways into cyber careers. Specialist cyber courts and forensics."},
+  {t:"Permanent Readiness for Government", p:[], d:"An implementation roadmap and transition pack keep us ready to govern from day one.", link:["Duty 8: Transition readiness","#m8"]}
+];
 
 const PNAME = {1:"Data Sovereignty",2:"Sovereign Cloud",3:"Cyber Financing",4:"CII Resilience",5:"Citizen Protection",6:"Indigenous Tech",7:"Cyber Workforce"};
 const FW = [
@@ -428,11 +590,25 @@ const FW = [
   {n:5, name:"Sovereign cloud policy", pris:[2,1], cov:"strong", note:"Sovereign hosting for state data and a data-localisation statute."},
   {n:6, name:"Incident response", pris:[5,4], cov:"partial", note:"Strong on citizen fraud response (292, MoMo freeze, forensics). National incident coordination and mandatory reporting are not yet explicit."}
 ];
-const PD = [
-  ["Conduct policy research and analysis", ["2a","2c","3a","4a"]],
-  ["Develop position papers and policy briefs", ["e1","1c","4b","o1"]],
-  ["Draft reform proposals and implementation frameworks", ["1b","e7","8a"]],
-  ["Recommend legislative and regulatory improvements", ["e6","1b","2a"]]
+const FUNCTIONS = [
+  {area:"Policy Development", rows:[
+    ["Conduct policy research and analysis", ["2a","2c","3a","4a"]],
+    ["Develop position papers and policy briefs", ["e1","1c","4b","o1"]],
+    ["Draft reform proposals and implementation frameworks", ["1b","e7","8a"]],
+    ["Recommend legislative and regulatory improvements", ["e6","1b","a2"]]]},
+  {area:"Sector Monitoring", rows:[
+    ["Monitor sector performance and developments", ["2c","2b"]],
+    ["Review government policies, programs and expenditures", ["2a","s1"]],
+    ["Benchmark Ghana's performance against international best practices", ["s2"]],
+    ["Identify emerging risks and opportunities", ["3a","3b","3c"]]]},
+  {area:"Strategic Communications", rows:[
+    ["Provide technical input for public statements and policy communications", ["c1","7c"]],
+    ["Support rapid response efforts on sector-related issues", ["c2"]],
+    ["Simplify complex policy issues for public understanding", ["c3","6a"]]]},
+  {area:"Knowledge Management", rows:[
+    ["Maintain a repository of research, reports, legislation and policy resources", ["k1"]],
+    ["Document lessons learned and best practices", ["k2"]],
+    ["Share knowledge across subcommittees where appropriate", ["k3","e1"]]]}
 ];
 
 const ST = {
@@ -493,9 +669,56 @@ function renderSummary(){
 
   const byId = Object.fromEntries(items.map(it=>[it.id,it]));
   const dot = s => s==="ready"?"var(--green)":s==="progress"?"var(--gold)":"var(--red)";
-  $("#pd").innerHTML = PD.map(([duty,ids])=>`
-    <div class="pdrow"><h4>${duty}</h4>
-      <div class="ichips">${ids.map(id=>{ const it=byId[id]; return `<a class="ichip" href="#item-${id}" title="${ST[statusOf(it)].label}"><i style="background:${dot(statusOf(it))}"></i>${it.t}</a>`; }).join("")}</div>
+  const chips = (ids, cls="") => `<div class="ichips">${ids.map(id=>{ const it=byId[id]; return `<a class="ichip ${cls}" href="#item-${id}" title="${ST[statusOf(it)].label}"><i style="background:${dot(statusOf(it))}"></i>${it.t}</a>`; }).join("")}</div>`;
+  $("#pd").innerHTML = FUNCTIONS.map(f=>{
+    const ids = [...new Set(f.rows.flatMap(r=>r[1]))], ready = ids.filter(id=>statusOf(byId[id])==="ready").length;
+    return `<div class="pdarea">${f.area}<small>${ready} of ${ids.length} linked inputs ready</small></div>` +
+      f.rows.map(([duty,ids])=>`<div class="pdrow"><h4>${duty}</h4>${chips(ids)}</div>`).join("");
+  }).join("");
+  $("#asreq").innerHTML = AS_REQ.map(([t,ids])=>`<div class="arow"><h4>${t}</h4>${chips(ids,"sm")}</div>`).join("");
+  renderMonthly(byId, chips);
+}
+
+/* Monthly cycle */
+let monthOff = 0;
+function monthAt(off){ const d = new Date(); return new Date(d.getFullYear(), d.getMonth()+off, 1); }
+const mkey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+const mlabel = (d,short) => d.toLocaleString("en-GB", short?{month:"short"}:{month:"long",year:"numeric"});
+function renderMonthly(byId, chips){
+  saved.monthly = saved.monthly || {};
+  const cur = monthAt(monthOff), key = mkey(cur), mm = saved.monthly[key] || {};
+  const months = [...Array(6)].map((_,i)=>monthAt(monthOff-5+i));
+  $("#monthly").innerHTML = `
+    <div class="dhead">
+      <div><div class="cad">Monthly</div><h3>Monthly reporting cycle</h3></div>
+      <div class="mnav"><button type="button" data-d="-1" aria-label="Previous month">‹</button><span>${mlabel(cur)}</span><button type="button" data-d="1" aria-label="Next month">›</button></div>
+    </div>
+    ${MONTHLY.map(x=>{ const s = mm[x.id]||"todo"; return `
+      <div class="mrow">
+        <div><h4>${x.t}</h4><p>${x.d}</p><div style="margin-top:8px;font-size:.74rem;color:var(--muted);font-weight:700">DRAWS ON</div>${chips(x.from,"sm")}</div>
+        <button class="status ${s}" type="button" data-mid="${x.id}" aria-label="${x.t}, ${mlabel(cur)}: ${ST[s].label}. Click to change."><i></i>${ST[s].label}</button>
+      </div>`;}).join("")}
+    <div class="hist">
+      <span class="lbl">Last six months</span>
+      <div class="hgrid">
+        <span></span>${months.map((d,i)=>`<span class="mh ${i===5?"cur":""}">${mlabel(d,true)}</span>`).join("")}
+        ${MONTHLY.map(x=>`<span class="rn" title="${x.t}">${x.t}</span>${months.map((d,i)=>{ const s=(saved.monthly[mkey(d)]||{})[x.id]||"todo"; return `<span class="sq ${s} ${i===5?"curcol":""}" title="${x.t}, ${mlabel(d)}: ${ST[s].label}"></span>`; }).join("")}`).join("")}
+      </div>
+    </div>`;
+  $("#monthly").querySelectorAll(".mnav button").forEach(b=>b.addEventListener("click",()=>{ monthOff += +b.dataset.d; renderMonthly(byId, chips); }));
+  $("#monthly").querySelectorAll("[data-mid]").forEach(b=>b.addEventListener("click",()=>{
+    const m = saved.monthly[key] = saved.monthly[key] || {};
+    m[b.dataset.mid] = ST[m[b.dataset.mid]||"todo"].next; persist(); renderMonthly(byId, chips);
+  }));
+}
+
+function renderPrinciples(){
+  $("#pr").innerHTML = PRINCIPLES.map((p,i)=>`
+    <div class="prc ${p.tense?"tense":""}">
+      <span class="n">${i+1}</span>
+      <h4>${p.t}</h4>
+      <p>${p.d}</p>
+      <div class="pchips">${p.p.map(n=>`<a href="manifesto.html#p${n}">P${n} ${PNAME[n]}</a>`).join("")}${p.link?`<a href="${p.link[1]}">${p.link[0]}</a>`:""}${p.tense?'<span class="cov partial">Tension, see below</span>':""}</div>
     </div>`).join("");
 }
 
@@ -517,7 +740,7 @@ function mandateBar(m){
 
 function renderMandates(){
   const groupHTML = m=>`
-    <article class="mand${m.paper?" paper":""}" id="m${m.n}">
+    <article class="mand${m.paper?" paper":""}${m.fn?" fn":""}" id="m${m.n}">
       <div class="mhead">
         <div class="mnum">${m.n}</div>
         <div>
@@ -544,7 +767,9 @@ function renderMandates(){
       </div>
     </article>`;
   $("#plist").innerHTML = PAPERS.map(groupHTML).join("");
-  $("#mlist").innerHTML = M.map(groupHTML).join("");
+  $("#alist").innerHTML = ANNUAL.map(groupHTML).join("");
+  $("#mlist").innerHTML = `<div class="subhead" style="margin-top:0">§1 Purpose: duties 1–8</div>` + M.map(groupHTML).join("")
+    + `<div class="subhead">§3 Functions</div>` + FUNCS.map(groupHTML).join("");
 
   document.querySelectorAll(".status[data-id]").forEach(b=>b.addEventListener("click",()=>{
     const it = allItems().find(x=>x.id===b.dataset.id);
@@ -573,6 +798,8 @@ function applyFilter(){
 $("#exportBtn").addEventListener("click",()=>{
   const d = new Date(), items = allItems(), c = counts(items);
   let out = `MY INPUTS TO THE CYBERSECURITY & NATIONAL DIGITAL SOVEREIGNTY SUB-COMMITTEE\nExported: ${d.toLocaleString()}\nReady: ${c.ready} · In progress: ${c.progress} · To prepare: ${c.todo} (of ${items.length})\n`;
+  const cm = monthAt(0), mm = (saved.monthly||{})[mkey(cm)] || {};
+  out += `\nMONTHLY DELIVERABLES: ${mlabel(cm).toUpperCase()}\n` + MONTHLY.map(x=>`   [${ST[mm[x.id]||"todo"].label}] ${x.t}`).join("\n") + "\n";
   GROUPS.forEach(m=>{
     out += `\n${m.label}: ${m.title.toUpperCase()}\n   ToR: ${m.tor}\n`;
     m.items.forEach(it=>{
@@ -587,7 +814,7 @@ $("#exportBtn").addEventListener("click",()=>{
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 });
 
-renderFramework(); renderMandates(); renderSummary(); applyFilter();
+renderFramework(); renderPrinciples(); renderMandates(); renderSummary(); applyFilter();
 </script>
 </body>
 </html>
