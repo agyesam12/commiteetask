@@ -155,6 +155,17 @@
   .pri-head h3{font-family:var(--serif);font-size:1.85rem;font-weight:700;margin-top:6px}
   .promise{font-family:var(--serif);font-size:1.18rem;color:var(--ink-2);margin-top:14px;font-style:italic;max-width:62ch}
   .pri-head .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .official{display:grid;grid-template-columns:1.3fr 1fr;background:var(--blue-soft);border-bottom:1px solid var(--line)}
+  .official > div{padding:24px 40px}
+  .official .v{border-left:1px solid #D6DEEA}
+  .official .lbl{margin-bottom:12px;color:var(--navy)}
+  .official .lbl em{font-style:normal;color:var(--muted);letter-spacing:.06em}
+  .official ul{display:flex;flex-direction:column;gap:7px}
+  .official li{display:flex;gap:10px;font-size:.95rem;align-items:baseline}
+  .official li::before{content:"";flex:none;width:7px;height:7px;border-radius:50%;background:var(--navy);transform:translateY(-2px)}
+  .official .v p{font-family:var(--serif);font-size:1.08rem;color:var(--ink);line-height:1.5}
+  .official.pending{display:block;padding:14px 40px;background:#FAFBFC}
+  .official.pending .lbl{margin:0;color:var(--muted)}
   .pri-body{display:grid;grid-template-columns:1.3fr 1fr}
   .will{padding:32px 40px}
   .lbl{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block}
@@ -211,6 +222,7 @@
     .pri-head{grid-template-columns:1fr;padding:28px 24px 22px;gap:10px}
     .bignum{font-size:3rem}
     .pri-body{grid-template-columns:1fr}
+    .official{grid-template-columns:1fr} .official > div{padding:20px 24px} .official .v{border-left:0;border-top:1px solid #D6DEEA} .official.pending{padding:12px 24px}
     .will{padding:26px 24px}
     .side{border-left:0;border-top:1px solid var(--line);padding:26px 24px}
     .mapcard{padding:22px}
@@ -396,18 +408,22 @@ const RECORDS = [
 const recDesc = id => (RECORDS.find(r=>r[0]===id)||[])[1] || "Description to be confirmed";
 
 const P = [
-  {n:1, title:"Digital & Data Sovereignty", short:"Keep Ghana's strategic data under Ghanaian law.",
+  {n:1, title:"Digital Sovereignty, National Data Governance & Strategic Information Assets", short:"National control over strategic information and citizens' data.",
    promise:"Ghana's most sensitive data, about our citizens and our state, will be held under Ghanaian law and protected by Ghanaian institutions.",
    ids:["11.01","11.09"], tiers:["sovereignty"],
-   will:["Introduce a statutory framework for hosting sensitive government and citizen data in Ghana","Close the data-localisation gap left by the Data Protection Act, 2012","Set clear classification rules for which national datasets must stay in-country"],
+   focus:["Strategic national data governance","Protection of sensitive government and critical-sector information","Secure data exchange and interoperability","Privacy and digital rights","Responsible use of strategic data"],
+   value:"Stronger national control over strategic information, better protection of citizens' data and reduced exposure of sensitive national assets.",
+   will:["Introduce a statutory framework for hosting sensitive government and citizen data in Ghana","Set clear classification rules for sensitive government and critical-sector information, including what must stay in-country","Establish secure, interoperable data-exchange standards across government","Strengthen privacy and digital rights, and close the gaps left by the Data Protection Act, 2012","Set rules for the responsible use of strategic national data"],
    why:"<b>The gap:</b> the Data Protection Act (2012) regulates personal data, but Ghana has no comprehensive data-localisation mandate. Sensitive datasets can be hosted on foreign servers outside immediate Ghanaian jurisdiction.",
    measure:["Data-localisation legislation passed","Share of sensitive government datasets hosted under Ghanaian jurisdiction"]},
-  {n:2, title:"Sovereign Cloud & Strategic Infrastructure", short:"Local cloud and disaster recovery for the state.",
-   promise:"Government systems will run on trusted, Ghana-based cloud infrastructure and recover from Ghanaian backups.",
-   ids:["11.01","14.04"], tiers:["sovereignty"],
-   will:["Establish sovereign cloud hosting for sensitive state data","Build sovereign disaster-recovery capability for critical national systems","Make local hosting the default for new public digital services"],
+  {n:2, title:"Strategic Digital Infrastructure & Technology Security", short:"Secure cloud, telecoms and data centres, with trusted suppliers.",
+   promise:"Ghana's cloud, telecommunications and data-centre infrastructure will be secure, reliable and under our operational control, built with trusted suppliers and local technical capacity.",
+   ids:["11.01","14.04","05.10"], tiers:["sovereignty"],
+   focus:["Security of cloud, telecommunications and data-centre infrastructure","Security assurance for critical platforms and providers","Secure technology procurement and lifecycle management","Management of technology dependencies and vendor risks","Interoperability and local technical capacity"],
+   value:"More secure and reliable digital infrastructure, reduced technology-related vulnerabilities and greater operational control over critical systems.",
+   will:["Set security standards for cloud, telecommunications and data-centre infrastructure, including sovereign cloud hosting for sensitive state data","Introduce security assurance and certification for critical platforms and providers","Build security into technology procurement and lifecycle management, extending standardised procurement (05.10)","Assess and manage technology dependencies and vendor risks across critical systems","Build sovereign disaster recovery, interoperability and local technical capacity"],
    why:"<b>Why it matters:</b> when critical systems depend on infrastructure abroad, Ghana's ability to recover from an attack or outage depends on another country's jurisdiction.",
-   measure:["Sovereign cloud capacity commissioned","Critical systems with tested sovereign disaster recovery"]},
+   measure:["Critical platforms and providers with completed security assurance","Critical systems with tested sovereign disaster recovery","Sovereign cloud capacity commissioned"]},
   {n:3, title:"Sustainable National Cybersecurity Financing", short:"A ring-fenced fund for national cyber defence.",
    promise:"National cyber defence will have predictable, transparent and protected funding, not budgets that vary from year to year.",
    ids:["11.02","05.10"], tiers:["sovereignty","citizens"],
@@ -576,6 +592,11 @@ $("#plist").innerHTML = P.map(p=>`
         <div class="tags">${tags(p.tiers)}</div>
       </div>
     </div>
+    ${p.focus ? `
+    <div class="official">
+      <div><span class="lbl">Focus <em>· Policy Paper §2.2</em></span><ul>${p.focus.map(f=>`<li>${f}</li>`).join("")}</ul></div>
+      <div class="v"><span class="lbl">Value <em>· Policy Paper §2.2</em></span><p>${p.value}</p></div>
+    </div>` : `<div class="official pending"><span class="lbl">Focus &amp; Value <em>· Awaiting official §2.2 text</em></span></div>`}
     <div class="pri-body">
       <div class="will">
         <span class="lbl">What we will do</span>
