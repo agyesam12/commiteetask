@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Committee Inputs</title>
+<style>
+  :root{
+    --navy:#0F172A; --navy-2:#1E293B; --navy-3:#334155;
+    --red:#CE1126; --gold:#D97706; --gold-2:#FBBF24; --green:#15803D;
+    --red-soft:#FDF0F1; --gold-soft:#FEF6EA; --green-soft:#EDF7F0; --blue-soft:#EEF2F8;
+    --ink:#0F172A; --ink-2:#334155; --muted:#5B6B82; --line:#E2E8F0; --line-2:#CBD5E1;
+    --bg:#F6F7F9; --card:#FFFFFF;
+    --serif:Georgia,Cambria,"Iowan Old Style","Times New Roman",serif;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --radius:16px; --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px rgba(15,23,42,.06);
+  }
+  html{font-size:19px;scroll-behavior:smooth;scroll-padding-top:84px}
+  html[data-size="l"]{font-size:21px}
+  html[data-size="xl"]{font-size:23px}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;line-height:1.18;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  ul,ol{margin:0;padding:0;list-style:none}
+  button{font:inherit;cursor:pointer;color:inherit}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+  .kicker{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+
+  /* Top bar (shared look with manifesto.html) */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:.86rem;white-space:nowrap;text-decoration:none}
+  .brand .mark{display:flex;flex-direction:column;width:6px;height:28px;border-radius:3px;overflow:hidden}
+  .brand .mark i{flex:1}
+  .toplinks{display:flex;gap:2px;margin-left:auto;overflow-x:auto}
+  .toplinks a{text-decoration:none;font-size:.82rem;font-weight:650;color:var(--ink-2);padding:8px 12px;border-radius:8px;white-space:nowrap}
+  .toplinks a:hover{background:var(--blue-soft);color:var(--ink)}
+  .toplinks a.cur{background:var(--navy);color:#fff}
+  .sizer{display:flex;align-items:center;border:1.5px solid var(--line-2);border-radius:10px;overflow:hidden;flex:none}
+  .sizer button{border:0;background:#fff;padding:5px 10px;font-weight:800;color:var(--muted);line-height:1}
+  .sizer button+button{border-left:1px solid var(--line)}
+  .sizer button[aria-pressed="true"]{background:var(--navy);color:#fff}
+
+  /* Hero */
+  .hero{background:var(--navy);color:#fff}
+  .stripe{display:flex;height:6px}.stripe i{flex:1}
+  .hero .wrap{padding-top:60px;padding-bottom:56px;display:grid;grid-template-columns:1.4fr 1fr;gap:56px;align-items:center}
+  .hero .kicker{color:var(--gold-2)}
+  .hero h1{font-family:var(--serif);font-size:2.8rem;font-weight:700;margin-top:14px;letter-spacing:-.01em}
+  .hero .lead{font-size:1.1rem;color:#D5DCE6;margin-top:18px;max-width:56ch}
+  .tor{margin-top:26px;border-left:3px solid var(--gold-2);padding:4px 0 4px 18px;color:#CBD5E1;font-family:var(--serif);font-style:italic;font-size:.98rem;max-width:62ch}
+  .tor b{display:block;font-family:var(--sans);font-style:normal;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#94A3B8;margin-bottom:6px}
+
+  .progress-card{background:var(--navy-2);border:1px solid var(--navy-3);border-radius:var(--radius);padding:28px}
+  .ring{display:flex;align-items:center;gap:22px}
+  .ring svg{flex:none}
+  .ring .big{font-family:var(--serif);font-size:2.4rem;font-weight:700;line-height:1}
+  .ring .cap{color:#94A3B8;font-size:.86rem;margin-top:6px}
+  .breakdown{display:grid;gap:10px;margin-top:24px;padding-top:20px;border-top:1px solid var(--navy-3)}
+  .brow{display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:#CBD5E1}
+  .brow b{color:#fff;font-variant-numeric:tabular-nums;font-size:1rem}
+  .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:10px}
+  .actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:10px 16px;font-weight:750;font-size:.84rem;border:1.5px solid transparent;text-decoration:none}
+  .btn.gold{background:var(--gold-2);color:var(--navy)}
+  .btn.gold:hover{background:#FCD34D}
+  .btn.line{border-color:rgba(255,255,255,.25);color:#fff;background:transparent}
+  .btn.line:hover{border-color:#fff}
+
+  section{padding:72px 0 0}
+  .sh{max-width:780px;margin-bottom:30px}
+  .sh h2{font-family:var(--serif);font-size:2rem;font-weight:700;margin-top:10px}
+  .sh p{color:var(--ink-2);font-size:1.04rem;margin-top:12px}
+
+  /* Next up */
+  .next{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .ncard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--red)}
+  .ncard .from{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .ncard h3{font-size:1.02rem;font-weight:750}
+  .ncard p{color:var(--muted);font-size:.88rem;flex:1}
+  .ncard a{font-size:.82rem;font-weight:750;text-decoration:none;color:var(--navy)}
+  .allclear{background:var(--green-soft);border:1px solid #BBE3C6;color:#166534;border-radius:var(--radius);padding:22px;font-weight:700}
+
+  /* Filter */
+  .fbar{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .fbtn{border:1.5px solid var(--line-2);background:#fff;color:var(--ink-2);border-radius:999px;padding:8px 16px;font-weight:750;font-size:.84rem;display:inline-flex;gap:8px;align-items:center}
+  .fbtn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .fbtn .c{font-size:.72rem;background:rgba(100,116,139,.15);border-radius:999px;padding:1px 8px}
+  .fbtn[aria-pressed="true"] .c{background:rgba(255,255,255,.2)}
+  .hint{color:var(--muted);font-size:.84rem}
+
+  /* Mandate cards */
+  .mlist{display:flex;flex-direction:column;gap:22px}
+  .mand{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .mand[hidden]{display:none}
+  .mhead{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:26px 32px;border-bottom:1px solid var(--line)}
+  .mnum{font-family:var(--serif);font-size:3rem;font-weight:700;color:var(--red);line-height:.9;width:44px}
+  .mhead .torline{font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .mhead h3{font-family:var(--serif);font-size:1.45rem;margin-top:4px}
+  .mhead .q{color:var(--ink-2);font-size:.92rem;margin-top:6px;font-style:italic}
+  .mbar{width:150px;text-align:right}
+  .mbar .t{font-size:.8rem;color:var(--muted);font-weight:700}
+  .mbar .track{height:8px;border-radius:99px;background:var(--line);margin-top:8px;overflow:hidden;display:flex}
+  .mbar .track i{display:block;height:100%}
+  .items{display:flex;flex-direction:column}
+  .item{display:grid;grid-template-columns:1fr auto;gap:12px 24px;padding:20px 32px;border-bottom:1px solid var(--line);align-items:start}
+  .item:last-child{border-bottom:0}
+  .item[hidden]{display:none}
+  .item h4{font-size:1.02rem;font-weight:750}
+  .item .d{color:var(--ink-2);font-size:.92rem;margin-top:6px;max-width:72ch}
+  .item .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .lk{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:750;text-decoration:none;background:var(--blue-soft);color:var(--navy);border:1px solid #D6DEEA;border-radius:8px;padding:4px 10px}
+  .lk:hover{border-color:var(--navy)}
+  .item textarea{grid-column:1 / -1;width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;font-size:.88rem;resize:vertical;background:#FBFCFD;color:var(--ink)}
+  .item textarea:focus{outline:2px solid var(--gold);background:#fff}
+  .status{border:1.5px solid;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.78rem;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;background:#fff}
+  .status i{width:9px;height:9px;border-radius:50%}
+  .status.todo{border-color:#F5C2C8;color:#A50E1F;background:var(--red-soft)} .status.todo i{background:var(--red)}
+  .status.progress{border-color:#F6D7A7;color:#92400E;background:var(--gold-soft)} .status.progress i{background:var(--gold)}
+  .status.ready{border-color:#BBE3C6;color:#166534;background:var(--green-soft)} .status.ready i{background:var(--green)}
+  .stwrap{text-align:right}
+  .stwrap small{display:block;color:var(--muted);font-size:.7rem;margin-top:5px}
+
+  footer{margin-top:88px;background:var(--navy);color:#94A3B8;font-size:.82rem}
+  footer .wrap{padding-top:36px;padding-bottom:44px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  footer a{color:#fff;font-weight:700}
+
+  @media (max-width:960px){
+    .hero .wrap{grid-template-columns:1fr;gap:36px}
+  }
+  @media (max-width:760px){
+    html{font-size:17px} html[data-size="l"]{font-size:19px} html[data-size="xl"]{font-size:21px}
+    .wrap{padding:0 20px}
+    .hero h1{font-size:2.1rem}
+    .mhead{grid-template-columns:auto 1fr;padding:22px 20px;gap:16px}
+    .mbar{grid-column:1 / -1;width:auto;text-align:left}
+    .item{grid-template-columns:1fr;padding:18px 20px}
+    .stwrap{text-align:left}
+    .toplinks a:not(.cur){display:none}
+  }
+  @media (max-width:520px){ .brand span.t{display:none} .wrap{padding:0 16px} }
+  @media print{
+    html{font-size:11.5pt}
+    .topbar,.actions,.filters,.sizer,.hint,.stwrap small{display:none !important}
+    body{background:#fff}
+    .hero{background:#fff;color:var(--ink);border-bottom:2px solid var(--ink)}
+    .hero .lead,.tor{color:var(--ink-2)} .hero .kicker{color:var(--red)}
+    .progress-card{background:#fff;border-color:var(--line)} .ring .big,.brow b{color:var(--ink)} .brow,.ring .cap{color:var(--ink-2)}
+    .mand,.ncard{box-shadow:none;break-inside:avoid}
+    .item textarea{border:0;padding:0;background:none;min-height:0;resize:none}
+    .item textarea:placeholder-shown{display:none}
+    footer{background:#fff;color:var(--ink-2)} footer a{color:var(--ink)}
+  }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></span>
+      <span class="t">Cybersecurity &amp; Digital Sovereignty</span>
+    </a>
+    <nav class="toplinks" aria-label="Pages">
+      <a href="index.html">Policy Explorer</a>
+      <a href="manifesto.html">Manifesto Chapter</a>
+      <a class="cur" href="inputs.html" aria-current="page">My Inputs</a>
+    </nav>
+    <div class="sizer" role="group" aria-label="Text size">
+      <button type="button" data-s="m" aria-label="Standard text" style="font-size:.78rem">A</button>
+      <button type="button" data-s="l" aria-label="Large text" style="font-size:.92rem">A</button>
+      <button type="button" data-s="xl" aria-label="Extra large text" style="font-size:1.06rem">A</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="stripe"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></div>
+  <div class="wrap">
+    <div>
+      <span class="kicker">Terms of Reference · Member Input Tracker</span>
+      <h1>What I need to bring to the Sub-Committee</h1>
+      <p class="lead">Each of the eight mandates in our Terms of Reference, turned into the specific inputs I am responsible for. Each input shows whether it is ready, in progress or still to prepare, and links to work that already exists.</p>
+      <p class="tor"><b>Purpose · Terms of Reference §1</b>Protecting Ghana's digital systems, critical infrastructure, data, and national digital assets from cyber threats while strengthening the country's capacity to control, secure, and govern the digital infrastructure and technologies essential to national security and economic development.</p>
+    </div>
+    <div class="progress-card" aria-live="polite">
+      <div class="ring">
+        <svg width="112" height="112" viewBox="0 0 112 112" aria-hidden="true">
+          <circle cx="56" cy="56" r="46" fill="none" stroke="#334155" stroke-width="12"/>
+          <circle id="ringProg" cx="56" cy="56" r="46" fill="none" stroke="var(--gold-2)" stroke-width="12" stroke-linecap="round" transform="rotate(-90 56 56)" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset .4s"/>
+          <circle id="ringReady" cx="56" cy="56" r="46" fill="none" stroke="#22C55E" stroke-width="12" stroke-linecap="round" transform="rotate(-90 56 56)" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset .4s"/>
+        </svg>
+        <div><div class="big" id="pct">0%</div><div class="cap">of inputs ready<br><span id="pctSub"></span></div></div>
+      </div>
+      <div class="breakdown" id="breakdown"></div>
+      <div class="actions">
+        <button class="btn gold" id="exportBtn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export summary</button>
+        <button class="btn line" type="button" onclick="window.print()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="next">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Next Up</span>
+        <h2>What to prepare first</h2>
+        <p>The next inputs still marked “To prepare”, in the order of the Terms of Reference.</p>
+      </div>
+      <div id="nextList"></div>
+    </div>
+  </section>
+
+  <section id="mandates">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">By Mandate</span>
+        <h2>My inputs under each Terms of Reference duty</h2>
+        <p>Click a status to move it on: To prepare → In progress → Ready. Notes are saved in this browser.</p>
+      </div>
+      <div class="fbar">
+        <div class="filters" id="filters"></div>
+        <span class="hint">Tip: filter to “To prepare” before a meeting to see what is outstanding.</span>
+      </div>
+      <div class="mlist" id="mlist"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Personal working tracker. Based on the Sub-Committee Terms of Reference, §1 Purpose (duties 1–8).</span>
+    <span><a href="index.html">Policy Explorer</a> · <a href="manifesto.html">Manifesto Chapter</a></span>
+  </div>
+</footer>
+
+<script>
+const M = [
+  {n:1, tor:"Develop policy proposals and reform recommendations within its assigned mandate.",
+   title:"Policy proposals & reform recommendations",
+   items:[
+     {id:"1a", t:"Seven 2028 priority proposals", d:"One proposal per strategic priority, each with a promise, concrete commitments and the 2024 record it builds on. Drafted in the Manifesto Chapter and ready for committee review.", s:"progress", links:[["Manifesto: 7 priorities","manifesto.html#priorities"]]},
+     {id:"1b", t:"Legal & regulatory reform list", d:"Specific reforms the proposals need: a data-localisation statute, Evidence Act update for digital evidence, ring-fencing the Cybersecurity Fund in law, a mandatory CII audit requirement, and a MoMo rapid-freeze protocol.", s:"todo", links:[["Priorities 1, 3, 4, 5","manifesto.html#detail"]]},
+     {id:"1c", t:"One-page brief per reform", d:"For each reform: the problem, the proposed change, the lead institution, and the trade-offs to flag to leadership.", s:"todo", links:[]}
+   ]},
+  {n:2, tor:"Monitor government activities, legislation, regulations, and programs related to its sector.",
+   title:"Monitoring government activity & legislation",
+   items:[
+     {id:"2a", t:"Legislation & regulation tracker", d:"Current status and gaps in the Cybersecurity Act, 2020 (Act 1038), Data Protection Act, 2012 (Act 843), CSA CII Directives, and relevant Bank of Ghana payment-system rules.", s:"todo", links:[]},
+     {id:"2b", t:"2024 commitment delivery status", d:"Where each 2024 record (03.14, 05.10, 11.01–11.10, 14.04) stands today. This includes confirming what 11.03, 11.05, 11.07, 11.08 and 11.10 cover so they can be mapped.", s:"progress", links:[["2024 record table","manifesto.html#continuity"]]},
+     {id:"2c", t:"Regular data watch", d:"Track new releases: BoG fraud reports, CSA scam and incident bulletins, and announcements from the 292 reporting channel. Update the evidence banner when new figures land.", s:"todo", links:[["Evidence section","index.html#evidence"]]}
+   ]},
+  {n:3, tor:"Identify opportunities, challenges, and emerging trends affecting the sector.",
+   title:"Opportunities, challenges & emerging trends",
+   items:[
+     {id:"3a", t:"Threat-trend note", d:"Fraud migrating from banks to mobile money, investment scams rebranding across social media, SIM swap, and ransomware risk to utilities and payment switches.", s:"progress", links:[["Evidence: what the numbers tell us","index.html#evidence"]]},
+     {id:"3b", t:"Opportunity note", d:"Youth cyber careers (local and global remote), a domestic cyber industry through procurement, and sovereign cloud as a national asset.", s:"progress", links:[["Priorities 6 & 7","manifesto.html#p6"]]},
+     {id:"3c", t:"Challenges & risks register", d:"For example, SME compliance cost of data localisation, liability for wrongful wallet freezes, funding sustainability, and skills retention.", s:"todo", links:[["Discussion questions","index.html#discussion"]]}
+   ]},
+  {n:4, tor:"Provide evidence-based advice to the Committee leadership.",
+   title:"Evidence-based advice to leadership",
+   items:[
+     {id:"4a", t:"Verified evidence pack", d:"Source each headline figure to the published document: PSP fraud 15,673 → 24,124 (+54%), bank cases −34%, RCBs 51% of SDI cash suppression, CSA H1 2026: 352 cases / GH¢3,429,447.", s:"progress", links:[["Evidence banner","index.html#evidence"]]},
+     {id:"4b", t:"Leadership briefing note", d:"A two-page note for leadership on the problem, the seven priorities, the decisions needed and the risks. The Manifesto Chapter is the visual companion.", s:"todo", links:[["Manifesto Chapter","manifesto.html"]]},
+     {id:"4c", t:"Recommendations on the three decision questions", d:"A recommended position, with reasoning, on the MoMo freeze protocol, local data hosting vs SME costs, and 2024→2028 implementation tracking.", s:"todo", links:[["Decision questions","index.html#discussion"]]}
+   ]},
+  {n:5, tor:"Engage stakeholders to gather perspectives and build consensus.",
+   title:"Stakeholder engagement & consensus",
+   items:[
+     {id:"5a", t:"Stakeholder map", d:"Regulators (CSA, BoG, NCA, Data Protection Commission), operators (MoMo/telcos, GhIPSS, ECG, GRIDCo, water utilities), academia and TVET, local cyber firms, civil society and traditional and community leaders.", s:"todo", links:[]},
+     {id:"5b", t:"Consultation plan & questions", d:"Who to meet, in what order, and what to test with each: freeze-protocol feasibility with operators, localisation costs with SMEs and startups, curriculum with universities.", s:"todo", links:[]},
+     {id:"5c", t:"Summary of stakeholder views", d:"Record of what was heard and where consensus exists or not. Feeds into committee status decisions (Core Flagship / Consolidate / Refine Scope).", s:"todo", links:[["Policy matrix","index.html#matrix"]]}
+   ]},
+  {n:6, tor:"Promote innovation, efficiency, accountability, and citizen-centered service delivery.",
+   title:"Innovation, efficiency, accountability & citizens",
+   items:[
+     {id:"6a", t:"Citizen impact cases", d:"How each policy changes real lives: the grandmother in the village, the ordinary Ghanaian, and Ghana as a nation, each with a before/after scenario.", s:"ready", links:[["Impact simulator","index.html#simulator"]]},
+     {id:"6b", t:"Accountability measures", d:"Progress indicators for each priority and a proposal for who owns and publishes a public scorecard.", s:"progress", links:[["Measures per priority","manifesto.html#detail"]]},
+     {id:"6c", t:"Innovation & efficiency proposals", d:"Standardised procurement (05.10) and local-firm quotas (Priority 6), plus ideas for digital, citizen-friendly reporting (292, WhatsApp, local languages).", s:"progress", links:[["Priority 6","manifesto.html#p6"]]}
+   ]},
+  {n:7, tor:"Contribute to the development of the Party's policy platform and manifesto.",
+   title:"Contribution to the policy platform & manifesto",
+   items:[
+     {id:"7a", t:"Draft manifesto chapter", d:"“A Secure and Sovereign Digital Ghana”: vision, seven priorities, commitments and measures. Drafted. Needs committee approval of wording.", s:"progress", links:[["Open chapter","manifesto.html"]]},
+     {id:"7b", t:"2024 → 2028 continuity map", d:"Shows every 2024 commitment carried forward, so the chapter builds visibly on the Party's record.", s:"ready", links:[["Connection map","manifesto.html#connections"]]},
+     {id:"7c", t:"Campaign-ready messages", d:"Short, plain-language lines per priority for use by the flag bearer and spokespersons, in English and key local languages.", s:"todo", links:[]}
+   ]},
+  {n:8, tor:"Maintain readiness to support future government transition and implementation efforts.",
+   title:"Transition & implementation readiness",
+   items:[
+     {id:"8a", t:"Implementation roadmap", d:"Sequencing of the seven priorities: early actions, what needs legislation, what needs funding, and the lead ministry or agency for each.", s:"todo", links:[]},
+     {id:"8b", t:"Institutional & funding notes", d:"Which institutions deliver each priority (CSA, BoG, Judiciary, ministries) and the likely funding route, including the ring-fenced Cybersecurity Fund.", s:"todo", links:[["Priority 3","manifesto.html#p3"]]},
+     {id:"8c", t:"Transition briefing pack", d:"A concise handover pack for an incoming administration: priorities, status of 2024 commitments, key stakeholders, and first decisions required.", s:"todo", links:[]}
+   ]}
+];
+
+const ST = {
+  todo:{label:"To prepare", next:"progress", color:"var(--red)"},
+  progress:{label:"In progress", next:"ready", color:"var(--gold)"},
+  ready:{label:"Ready", next:"todo", color:"var(--green)"}
+};
+const KEY = "gh2028-inputs-v1";
+let saved = {status:{}, notes:{}};
+try{ saved = JSON.parse(localStorage.getItem(KEY)) || saved; }catch(e){}
+const persist = () => { try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){} };
+const statusOf = it => saved.status[it.id] || it.s;
+const allItems = () => M.flatMap(m=>m.items.map(it=>({...it, m})));
+let filter = "all";
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* Text size (shared with manifesto.html) */
+const sizeKey = "gh2028-text-size";
+function setSize(s){
+  document.documentElement.dataset.size = s;
+  document.querySelectorAll(".sizer button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.s===s));
+  try{ localStorage.setItem(sizeKey, s); }catch(e){}
+}
+document.querySelectorAll(".sizer button").forEach(b=>b.addEventListener("click",()=>setSize(b.dataset.s)));
+let sz="m"; try{ sz = localStorage.getItem(sizeKey) || "m"; }catch(e){} setSize(sz);
+
+function counts(items){
+  const c = {todo:0,progress:0,ready:0};
+  items.forEach(it=>c[statusOf(it)]++);
+  return c;
+}
+
+function renderSummary(){
+  const items = allItems(), c = counts(items), total = items.length;
+  const pReady = c.ready/total, pProg = (c.ready+c.progress)/total, L = 289;
+  $("#ringReady").setAttribute("stroke-dashoffset", L*(1-pReady));
+  $("#ringProg").setAttribute("stroke-dashoffset", L*(1-pProg));
+  $("#pct").textContent = Math.round(pReady*100)+"%";
+  $("#pctSub").textContent = `${c.ready} of ${total} inputs`;
+  $("#breakdown").innerHTML = Object.entries(ST).map(([k,v])=>
+    `<div class="brow"><span><span class="sw" style="background:${k==="ready"?"#22C55E":k==="progress"?"var(--gold-2)":"#F87171"}"></span>${v.label}</span><b>${c[k]}</b></div>`).join("");
+
+  const next = items.filter(it=>statusOf(it)==="todo").slice(0,6);
+  $("#nextList").innerHTML = next.length
+    ? `<div class="next">${next.map(it=>`
+        <div class="ncard">
+          <span class="from">Mandate ${it.m.n} · ${it.m.title}</span>
+          <h3>${it.t}</h3>
+          <p>${it.d}</p>
+          <a href="#item-${it.id}">Go to input →</a>
+        </div>`).join("")}</div>`
+    : `<div class="allclear">Nothing left marked “To prepare”. Every input is in progress or ready.</div>`;
+
+  const fdefs = [["all","All inputs",total],["todo","To prepare",c.todo],["progress","In progress",c.progress],["ready","Ready",c.ready]];
+  $("#filters").innerHTML = fdefs.map(([k,l,n])=>`<button class="fbtn" type="button" data-f="${k}" aria-pressed="${filter===k}">${l}<span class="c">${n}</span></button>`).join("");
+  document.querySelectorAll(".fbtn").forEach(b=>b.addEventListener("click",()=>{ filter=b.dataset.f; renderSummary(); applyFilter(); }));
+}
+
+function mandateBar(m){
+  const c = counts(m.items), t = m.items.length;
+  return `<div class="t">${c.ready} of ${t} ready</div>
+    <div class="track"><i style="width:${c.ready/t*100}%;background:var(--green)"></i><i style="width:${c.progress/t*100}%;background:var(--gold)"></i></div>`;
+}
+
+function renderMandates(){
+  $("#mlist").innerHTML = M.map(m=>`
+    <article class="mand" id="m${m.n}">
+      <div class="mhead">
+        <div class="mnum">${m.n}</div>
+        <div>
+          <div class="torline">Terms of Reference · Duty ${m.n}</div>
+          <h3>${m.title}</h3>
+          <p class="q">“${m.tor}”</p>
+        </div>
+        <div class="mbar" id="bar${m.n}">${mandateBar(m)}</div>
+      </div>
+      <div class="items">
+        ${m.items.map(it=>{ const s = statusOf(it); return `
+        <div class="item" id="item-${it.id}" data-s="${s}">
+          <div>
+            <h4>${it.t}</h4>
+            <p class="d">${it.d}</p>
+            ${it.links.length?`<div class="links">${it.links.map(([l,h])=>`<a class="lk" href="${h}">${l} →</a>`).join("")}</div>`:""}
+          </div>
+          <div class="stwrap">
+            <button class="status ${s}" type="button" data-id="${it.id}" aria-label="${it.t}: ${ST[s].label}. Click to change."><i></i>${ST[s].label}</button>
+            <small>Click to change</small>
+          </div>
+          <textarea data-id="${it.id}" placeholder="My notes, sources, owner or deadline…" aria-label="Notes for ${it.t}">${esc(saved.notes[it.id]||"")}</textarea>
+        </div>`;}).join("")}
+      </div>
+    </article>`).join("");
+
+  document.querySelectorAll(".status[data-id]").forEach(b=>b.addEventListener("click",()=>{
+    const it = allItems().find(x=>x.id===b.dataset.id);
+    const s = ST[statusOf(it)].next;
+    saved.status[it.id] = s; persist();
+    b.className = "status "+s; b.innerHTML = `<i></i>${ST[s].label}`;
+    b.setAttribute("aria-label", `${it.t}: ${ST[s].label}. Click to change.`);
+    b.closest(".item").dataset.s = s;
+    $("#bar"+it.m.n).innerHTML = mandateBar(it.m);
+    renderSummary(); applyFilter();
+  }));
+  document.querySelectorAll("textarea[data-id]").forEach(t=>t.addEventListener("input",()=>{ saved.notes[t.dataset.id]=t.value; persist(); }));
+}
+
+function applyFilter(){
+  document.querySelectorAll(".mand").forEach(card=>{
+    let any = false;
+    card.querySelectorAll(".item").forEach(row=>{
+      const show = filter==="all" || row.dataset.s===filter;
+      row.hidden = !show; if(show) any = true;
+    });
+    card.hidden = !any;
+  });
+}
+
+$("#exportBtn").addEventListener("click",()=>{
+  const d = new Date(), items = allItems(), c = counts(items);
+  let out = `MY INPUTS TO THE CYBERSECURITY & NATIONAL DIGITAL SOVEREIGNTY SUB-COMMITTEE\nExported: ${d.toLocaleString()}\nReady: ${c.ready} · In progress: ${c.progress} · To prepare: ${c.todo} (of ${items.length})\n`;
+  M.forEach(m=>{
+    out += `\n${m.n}. ${m.title.toUpperCase()}\n   ToR: ${m.tor}\n`;
+    m.items.forEach(it=>{
+      out += `   [${ST[statusOf(it)].label}] ${it.t}\n`;
+      const n = (saved.notes[it.id]||"").trim(); if(n) out += `      Notes: ${n.replace(/\n/g,"\n             ")}\n`;
+    });
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out],{type:"text/plain"}));
+  a.download = `my-committee-inputs-${d.toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+
+renderMandates(); renderSummary(); applyFilter();
+</script>
+</body>
+</html>
