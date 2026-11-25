@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ghana 2028 Cyber Policy Explorer</title>
+<style>
+  :root{
+    --navy:#0F172A; --navy-2:#1E293B; --navy-3:#334155;
+    --red:#CE1126; --gold:#D97706; --green:#15803D;
+    --red-soft:#FDECEE; --gold-soft:#FEF3E2; --green-soft:#E8F5EC; --blue-soft:#EEF2F8;
+    --ink:#0F172A; --ink-2:#334155; --muted:#64748B; --line:#E2E8F0;
+    --bg:#F1F5F9; --card:#FFFFFF;
+    --radius:14px; --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  html{font-size:17px}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{line-height:1.2;margin:0;text-wrap:balance}
+  p{margin:0}
+  button{font:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+  /* Header */
+  header{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+  .flagbar{display:flex;height:6px}
+  .flagbar span{flex:1}
+  .hdr{padding:32px 0 36px;display:flex;gap:24px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+  .eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#FBBF24;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  header h1{font-size:2.05rem;font-weight:750;letter-spacing:-.01em;max-width:820px}
+  header .sub{margin-top:10px;color:#CBD5E1;font-style:italic;font-size:1.02rem}
+  .hdr-meta{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:6px 12px;font-size:.82rem;color:#E2E8F0;background:rgba(255,255,255,.05)}
+  nav.jump{background:var(--navy-2);border-top:1px solid rgba(255,255,255,.06)}
+  nav.jump .wrap{display:flex;gap:4px;overflow-x:auto}
+  nav.jump a{color:#CBD5E1;text-decoration:none;padding:12px 14px;font-size:.88rem;font-weight:600;white-space:nowrap;border-bottom:3px solid transparent}
+  nav.jump a:hover{color:#fff;border-bottom-color:var(--gold)}
+
+  section{padding:40px 0 8px}
+  .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+  .sec-num{font-size:.78rem;font-weight:800;letter-spacing:.12em;color:var(--red);text-transform:uppercase}
+  .sec-head h2{font-size:1.55rem;margin-top:4px}
+  .sec-head p{color:var(--muted);max-width:640px;margin-top:6px}
+
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line)}
+
+  /* KPI */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .kpi{padding:22px 22px 20px;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)}
+  .kpi .ico{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);margin-bottom:14px}
+  .kpi .val{font-size:2.3rem;font-weight:800;letter-spacing:-.02em;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+  .kpi .lbl{font-weight:700;font-size:1.05rem;margin-top:8px}
+  .kpi .det{color:var(--ink-2);font-size:.93rem;margin-top:6px}
+  .kpi .src{color:var(--muted);font-size:.78rem;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+
+  .evidence{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-top:18px}
+  .chart-card{padding:22px}
+  .chart-card h3{font-size:1.1rem}
+  .chart-card .cap{color:var(--muted);font-size:.88rem;margin-top:4px}
+  .chart-box{position:relative;height:270px;margin-top:14px}
+  .fallback-chart{display:flex;align-items:flex-end;justify-content:center;gap:56px;height:100%;padding:10px 0 0;border-bottom:2px solid var(--line)}
+  .fbar{width:120px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .fbar .b{width:100%;border-radius:8px 8px 0 0}
+  .fbar .n{font-weight:800;font-size:1.15rem;margin-bottom:6px;font-variant-numeric:tabular-nums}
+  .fbar-lbls{display:flex;justify-content:center;gap:56px;margin-top:8px}
+  .fbar-lbls span{width:120px;text-align:center;font-weight:700;color:var(--ink-2)}
+  .why{padding:22px;background:var(--navy);color:#E2E8F0;border:none}
+  .why h3{color:#fff;font-size:1.1rem;margin-bottom:12px}
+  .why ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+  .why li{display:flex;gap:12px;font-size:.95rem}
+  .why li b{color:#fff}
+  .why .dot{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .why .note{margin-top:14px;font-size:.78rem;color:#94A3B8}
+
+  /* Personas */
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tab{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;gap:14px;align-items:flex-start;transition:border-color .15s,box-shadow .15s,transform .15s;color:var(--ink)}
+  .tab:hover{border-color:#CBD5E1;transform:translateY(-1px)}
+  .tab[aria-selected="true"]{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft),var(--shadow)}
+  .tab .ico{flex:none;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+  .tab .t{font-weight:750;font-size:1.06rem}
+  .tab .s{color:var(--muted);font-size:.88rem;margin-top:2px}
+  .tier{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+
+  .panel{margin-top:16px;padding:0;overflow:hidden}
+  .panel-top{padding:18px 22px;background:var(--accent-soft);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+  .panel-top h3{font-size:1.25rem}
+  .panel-top .quote{color:var(--ink-2);font-style:italic;font-size:.95rem;margin-top:4px}
+  .toggle{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+  .toggle button{border:0;background:transparent;padding:8px 16px;border-radius:999px;font-weight:700;font-size:.88rem;color:var(--muted)}
+  .toggle button[aria-pressed="true"]{background:var(--navy);color:#fff}
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr}
+  .col{padding:20px 22px;border-right:1px solid var(--line)}
+  .col:last-child{border-right:0}
+  .col h4{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .col ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .col li{display:flex;gap:10px;font-size:.95rem;align-items:flex-start}
+  .col li svg{flex:none;margin-top:3px}
+  .pol{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FAFBFD}
+  .pol .code{font-family:Consolas,"SF Mono",Menlo,monospace;font-size:.8rem;font-weight:700;color:var(--navy);background:var(--blue-soft);padding:2px 7px;border-radius:5px;display:inline-block;margin-bottom:4px}
+  .pol .nm{font-size:.92rem;font-weight:600}
+  .journey{padding:20px 22px;border-top:1px solid var(--line);background:#FCFCFD}
+  .journey h4{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;counter-reset:s}
+  .step{border-radius:10px;padding:12px 14px;font-size:.9rem;border:1px solid var(--line);background:#fff;position:relative}
+  .step .k{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+  .step.bad{border-color:#F5C2C8;background:var(--red-soft)} .step.bad .k{color:var(--red)}
+  .step.good{border-color:#BBE3C6;background:var(--green-soft)} .step.good .k{color:var(--green)}
+  .journey .res{margin-top:12px;font-weight:700;font-size:.95rem;display:flex;gap:8px;align-items:center}
+
+  /* Matrix */
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .fbtn{border:1.5px solid var(--line);background:#fff;color:var(--ink-2);border-radius:999px;padding:8px 16px;font-weight:700;font-size:.88rem;display:inline-flex;gap:8px;align-items:center}
+  .fbtn:hover{border-color:#94A3B8}
+  .fbtn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .fbtn .c{font-size:.75rem;background:rgba(100,116,139,.15);border-radius:999px;padding:1px 7px}
+  .fbtn[aria-pressed="true"] .c{background:rgba(255,255,255,.2)}
+  .matrix-tools{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .tally{display:flex;gap:8px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);align-items:center}
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:900px}
+  thead th{background:var(--navy);color:#fff;text-align:left;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding:12px 14px;font-weight:700}
+  thead th:first-child{border-top-left-radius:var(--radius)} thead th:last-child{border-top-right-radius:var(--radius)}
+  tbody td{padding:14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:.93rem;background:#fff}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover td{background:#FAFBFD}
+  tbody tr.hidden{display:none}
+  .pnum{font-weight:800;color:var(--red);font-size:.8rem;letter-spacing:.06em}
+  .pname{font-weight:700;font-size:1rem;margin-top:2px}
+  .pdesc{color:var(--muted);font-size:.86rem;margin-top:4px}
+  .ids{display:flex;flex-wrap:wrap;gap:6px}
+  .id{font-family:Consolas,"SF Mono",Menlo,monospace;font-size:.8rem;font-weight:700;background:var(--blue-soft);color:var(--navy);padding:3px 8px;border-radius:6px;border:1px solid #D6DEEA;cursor:help}
+  .idsub{color:var(--muted);font-size:.82rem;margin-top:6px}
+  .tags{display:flex;flex-direction:column;gap:5px}
+  .tag{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;padding:3px 9px;border-radius:6px;width:max-content}
+  .tag.citizens{background:var(--red-soft);color:#A50E1F}
+  .tag.economy{background:var(--gold-soft);color:#92400E}
+  .tag.sovereignty{background:var(--green-soft);color:#166534}
+  .status{border:0;border-radius:999px;padding:6px 12px;font-weight:800;font-size:.8rem;display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
+  .status.flagship{background:var(--green);color:#fff}
+  .status.consolidate{background:var(--gold);color:#fff}
+  .status.refine{background:var(--red);color:#fff}
+  .status-hint{color:var(--muted);font-size:.74rem;margin-top:6px}
+  textarea.note{width:100%;min-width:190px;min-height:62px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:.86rem;resize:vertical;background:#FCFCFD;color:var(--ink)}
+  textarea.note:focus{outline:2px solid var(--gold);background:#fff}
+  .unmapped{margin-top:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;border-left:5px solid var(--gold)}
+  .unmapped b{display:block;margin-bottom:4px}
+  .unmapped p{color:var(--ink-2);font-size:.9rem}
+  .btn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font-weight:700;font-size:.85rem;color:var(--ink-2);display:inline-flex;gap:8px;align-items:center}
+  .btn:hover{border-color:#94A3B8;color:var(--ink)}
+  .btn.dark{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  /* Discussion */
+  .disc{margin-top:8px;background:var(--navy);color:#E2E8F0;border-radius:var(--radius);overflow:hidden}
+  .disc-head{width:100%;background:transparent;border:0;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:20px 24px;text-align:left}
+  .disc-head h2{font-size:1.3rem}
+  .disc-head .sm{color:#94A3B8;font-size:.9rem;margin-top:4px}
+  .chev{transition:transform .2s}
+  .disc-head[aria-expanded="false"] .chev{transform:rotate(-90deg)}
+  .disc-body{padding:0 24px 24px;display:grid;gap:14px}
+  .disc-body[hidden]{display:none}
+  .q{background:var(--navy-2);border:1px solid var(--navy-3);border-radius:12px;padding:18px 20px}
+  .q-top{display:flex;gap:14px;align-items:flex-start}
+  .q-n{flex:none;width:36px;height:36px;border-radius:10px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:900}
+  .q h3{color:#fff;font-size:1.08rem}
+  .q .ask{color:#CBD5E1;margin-top:6px;font-size:.95rem}
+  .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;padding-left:50px}
+  .opt{border:1.5px solid var(--navy-3);background:transparent;color:#E2E8F0;border-radius:10px;padding:10px 12px;text-align:left;font-size:.88rem}
+  .opt b{display:block;color:#fff;font-size:.9rem;margin-bottom:2px}
+  .opt:hover{border-color:#64748B}
+  .opt[aria-pressed="true"]{border-color:var(--gold);background:rgba(217,119,6,.14)}
+  .q .links{padding-left:50px;margin-top:10px;font-size:.8rem;color:#94A3B8}
+
+  footer{padding:28px 0 40px;color:var(--muted);font-size:.82rem}
+  footer .srcs{display:grid;gap:4px;margin-top:8px}
+
+  @media (max-width: 960px){
+    html{font-size:16px}
+    .kpis,.tabs{grid-template-columns:1fr}
+    .evidence{grid-template-columns:1fr}
+    .cols{grid-template-columns:1fr}
+    .col{border-right:0;border-bottom:1px solid var(--line)}
+    .steps{grid-template-columns:1fr 1fr}
+    .opts{grid-template-columns:1fr;padding-left:0}
+    .q .links{padding-left:0}
+    header h1{font-size:1.6rem}
+  }
+  @media (max-width: 560px){
+    .wrap{padding:0 16px}
+    .steps{grid-template-columns:1fr}
+    .fallback-chart,.fbar-lbls{gap:24px}
+    .fbar,.fbar-lbls span{width:96px}
+  }
+  @media print{
+    nav.jump,.filters,.matrix-tools .btn{display:none}
+    .disc-body[hidden]{display:grid}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="flagbar"><span style="background:var(--red)"></span><span style="background:#FCD116"></span><span style="background:var(--green)"></span></div>
+  <div class="wrap hdr">
+    <div>
+      <div class="eyebrow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Policy Explorer · Working Draft
+      </div>
+      <h1>Ghana 2028 Manifesto: Cybersecurity &amp; Digital Sovereignty Policy Explorer</h1>
+      <p class="sub">NPP Cybersecurity &amp; National Digital Sovereignty Sub-Committee — Working Session Prototype</p>
+    </div>
+    <div class="hdr-meta">
+      <span class="pill">7 Strategic Priorities</span>
+      <span class="pill">13 Baseline 2024 Records</span>
+      <span class="pill">3 Impact Tiers</span>
+    </div>
+  </div>
+  <nav class="jump" aria-label="Sections">
+    <div class="wrap">
+      <a href="#evidence">1 · Evidence</a>
+      <a href="#simulator">2 · Impact Simulator</a>
+      <a href="#matrix">3 · Policy Matrix</a>
+      <a href="#discussion">4 · Discussion</a>
+      <a href="manifesto.html" style="margin-left:auto;color:#FBBF24">Manifesto Chapter →</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- 1. EVIDENCE -->
+  <section id="evidence">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">Section 01</div>
+        <h2>Executive Overview &amp; Hard Evidence</h2>
+        <p>Official Ghanaian data showing why digital economic security belongs at the centre of the 2028 manifesto.</p>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <article class="card kpi" style="--accent:var(--red);--accent-soft:var(--red-soft)">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+        <div class="val">+54%</div>
+        <div class="lbl">Surge in Mobile Money / PSP Fraud</div>
+        <p class="det"><b>24,124</b> cases in 2025, up from <b>15,673</b> in 2024. Fraud is shifting from banks toward mobile money users.</p>
+        <div class="src">Source: Bank of Ghana, 2025 Fraud Report</div>
+      </article>
+      <article class="card kpi" style="--accent:var(--gold);--accent-soft:var(--gold-soft)">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></div>
+        <div class="val">GH¢3.43M</div>
+        <div class="lbl">Lost in 6 Months to Online Scams</div>
+        <p class="det"><b>352</b> online investment &amp; social media scam cases in H1 2026 alone (GH¢3,429,447 in direct losses).</p>
+        <div class="src">Source: Cyber Security Authority (CSA)</div>
+      </article>
+      <article class="card kpi" style="--accent:var(--green);--accent-soft:var(--green-soft)">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg></div>
+        <div class="val">5,000+</div>
+        <div class="lbl">Youth Cyber Jobs</div>
+        <p class="det">Target workforce pipeline under 2024 Manifesto Commitment <b>03.14</b> and 2028 <b>Priority 7</b>.</p>
+        <div class="src">Source: 2024 Manifesto record 03.14 · Proposed 2028 Priority 7</div>
+      </article>
+    </div>
+
+    <div class="evidence">
+      <div class="card chart-card">
+        <h3>PSP Electronic Fraud Incidents, 2024 vs 2025</h3>
+        <p class="cap">Recorded by Payment Service Providers (mainly mobile money operators)</p>
+        <div class="chart-box" id="chartBox">
+          <canvas id="fraudChart" aria-label="Bar chart: 15,673 PSP fraud cases in 2024 and 24,124 in 2025" role="img"></canvas>
+        </div>
+      </div>
+      <div class="card why">
+        <h3>What the numbers tell us</h3>
+        <ul>
+          <li><span class="dot" style="background:var(--red);color:#fff">↑</span><span><b>Fraud has migrated to mobile money.</b> PSP cases rose 54% while case counts at traditional banks fell by 34%.</span></li>
+          <li><span class="dot" style="background:var(--gold);color:#fff">!</span><span><b>Rural institutions are exposed.</b> Rural &amp; Community Banks recorded 51% of all cash suppression/theft cases among SDIs in 2025.</span></li>
+          <li><span class="dot" style="background:var(--green);color:#fff">→</span><span><b>The cause is structural.</b> The BoG links the shift to high transaction volumes and low digital literacy among everyday users.</span></li>
+        </ul>
+        <p class="note">Source: Bank of Ghana 2025 Fraud Report. The figures are quoted from the committee's research brief. Verify them against the published report before public use.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SIMULATOR -->
+  <section id="simulator">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">Section 02</div>
+        <h2>Three-Tier Impact Simulator</h2>
+        <p>Choose a persona to see how the policy package affects real lives. Switch between <b>Today</b> and <b>With 2028 Policy</b> to compare the two journeys.</p>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" id="personaTabs"></div>
+    <div class="card panel" id="personaPanel" role="tabpanel"></div>
+  </section>
+
+  <!-- 3. MATRIX -->
+  <section id="matrix">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">Section 03</div>
+        <h2>2024 Baseline → 2028 Policy Matrix</h2>
+        <p>Each proposed 2028 priority traced to its 2024 manifesto record IDs. Click a status badge to change it, and type notes during the session. Notes are saved in this browser.</p>
+      </div>
+    </div>
+
+    <div class="matrix-tools">
+      <div class="filters" id="filters"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="resetBtn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset
+        </button>
+        <button class="btn dark" id="exportBtn" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export session notes
+        </button>
+      </div>
+    </div>
+    <div class="tally" id="tally" style="margin-bottom:12px"></div>
+
+    <div class="card tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:28%">2028 Strategic Priority</th>
+            <th style="width:19%">2024 Record IDs</th>
+            <th style="width:15%">Impact Tier</th>
+            <th style="width:14%">Committee Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card unmapped">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      <div style="flex:1;min-width:240px">
+        <b>2024 records not yet mapped: <span id="unmappedIds"></span></b>
+        <p>These Chapter 11 records are in the baseline but have no confirmed 2028 priority yet. The secretariat should confirm what each one covers and assign it during the session.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. DISCUSSION -->
+  <section id="discussion" style="padding-bottom:0">
+    <div class="disc">
+      <button class="disc-head" id="discToggle" aria-expanded="true" aria-controls="discBody" type="button">
+        <div>
+          <div class="sec-num" style="color:#FBBF24">Section 04</div>
+          <h2>Committee Working Session: Decision Questions</h2>
+          <p class="sm">Three questions the sub-committee needs to settle. Click an option to record the room's leaning.</p>
+        </div>
+        <svg class="chev" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="disc-body" id="discBody"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <b>Evidence sources referenced:</b>
+  <div class="srcs">
+    <span>Bank of Ghana: 2025 Fraud Report (PSP, bank and SDI fraud statistics).</span>
+    <span>Cyber Security Authority: H1 2026 online investment scam data; 292 incident reporting shortcode; CII Directives.</span>
+    <span>Cybersecurity Act, 2020 (Act 1038) · Data Protection Act, 2012 (Act 843).</span>
+    <span>NPP 2024 Manifesto records 03.14, 05.10, 11.01–11.10, 14.04 · Proposed 2028 Strategic Policy Priorities 1–7.</span>
+  </div>
+  <p style="margin-top:12px">Internal working prototype for sub-committee deliberation. Not a published policy position.</p>
+</footer>
+
+<script>
+/* ---------- Icons ---------- */
+const I = {
+  check:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  alert:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m10.3 3.9-8.2 14A2 2 0 0 0 3.8 21h16.4a2 2 0 0 0 1.7-3.1l-8.2-14a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  doc:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>',
+  elder:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6l-3 7M12 14l3 7M8 11h8"/><path d="M18 11v10"/></svg>',
+  people:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+  nation:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M12 3 2 8h20z"/></svg>',
+  shield:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  coin:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5h4.5a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3H15"/></svg>',
+  flag:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4a1 1 0 0 1 1-1h12l-2 4 2 4H5"/></svg>',
+};
+
+/* ---------- Safe storage ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const KEY = 'gh2028-cyber-explorer-v1';
+let state = store.get(KEY, { status:{}, notes:{}, votes:{}, persona:0, mode:'with' });
+
+/* ---------- Chart ---------- */
+function drawFallbackChart(){
+  const box = document.getElementById('chartBox');
+  const max = 24124;
+  box.innerHTML = `
+    <div class="fallback-chart" style="height:calc(100% - 34px)">
+      <div class="fbar"><div class="n">15,673</div><div class="b" style="height:${15673/max*85}%;background:#94A3B8"></div></div>
+      <div class="fbar"><div class="n" style="color:var(--red)">24,124</div><div class="b" style="height:85%;background:var(--red)"></div></div>
+    </div>
+    <div class="fbar-lbls"><span>2024</span><span>2025 <small style="color:var(--red)">(+54%)</small></span></div>`;
+}
+function drawChart(){
+  if (!document.getElementById('fraudChart')) return; // fallback already drawn
+  if (typeof Chart === 'undefined'){ drawFallbackChart(); return; }
+  const valueLabels = {
+    id:'valueLabels',
+    afterDatasetsDraw(chart){
+      const {ctx} = chart;
+      chart.getDatasetMeta(0).data.forEach((bar,i)=>{
+        const v = chart.data.datasets[0].data[i];
+        ctx.save();
+        ctx.font = '800 16px "Segoe UI", system-ui, sans-serif';
+        ctx.fillStyle = i===1 ? '#CE1126' : '#334155';
+        ctx.textAlign = 'center';
+        ctx.fillText(v.toLocaleString('en-US'), bar.x, bar.y - 10);
+        ctx.restore();
+      });
+    }
+  };
+  new Chart(document.getElementById('fraudChart'), {
+    type:'bar',
+    data:{ labels:['2024','2025'], datasets:[{ data:[15673,24124], backgroundColor:['#94A3B8','#CE1126'], borderRadius:8, maxBarThickness:120 }] },
+    options:{
+      responsive:true, maintainAspectRatio:false, layout:{padding:{top:28}},
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>' '+c.parsed.y.toLocaleString('en-US')+' cases'}} },
+      scales:{
+        y:{ beginAtZero:true, max:28000, ticks:{ callback:v=>v.toLocaleString('en-US'), color:'#64748B', font:{size:13} }, grid:{color:'#EEF2F7'}, border:{display:false} },
+        x:{ ticks:{ color:'#0F172A', font:{size:15, weight:'700'} }, grid:{display:false} }
+      }
+    },
+    plugins:[valueLabels]
+  });
+}
+
+/* ---------- Personas ---------- */
+const personas = [
+  {
+    key:'village', tier:'Tier 1', icon:I.elder, accent:'var(--red)', soft:'var(--red-soft)',
+    title:'Grandmother at the Village', short:'Rural & elderly citizen',
+    quote:'"My grandson sends money every month. Last time, someone called and said it was sent by mistake. I sent it back."',
+    pains:['Fake MoMo agent "wrong transfer" reversal scams','SIM swap fraud that takes over her wallet','Suspicious SMS promos and fake prize messages','Low digital literacy and few reporting channels in her language'],
+    policies:[
+      {code:'2028 · P5', name:'Digital Economic Security & Protection of Citizens'},
+      {code:'2024 · 11.02', name:'Cybersecurity Fund (finances public sensitisation)'},
+      {code:'CSA · 292', name:'Rapid incident reporting shortcode & WhatsApp channel'}
+    ],
+    outcomes:['Local-language radio and community information-centre fraud alerts','Mandatory MoMo agent registration and accountability','Rapid MoMo wallet freeze protocol triggered by a 292 report','Remittances from family members protected end to end'],
+    today:[
+      {k:'Incident', t:'Caller claims money was sent "by mistake" and pressures her to reverse it.'},
+      {k:'Response', t:'She doesn\'t know where to report or what number to call.'},
+      {k:'Recovery', t:'Funds move through several wallets within minutes.'},
+      {k:'Result', t:'Money lost. She stops trusting mobile money.'}
+    ],
+    withp:[
+      {k:'Prevention', t:'She has heard the "wrong transfer" scam warning on community radio in Twi or Ewe.'},
+      {k:'Report', t:'She dials 292 or asks a registered agent to report for her.'},
+      {k:'Freeze', t:'The MoMo operator freezes the receiving wallet under the rapid-freeze protocol.'},
+      {k:'Result', t:'Funds are held and the agent is traceable. Her trust in MoMo is kept.'}
+    ],
+    resToday:'Financial inclusion goes backwards', resWith:'Rural financial inclusion is protected'
+  },
+  {
+    key:'ordinary', tier:'Tier 2', icon:I.people, accent:'var(--gold)', soft:'var(--gold-soft)',
+    title:'The Ordinary Ghanaian', short:'Traders, youth & workers',
+    quote:'"The investment page had thousands of followers and paid me twice. Then it disappeared with my savings, and nobody was ever charged."',
+    pains:['Fake online investment schemes that rebrand across social media','Identity theft and account takeover','Slow trials for cybercriminals with limited forensic capacity','Youth unemployment with no clear route into tech careers'],
+    policies:[
+      {code:'2024 · 03.14', name:'5,000 Cybersecurity Jobs pipeline'},
+      {code:'2024 · 11.04', name:'Cybersecurity in the school curriculum'},
+      {code:'2024 · 11.06', name:'National Digital Forensics Lab & specialised cyber courts'},
+      {code:'2028 · P7', name:'Cyber workforce & industry–academia pipeline'}
+    ],
+    outcomes:['Well-paid local and remote cybersecurity careers for youth','Faster prosecution of scammers and restitution for victims','Safer e-commerce, social commerce and digital banking','Evidence Act updated so digital evidence holds up in court'],
+    today:[
+      {k:'Incident', t:'A trader puts savings into a "high-yield" platform promoted on social media.'},
+      {k:'Report', t:'Reports to police, but there is no specialised forensic support.'},
+      {k:'Justice', t:'The case stalls because digital evidence is hard to admit and courts are backlogged.'},
+      {k:'Result', t:'No conviction. Scammers rebrand and try again.'}
+    ],
+    withp:[
+      {k:'Prevention', t:'CSA alerts flag the platform early, and platform takedown is coordinated.'},
+      {k:'Forensics', t:'The National Digital Forensics Lab traces wallets and accounts.'},
+      {k:'Justice', t:'A specialised cyber court hears the case under the updated Evidence Act.'},
+      {k:'Result', t:'Conviction, restitution and deterrence. The analysts on the case are young Ghanaians.'}
+    ],
+    resToday:'Impunity, plus a lost talent pipeline', resWith:'Justice, deterrence and youth jobs'
+  },
+  {
+    key:'nation', tier:'Tier 3', icon:I.nation, accent:'var(--green)', soft:'var(--green-soft)',
+    title:'Ghana as a Nation', short:'Sovereignty & critical infrastructure',
+    quote:'"When citizen data and grid controls sit on foreign servers and foreign software, our security depends on someone else\'s jurisdiction."',
+    pains:['Sensitive citizen and government data hosted on foreign servers','Cyber risk to ECG, GRIDCo, water, GhIPSS and banking systems','Foreign-exchange drain on imported security software and licences','No statutory data-localisation mandate beyond the Data Protection Act (2012)'],
+    policies:[
+      {code:'2028 · P1–P4, P6', name:'Data Sovereignty · Sovereign Cloud · Sustainable Cyber Fund · CII Resilience · Indigenous Cyber Tech'},
+      {code:'2024 · 11.01', name:'Critical Information Infrastructure protection'},
+      {code:'2024 · 11.09', name:'National cyber capability & local ecosystem'},
+      {code:'2024 · 14.04', name:'Energy & utility sector digital security'}
+    ],
+    outcomes:['Sovereign local hosting for sensitive state and citizen data','Mandatory cyber audits for energy and utility operators','Government procurement quotas for Ghanaian cybersecurity startups','Sovereign disaster recovery for critical national systems'],
+    today:[
+      {k:'Exposure', t:'Critical datasets sit with foreign providers, outside immediate Ghanaian jurisdiction.'},
+      {k:'Threat', t:'A ransomware attack on a utility\'s systems disrupts power distribution.'},
+      {k:'Response', t:'Recovery depends on foreign vendors and foreign-exchange payments.'},
+      {k:'Result', t:'Long outage, forex drain and loss of public confidence.'}
+    ],
+    withp:[
+      {k:'Hosting', t:'Sensitive data sits in a sovereign Ghanaian cloud under Ghanaian law.'},
+      {k:'Audit', t:'Mandatory CII audits find the weakness before attackers do.'},
+      {k:'Response', t:'The national CERT and local vendors restore service from sovereign backups.'},
+      {k:'Result', t:'Short disruption, cedis stay in Ghana, and local firms grow.'}
+    ],
+    resToday:'Strategic dependency', resWith:'Digital sovereignty & self-reliance'
+  }
+];
+// Note: the persona short descriptions for 11.01 and 11.09 are working labels; confirm against the 2024 manifesto text.
+
+function renderTabs(){
+  const wrap = document.getElementById('personaTabs');
+  wrap.innerHTML = personas.map((p,i)=>`
+    <button class="tab" role="tab" id="tab-${p.key}" aria-controls="personaPanel" aria-selected="${i===state.persona}" data-i="${i}" style="--accent:${p.accent};--accent-soft:${p.soft}" type="button">
+      <span class="ico">${p.icon}</span>
+      <span><span class="tier">${p.tier}</span><span class="t" style="display:block">${p.title}</span><span class="s" style="display:block">${p.short}</span></span>
+    </button>`).join('');
+  wrap.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ state.persona=+b.dataset.i; save(); renderTabs(); renderPanel(); }));
+  wrap.onkeydown = e=>{
+    if(!['ArrowRight','ArrowLeft'].includes(e.key)) return;
+    state.persona = (state.persona + (e.key==='ArrowRight'?1:-1) + personas.length) % personas.length;
+    save(); renderTabs(); renderPanel();
+    document.getElementById('tab-'+personas[state.persona].key).focus();
+  };
+}
+function renderPanel(){
+  const p = personas[state.persona];
+  const panel = document.getElementById('personaPanel');
+  panel.setAttribute('aria-labelledby','tab-'+p.key);
+  panel.style.setProperty('--accent',p.accent); panel.style.setProperty('--accent-soft',p.soft);
+  const isWith = state.mode==='with';
+  const steps = isWith ? p.withp : p.today;
+  panel.innerHTML = `
+    <div class="panel-top">
+      <div><h3>${p.tier}: ${p.title}</h3><p class="quote">${p.quote}</p></div>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <h4 style="color:var(--red)">${I.alert} Pain Points</h4>
+        <ul>${p.pains.map(x=>`<li>${I.alert}<span>${x}</span></li>`).join('')}</ul>
+      </div>
+      <div class="col">
+        <h4 style="color:var(--navy)">${I.doc} Mapped Policies</h4>
+        <ul>${p.policies.map(x=>`<li class="pol" style="display:block"><span class="code">${x.code}</span><div class="nm">${x.name}</div></li>`).join('')}</ul>
+      </div>
+      <div class="col">
+        <h4 style="color:var(--green)">${I.check} Tangible Outcomes</h4>
+        <ul>${p.outcomes.map(x=>`<li>${I.check}<span>${x}</span></li>`).join('')}</ul>
+      </div>
+    </div>
+    <div class="journey">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+        <h4 style="margin:0">Scenario walk-through</h4>
+        <div class="toggle" role="group" aria-label="Scenario mode">
+          <button type="button" data-m="today" aria-pressed="${!isWith}">Today</button>
+          <button type="button" data-m="with" aria-pressed="${isWith}">With 2028 Policy</button>
+        </div>
+      </div>
+      <div class="steps">${steps.map(s=>`<div class="step ${isWith?'good':'bad'}"><div class="k">${s.k}</div>${s.t}</div>`).join('')}</div>
+      <p class="res" style="color:${isWith?'var(--green)':'var(--red)'}">${isWith?I.check:I.alert} Outcome: ${isWith?p.resWith:p.resToday}</p>
+    </div>`;
+  panel.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{ state.mode=b.dataset.m; save(); renderPanel(); }));
+}
+
+/* ---------- Matrix ---------- */
+const recordInfo = {
+  '03.14':'5,000 cybersecurity jobs / workforce pipeline',
+  '05.10':'Standardised technology procurement',
+  '11.01':'Critical Information Infrastructure & data protection',
+  '11.02':'Cybersecurity Fund',
+  '11.04':'Cybersecurity in the school curriculum',
+  '11.06':'National Digital Forensics Lab & specialised cyber courts',
+  '11.09':'Local cyber capability & sovereignty',
+  '14.04':'Energy & utility sector digital security'
+};
+const allBaseline = ['03.14','05.10','11.01','11.02','11.03','11.04','11.05','11.06','11.07','11.08','11.09','11.10','14.04'];
+
+const priorities = [
+  {n:1, name:'Digital & Data Sovereignty', desc:'Keep strategic national and citizen data under Ghanaian legal jurisdiction. Close the data-localisation gap left by the Data Protection Act (2012).', ids:['11.01','11.09'], tiers:['sovereignty'], status:'flagship'},
+  {n:2, name:'Sovereign Cloud & Strategic Digital Infrastructure', desc:'Local cloud hosting for sensitive state data, plus sovereign disaster recovery.', ids:['11.01','14.04'], tiers:['sovereignty'], status:'consolidate'},
+  {n:3, name:'Sustainable National Cybersecurity Financing', desc:'A ring-fenced, predictable and transparent fund for national cyber defence and sensitisation.', ids:['11.02','05.10'], tiers:['sovereignty','citizens'], status:'consolidate'},
+  {n:4, name:'National Cyber Resilience & CII Protection', desc:'Mandatory audits and resilience standards for energy grids, GhIPSS, telecoms, water and health (Act 1038, CSA CII Directives).', ids:['11.01','14.04'], tiers:['sovereignty','citizens'], status:'flagship'},
+  {n:5, name:'Digital Economic Security & Protection of Citizens', desc:'MoMo fraud rapid-freeze, agent accountability, local-language sensitisation via CSA 292, digital forensics and cyber courts.', ids:['11.02','11.06'], tiers:['citizens'], status:'flagship'},
+  {n:6, name:'Indigenous Cybersecurity Technology Development', desc:'Government procurement quotas and leverage to create a domestic market for Ghanaian cyber startups and cut forex drain.', ids:['05.10','11.09'], tiers:['economy','sovereignty'], status:'refine'},
+  {n:7, name:'Cyber Workforce & Youth Employment', desc:'Train 5,000+ cybersecurity professionals. Build industry–academia pipelines for domestic and global remote jobs.', ids:['03.14','11.04'], tiers:['economy','citizens'], status:'flagship'}
+];
+const tierMeta = {
+  citizens:{label:'Protects Village/Citizens', icon:I.shield},
+  economy:{label:'Builds Economy/Jobs', icon:I.coin},
+  sovereignty:{label:'National Sovereignty', icon:I.flag}
+};
+const statusMeta = {
+  flagship:{label:'Core Flagship', next:'consolidate'},
+  consolidate:{label:'Consolidate', next:'refine'},
+  refine:{label:'Refine Scope', next:'flagship'}
+};
+let filter = 'all';
+
+function getStatus(p){ return state.status[p.n] || p.status; }
+
+function renderFilters(){
+  const defs = [['all','All Priorities',priorities.length]].concat(
+    Object.entries(tierMeta).map(([k,v])=>[k,v.label,priorities.filter(p=>p.tiers.includes(k)).length]));
+  const el = document.getElementById('filters');
+  el.innerHTML = defs.map(([k,l,c])=>`<button class="fbtn" type="button" data-f="${k}" aria-pressed="${filter===k}">${k!=='all'?tierMeta[k].icon:''}${l}<span class="c">${c}</span></button>`).join('');
+  el.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>{ filter=b.dataset.f; renderFilters(); applyFilter(); }));
+}
+function renderMatrix(){
+  const body = document.getElementById('matrixBody');
+  body.innerHTML = priorities.map(p=>{
+    const s = getStatus(p);
+    return `<tr data-n="${p.n}" data-tiers="${p.tiers.join(' ')}">
+      <td><div class="pnum">PRIORITY ${p.n}</div><div class="pname">${p.name}</div><div class="pdesc">${p.desc}</div></td>
+      <td><div class="ids">${p.ids.map(id=>`<span class="id" title="${recordInfo[id]||'Description to be confirmed'}">${id}</span>`).join('')}</div>
+          <div class="idsub">${p.ids.map(id=>recordInfo[id]).filter(Boolean).join(' · ')}</div></td>
+      <td><div class="tags">${p.tiers.map(t=>`<span class="tag ${t}">${tierMeta[t].icon}${tierMeta[t].label}</span>`).join('')}</div></td>
+      <td><button class="status ${s}" type="button" data-n="${p.n}" aria-label="Status: ${statusMeta[s].label}. Click to change.">${statusMeta[s].label}</button>
+          <div class="status-hint">Click to change</div></td>
+      <td><textarea class="note" data-n="${p.n}" placeholder="Committee notes…" aria-label="Notes for priority ${p.n}">${escapeHtml(state.notes[p.n]||'')}</textarea></td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('.status').forEach(b=>b.addEventListener('click',()=>{
+    const p = priorities.find(x=>x.n==b.dataset.n);
+    state.status[p.n] = statusMeta[getStatus(p)].next; save(); renderMatrix();
+    body.querySelector(`.status[data-n="${p.n}"]`).focus();
+  }));
+  body.querySelectorAll('textarea.note').forEach(t=>t.addEventListener('input',()=>{ state.notes[t.dataset.n]=t.value; save(); }));
+  applyFilter(); renderTally();
+}
+function applyFilter(){
+  document.querySelectorAll('#matrixBody tr').forEach(r=>{
+    r.classList.toggle('hidden', filter!=='all' && !r.dataset.tiers.split(' ').includes(filter));
+  });
+}
+function renderTally(){
+  const counts = {flagship:0,consolidate:0,refine:0};
+  priorities.forEach(p=>counts[getStatus(p)]++);
+  document.getElementById('tally').innerHTML = 'Current recommendation:' + Object.entries(counts).map(([k,c])=>
+    `<span class="status ${k}" style="cursor:default;padding:3px 10px">${c} × ${statusMeta[k].label}</span>`).join('');
+  const mapped = new Set(priorities.flatMap(p=>p.ids));
+  document.getElementById('unmappedIds').textContent = allBaseline.filter(id=>!mapped.has(id)).join(', ');
+}
+function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------- Discussion ---------- */
+const questions = [
+  {id:'q1', title:'Rapid MoMo Fraud Freeze Protocol',
+   ask:'How quickly should telcos and PSPs be legally required to freeze a receiving wallet after a verified 292 or agent report, and who carries liability for wrongful freezes?',
+   links:'Links: Priority 5 · 2024 ID 11.02 · BoG PSP fraud data (+54%)',
+   opts:[['Statutory deadline','Hard legal time limit enforced by BoG / CSA'],['Industry code','BoG-supervised voluntary standard first'],['Pilot first','Pilot in selected regions before national rollout']]},
+  {id:'q2', title:'Local Data Hosting vs SME Compliance Costs',
+   ask:'Should data localisation apply to all sensitive data, or start with government and CII data, so Ghanaian SMEs and startups don\'t face high compliance costs?',
+   links:'Links: Priorities 1, 2 & 6 · 2024 IDs 11.01, 11.09 · Data Protection Act 2012',
+   opts:[['State & CII first','Mandate for government and CII datasets only'],['Tiered by risk','Phased obligations by data sensitivity & firm size'],['Broad mandate','Localisation for all sensitive personal data']]},
+  {id:'q3', title:'Tracking 2024 → 2028 Implementation',
+   ask:'How will the party show voters measurable progress on 2024 commitments, and which body owns the public scorecard?',
+   links:'Links: All priorities · 2024 IDs 03.14, 05.10, 11.01–11.10, 14.04',
+   opts:[['Public dashboard','Quarterly published KPI scorecard'],['Annual audit','Independent annual implementation review'],['Party-internal','Committee-tracked, published at campaign milestones']]}
+];
+function renderDiscussion(){
+  const body = document.getElementById('discBody');
+  body.innerHTML = questions.map((q,i)=>`
+    <div class="q">
+      <div class="q-top"><div class="q-n">${i+1}</div><div><h3>${q.title}</h3><p class="ask">${q.ask}</p></div></div>
+      <div class="opts" role="group" aria-label="Options for ${q.title}">
+        ${q.opts.map(([t,d],j)=>`<button class="opt" type="button" data-q="${q.id}" data-j="${j}" aria-pressed="${state.votes[q.id]===j}"><b>${t}</b>${d}</button>`).join('')}
+      </div>
+      <p class="links">${q.links}</p>
+    </div>`).join('');
+  body.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    const j=+b.dataset.j; state.votes[b.dataset.q] = state.votes[b.dataset.q]===j ? undefined : j; save(); renderDiscussion();
+  }));
+}
+document.getElementById('discToggle').addEventListener('click',e=>{
+  const btn = e.currentTarget, open = btn.getAttribute('aria-expanded')==='true';
+  btn.setAttribute('aria-expanded', String(!open));
+  document.getElementById('discBody').hidden = open;
+});
+
+/* ---------- Save / reset / export ---------- */
+function save(){ store.set(KEY, state); renderTallySafe(); }
+function renderTallySafe(){ if(document.getElementById('tally')) renderTally(); }
+
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(!confirm('Reset all statuses, notes and discussion choices to defaults?')) return;
+  state = { status:{}, notes:{}, votes:{}, persona:state.persona, mode:state.mode };
+  store.set(KEY, state); renderMatrix(); renderDiscussion();
+});
+document.getElementById('exportBtn').addEventListener('click',()=>{
+  const d = new Date();
+  let out = `GHANA 2028 MANIFESTO — CYBERSECURITY & DIGITAL SOVEREIGNTY\nSub-Committee Working Session Notes\nExported: ${d.toLocaleString()}\n\n== POLICY MATRIX ==\n`;
+  priorities.forEach(p=>{
+    out += `\nPriority ${p.n}: ${p.name}\n  2024 IDs: ${p.ids.join(', ')}\n  Status: ${statusMeta[getStatus(p)].label}\n  Notes: ${(state.notes[p.n]||'—').trim()}\n`;
+  });
+  out += `\n== DISCUSSION QUESTIONS ==\n`;
+  questions.forEach((q,i)=>{
+    const v = state.votes[q.id];
+    out += `\n${i+1}. ${q.title}\n  Room leaning: ${v===undefined?'Not recorded':q.opts[v][0]}\n`;
+  });
+  const blob = new Blob([out],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `cyber-subcommittee-notes-${d.toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+});
+
+/* ---------- Init ---------- */
+renderTabs(); renderPanel(); renderFilters(); renderMatrix(); renderDiscussion();
+</script>
+<!-- Chart.js from CDN (optional). If offline, a built-in bar chart is drawn instead. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" onload="drawChart()" onerror="drawFallbackChart()"></script>
+<script>setTimeout(()=>{ if(typeof Chart==='undefined' && !document.querySelector('.fallback-chart')) drawFallbackChart(); }, 3000);</script>
+</body>
+</html>

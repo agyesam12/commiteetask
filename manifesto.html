@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2028 Manifesto: Secure Digital Ghana</title>
+<style>
+  :root{
+    --navy:#0F172A; --navy-2:#1E293B; --navy-3:#334155;
+    --red:#CE1126; --gold:#D97706; --gold-2:#FBBF24; --green:#15803D;
+    --red-soft:#FDF0F1; --gold-soft:#FEF6EA; --green-soft:#EDF7F0; --blue-soft:#EEF2F8;
+    --ink:#0F172A; --ink-2:#334155; --muted:#5B6B82; --line:#E2E8F0; --line-2:#CBD5E1;
+    --bg:#F6F7F9; --card:#FFFFFF;
+    --serif:Georgia,Cambria,"Iowan Old Style","Times New Roman",serif;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:Consolas,"SF Mono",Menlo,monospace;
+    --radius:16px; --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px rgba(15,23,42,.06);
+  }
+  html{font-size:19px;scroll-behavior:smooth;scroll-padding-top:84px}
+  html[data-size="l"]{font-size:21px}
+  html[data-size="xl"]{font-size:23px}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;line-height:1.18;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  ul{margin:0;padding:0;list-style:none}
+  button{font:inherit;cursor:pointer;color:inherit}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+  .kicker{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+  .serif{font-family:var(--serif)}
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:.86rem;letter-spacing:.01em;white-space:nowrap;text-decoration:none}
+  .brand .mark{display:flex;flex-direction:column;width:6px;height:28px;border-radius:3px;overflow:hidden}
+  .brand .mark i{flex:1}
+  .toplinks{display:flex;gap:2px;margin-left:auto;overflow-x:auto}
+  .toplinks a{text-decoration:none;font-size:.82rem;font-weight:650;color:var(--ink-2);padding:8px 12px;border-radius:8px;white-space:nowrap}
+  .toplinks a:hover{background:var(--blue-soft);color:var(--ink)}
+  .toplinks a.ext{color:var(--navy);border:1.5px solid var(--line-2)}
+  .sizer{display:flex;align-items:center;border:1.5px solid var(--line-2);border-radius:10px;overflow:hidden;flex:none}
+  .sizer button{border:0;background:#fff;padding:5px 10px;font-weight:800;color:var(--muted);line-height:1}
+  .sizer button+button{border-left:1px solid var(--line)}
+  .sizer button[aria-pressed="true"]{background:var(--navy);color:#fff}
+
+  /* Hero */
+  .hero{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-180px;top:-180px;width:560px;height:560px;border-radius:50%;border:80px solid rgba(251,191,36,.05);pointer-events:none}
+  .stripe{display:flex;height:6px}.stripe i{flex:1}
+  .hero .wrap{padding-top:72px;padding-bottom:64px;position:relative;z-index:1}
+  .draft{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(251,191,36,.45);color:var(--gold-2);border-radius:999px;padding:6px 14px;font-size:.74rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:3.1rem;letter-spacing:-.015em;margin-top:22px;max-width:16ch}
+  .hero h1 em{font-style:normal;color:var(--gold-2)}
+  .hero .lead{font-size:1.2rem;color:#D5DCE6;max-width:58ch;margin-top:22px}
+  .hero .attrib{margin-top:14px;font-size:.84rem;color:#94A3B8}
+  .hero-cta{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:10px;border-radius:12px;padding:13px 22px;font-weight:750;font-size:.95rem;text-decoration:none;border:2px solid transparent}
+  .btn.primary{background:var(--gold-2);color:var(--navy)}
+  .btn.primary:hover{background:#FCD34D}
+  .btn.ghost{border-color:rgba(255,255,255,.3);color:#fff}
+  .btn.ghost:hover{border-color:#fff}
+  .figs{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:1px solid rgba(255,255,255,.12)}
+  .fig{padding:26px 28px 0 0}
+  .fig+.fig{padding-left:28px;border-left:1px solid rgba(255,255,255,.12)}
+  .fig .n{font-family:var(--serif);font-size:2.5rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .fig .l{font-weight:700;margin-top:10px;font-size:.98rem}
+  .fig .s{color:#94A3B8;font-size:.78rem;margin-top:4px}
+
+  section{padding:88px 0 0}
+  .sh{max-width:760px;margin-bottom:36px}
+  .sh h2{font-family:var(--serif);font-size:2.2rem;font-weight:700;margin-top:10px;letter-spacing:-.01em}
+  .sh p{color:var(--ink-2);font-size:1.08rem;margin-top:14px}
+
+  /* Pillars at a glance */
+  .glance{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px 22px;text-decoration:none;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s;position:relative}
+  .gcard:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 2px 4px rgba(15,23,42,.06),0 16px 32px rgba(15,23,42,.09)}
+  .gcard .num{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--red);line-height:1}
+  .gcard h3{font-size:1.12rem;margin-top:14px;font-weight:750}
+  .gcard p{color:var(--muted);font-size:.92rem;margin-top:8px;flex:1}
+  .gcard .foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+  .dots{display:flex;gap:6px}
+  .dots i{width:11px;height:11px;border-radius:50%}
+  .gcard .go{font-size:.8rem;font-weight:750;color:var(--navy)}
+  .gcard.vision{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .gcard.vision p{color:#CBD5E1}
+  .legend{display:flex;gap:24px;flex-wrap:wrap;margin-top:22px;font-size:.86rem;color:var(--ink-2)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .legend i{width:12px;height:12px;border-radius:50%}
+
+  /* Connection map */
+  .mapcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px}
+  .maphint{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+  .maphint p{color:var(--muted);font-size:.9rem}
+  .clear{border:1.5px solid var(--line-2);background:#fff;border-radius:10px;padding:7px 14px;font-weight:700;font-size:.82rem;color:var(--ink-2)}
+  .clear[hidden]{display:none}
+  .map{position:relative;display:grid;grid-template-columns:1fr 1.25fr 0.9fr;gap:0 96px}
+  .map svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .map path{fill:none;stroke:#CBD5E1;stroke-width:1.6;transition:stroke .2s,stroke-width .2s,opacity .2s}
+  .map.sel path{opacity:.18}
+  .map.sel path.on{opacity:1;stroke:var(--navy);stroke-width:2.6}
+  .mcol h4{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .mcol h4 b{color:var(--ink);font-size:.8rem;letter-spacing:.06em}
+  .mlist{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
+  .node{width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px;transition:border-color .15s,background .15s,opacity .2s,box-shadow .15s}
+  .node:hover{border-color:var(--line-2)}
+  .node .id{font-family:var(--mono);font-weight:800;font-size:.78rem;background:var(--blue-soft);color:var(--navy);padding:2px 7px;border-radius:6px;flex:none}
+  .node .tx{font-size:.84rem;line-height:1.3;color:var(--ink-2)}
+  .node.rec.tbc{border-style:dashed;background:#FAFBFC}
+  .node.rec.tbc .tx{color:var(--muted);font-style:italic}
+  .mcol.pri .mlist{gap:12px}
+  .node.pri{padding:13px 14px;gap:14px}
+  .node.pri .pn{font-family:var(--serif);font-weight:700;font-size:1.35rem;color:var(--red);width:22px;text-align:center;flex:none}
+  .node.pri .tx{font-weight:700;color:var(--ink);font-size:.92rem}
+  .mcol.tier .mlist{gap:18px;justify-content:center;height:calc(100% - 34px)}
+  .node.tier{padding:16px;flex-direction:column;align-items:flex-start;gap:6px;border-left:6px solid var(--c)}
+  .node.tier .tt{font-weight:800;font-size:.95rem}
+  .node.tier .tx{font-size:.8rem}
+  .map.sel .node{opacity:.38}
+  .map.sel .node.on{opacity:1;border-color:var(--navy);box-shadow:0 0 0 3px rgba(15,23,42,.08)}
+  .map.sel .node.focus{background:var(--navy);border-color:var(--navy)}
+  .map.sel .node.focus .tx,.map.sel .node.focus .tt,.map.sel .node.focus .pn{color:#fff}
+  .map.sel .node.focus .id{background:rgba(255,255,255,.15);color:#fff}
+  .readout{margin-top:28px;border-top:1px solid var(--line);padding-top:24px;min-height:96px}
+  .readout .empty{color:var(--muted);font-size:.95rem;display:flex;gap:10px;align-items:center}
+  .readout h3{font-family:var(--serif);font-size:1.4rem}
+  .readout p{color:var(--ink-2);margin-top:8px;max-width:70ch}
+  .readout .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+  .chip{display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:5px 11px;font-size:.82rem;font-weight:700;background:var(--blue-soft);color:var(--navy);text-decoration:none;border:1px solid #D6DEEA}
+  a.chip:hover{border-color:var(--navy)}
+  .chip .id{font-family:var(--mono)}
+  .tag{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:4px 12px;font-size:.8rem;font-weight:750}
+  .tag i{width:8px;height:8px;border-radius:50%;background:currentColor}
+  .tag.citizens{background:var(--red-soft);color:#A50E1F}
+  .tag.economy{background:var(--gold-soft);color:#92400E}
+  .tag.sovereignty{background:var(--green-soft);color:#166534}
+
+  /* Priority detail */
+  .detail{display:grid;grid-template-columns:200px 1fr;gap:48px;align-items:start}
+  .rail{position:sticky;top:96px}
+  .rail .kicker{color:var(--muted);margin-bottom:12px;display:block}
+  .rail a{display:flex;gap:12px;align-items:baseline;text-decoration:none;padding:8px 12px;border-radius:10px;font-size:.84rem;color:var(--muted);font-weight:600;border-left:3px solid transparent;line-height:1.3}
+  .rail a b{font-family:var(--serif);font-size:1rem;color:var(--line-2);width:14px}
+  .rail a:hover{color:var(--ink);background:#fff}
+  .rail a.cur{color:var(--ink);background:#fff;border-left-color:var(--red)}
+  .rail a.cur b{color:var(--red)}
+  .plist{display:flex;flex-direction:column;gap:28px}
+  .pri-art{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .pri-head{padding:36px 40px 28px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start;border-bottom:1px solid var(--line)}
+  .bignum{font-family:var(--serif);font-size:4.2rem;font-weight:700;color:var(--red);line-height:.85}
+  .pri-head .kicker{color:var(--muted)}
+  .pri-head h3{font-family:var(--serif);font-size:1.85rem;font-weight:700;margin-top:6px}
+  .promise{font-family:var(--serif);font-size:1.18rem;color:var(--ink-2);margin-top:14px;font-style:italic;max-width:62ch}
+  .pri-head .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .pri-body{display:grid;grid-template-columns:1.3fr 1fr}
+  .will{padding:32px 40px}
+  .lbl{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block}
+  .will ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:w}
+  .will li{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:1rem;counter-increment:w}
+  .will li::before{content:counter(w);width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:.76rem;display:grid;place-items:center;margin-top:1px}
+  .side{background:#FAFBFC;border-left:1px solid var(--line);padding:32px 32px;display:flex;flex-direction:column;gap:26px}
+  .side .lbl{margin-bottom:10px}
+  .recs{display:flex;flex-direction:column;gap:8px}
+  .recitem{display:flex;gap:10px;align-items:baseline;font-size:.9rem}
+  .recitem .id{font-family:var(--mono);font-weight:800;font-size:.78rem;background:var(--blue-soft);color:var(--navy);padding:2px 7px;border-radius:6px;border:1px solid #D6DEEA;flex:none}
+  .why{font-size:.94rem;color:var(--ink-2);border-left:3px solid var(--gold);padding-left:14px}
+  .why b{color:var(--ink)}
+  .measure li{display:flex;gap:10px;font-size:.9rem;align-items:baseline;color:var(--ink-2)}
+  .measure li+li{margin-top:8px}
+  .measure li::before{content:"";flex:none;width:7px;height:7px;border-radius:2px;background:var(--green);transform:translateY(-2px)}
+
+  /* Continuity table */
+  .ttable{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .ttable table{width:100%;border-collapse:collapse}
+  .ttable th{text-align:left;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:16px 24px;background:#FAFBFC;border-bottom:1px solid var(--line)}
+  .ttable td{padding:16px 24px;border-bottom:1px solid var(--line);font-size:.95rem;vertical-align:middle}
+  .ttable tr:last-child td{border-bottom:0}
+  .ttable .id{font-family:var(--mono);font-weight:800;font-size:.84rem;color:var(--navy)}
+  .ttable .ps{display:flex;gap:6px;flex-wrap:wrap}
+  .ttable .ps a{font-family:var(--serif);font-weight:700;text-decoration:none;width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:var(--red-soft);color:var(--red);font-size:.95rem}
+  .ttable .ps a:hover{background:var(--red);color:#fff}
+  .st{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:750;white-space:nowrap}
+  .st i{width:8px;height:8px;border-radius:50%}
+  .st.ok{color:var(--green)} .st.ok i{background:var(--green)}
+  .st.tbc{color:var(--gold)} .st.tbc i{background:var(--gold)}
+  .muted{color:var(--muted)}
+
+  footer{margin-top:96px;background:var(--navy);color:#94A3B8;font-size:.82rem}
+  footer .wrap{padding-top:40px;padding-bottom:48px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px}
+  footer b{color:#fff;display:block;margin-bottom:10px;font-size:.88rem}
+  footer li+li{margin-top:5px}
+
+  @media (max-width:1080px){
+    .detail{grid-template-columns:1fr}
+    .rail{display:none}
+    .map{grid-template-columns:1fr 1.2fr .9fr;gap:0 56px}
+  }
+  @media (max-width:860px){
+    html{font-size:17px} html[data-size="l"]{font-size:19px} html[data-size="xl"]{font-size:21px}
+    .wrap{padding:0 20px}
+    .hero h1{font-size:2.3rem}
+    .figs{grid-template-columns:1fr}
+    .fig+.fig{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.12);margin-top:22px}
+    .fig{padding-right:0}
+    .map{grid-template-columns:1fr;gap:28px}
+    .map svg{display:none}
+    .mcol.tier .mlist{height:auto}
+    .pri-head{grid-template-columns:1fr;padding:28px 24px 22px;gap:10px}
+    .bignum{font-size:3rem}
+    .pri-body{grid-template-columns:1fr}
+    .will{padding:26px 24px}
+    .side{border-left:0;border-top:1px solid var(--line);padding:26px 24px}
+    .mapcard{padding:22px}
+    footer .wrap{grid-template-columns:1fr}
+    .ttable{overflow-x:auto} .ttable table{min-width:620px}
+    .toplinks a:not(.ext){display:none}
+  }
+  @media (max-width:520px){ .brand span.t{display:none} .wrap{padding:0 16px} }
+  @media print{
+    html{font-size:12pt}
+    .topbar,.hero-cta,.rail,.maphint .clear,.sizer{display:none !important}
+    body{background:#fff}
+    .hero{background:#fff;color:var(--ink);border-bottom:2px solid var(--ink)}
+    .hero .lead,.fig .s,.hero .attrib{color:var(--ink-2)}
+    .hero h1 em{color:var(--red)}
+    .figs{border-color:var(--line)} .fig+.fig{border-color:var(--line)}
+    .detail{grid-template-columns:1fr}
+    .pri-art,.gcard,.mapcard,.ttable{box-shadow:none;break-inside:avoid}
+    section{padding-top:36px}
+    footer{background:#fff;color:var(--ink-2)} footer b{color:var(--ink)}
+  }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none !important} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></span>
+      <span class="t">Cybersecurity &amp; Digital Sovereignty</span>
+    </a>
+    <nav class="toplinks" aria-label="Page sections">
+      <a href="#priorities">Priorities</a>
+      <a href="#connections">How It Connects</a>
+      <a href="#detail">In Detail</a>
+      <a href="#continuity">2024 Record</a>
+      <a class="ext" href="index.html">Policy Explorer →</a>
+    </nav>
+    <div class="sizer" role="group" aria-label="Text size">
+      <button type="button" data-s="m" aria-label="Standard text" style="font-size:.78rem">A</button>
+      <button type="button" data-s="l" aria-label="Large text" style="font-size:.92rem">A</button>
+      <button type="button" data-s="xl" aria-label="Extra large text" style="font-size:1.06rem">A</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="stripe"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></div>
+  <div class="wrap">
+    <span class="draft">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      Proposed 2028 Manifesto Chapter · Draft for Leadership Review
+    </span>
+    <h1>A Secure and <em>Sovereign</em> Digital Ghana</h1>
+    <p class="lead">Every Ghanaian, from the grandmother receiving remittances in the village to the trader building a business online, deserves a digital economy they can trust. This chapter builds on our 2024 record with seven priorities. Together they protect citizens, create jobs for our youth, and keep Ghana's critical data and infrastructure under Ghanaian control.</p>
+    <p class="attrib">Draft vision statement · NPP Cybersecurity &amp; National Digital Sovereignty Sub-Committee</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#priorities">See the seven priorities
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+      <a class="btn ghost" href="#connections">How it connects to our record</a>
+    </div>
+    <div class="figs">
+      <div class="fig"><div class="n" style="color:#FF8A96">+54%</div><div class="l">Rise in mobile money fraud</div><div class="s">15,673 → 24,124 PSP cases, 2024–2025 · Bank of Ghana</div></div>
+      <div class="fig"><div class="n" style="color:var(--gold-2)">GH¢3.43M</div><div class="l">Lost to online scams in six months</div><div class="s">352 investment-scam cases, H1 2026 · Cyber Security Authority</div></div>
+      <div class="fig"><div class="n" style="color:#6EE7A0">5,000+</div><div class="l">Cybersecurity jobs for our youth</div><div class="s">Building on 2024 commitment 03.14</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- AT A GLANCE -->
+  <section id="priorities">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">The Chapter at a Glance</span>
+        <h2>Seven priorities, one promise</h2>
+        <p>Each priority serves at least one of three groups: our citizens and villages, our economy and young people, and the sovereignty of the nation.</p>
+      </div>
+      <div class="glance" id="glance"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </section>
+
+  <!-- CONNECTION MAP -->
+  <section id="connections">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">How It Connects</span>
+        <h2>From our 2024 record to the 2028 promise</h2>
+        <p>Each 2028 priority builds on commitments already in the 2024 manifesto. Select a record, a priority or a group to trace the connections.</p>
+      </div>
+      <div class="mapcard">
+        <div class="maphint">
+          <p>Click any item to highlight its connections. Click it again, or use “Show all”, to reset.</p>
+          <button class="clear" id="clearSel" type="button" hidden>Show all</button>
+        </div>
+        <div class="map" id="map">
+          <svg id="mapSvg" aria-hidden="true"></svg>
+          <div class="mcol rec"><h4><b>2024</b> Manifesto Record</h4><div class="mlist" id="colRec"></div></div>
+          <div class="mcol pri"><h4><b>2028</b> Strategic Priority</h4><div class="mlist" id="colPri"></div></div>
+          <div class="mcol tier"><h4>Who It Serves</h4><div class="mlist" id="colTier"></div></div>
+        </div>
+        <div class="readout" id="readout" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAIL -->
+  <section id="detail">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">The Priorities in Detail</span>
+        <h2>What we will do, and how we will measure it</h2>
+        <p>For each priority: what we will deliver, the 2024 commitment it builds on, the evidence behind it, and how progress will be measured.</p>
+      </div>
+      <div class="detail">
+        <nav class="rail" id="rail" aria-label="Priorities"><span class="kicker">Priorities</span></nav>
+        <div class="plist" id="plist"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTINUITY -->
+  <section id="continuity">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Continuity of Delivery</span>
+        <h2>Where each 2024 commitment goes next</h2>
+        <p>Every baseline record is accounted for. Records marked “Awaiting mapping” will be confirmed by the sub-committee secretariat before the chapter is finalised.</p>
+      </div>
+      <div class="ttable">
+        <table>
+          <thead><tr><th style="width:14%">2024 Record</th><th>Commitment</th><th style="width:22%">Carried into 2028</th><th style="width:18%">Status</th></tr></thead>
+          <tbody id="contBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <b>About this document</b>
+      <p>A proposed manifesto chapter prepared by the NPP Cybersecurity &amp; National Digital Sovereignty Sub-Committee for leadership review. It is an internal working draft and not a published party position.</p>
+      <p style="margin-top:12px"><a href="index.html" style="color:#fff;font-weight:700">Open the committee Policy Explorer →</a></p>
+    </div>
+    <div>
+      <b>Evidence sources</b>
+      <ul>
+        <li>Bank of Ghana: 2025 Fraud Report</li>
+        <li>Cyber Security Authority: H1 2026 scam data · 292 reporting channel · CII Directives</li>
+        <li>Cybersecurity Act, 2020 (Act 1038) · Data Protection Act, 2012 (Act 843)</li>
+        <li>NPP 2024 Manifesto records 03.14, 05.10, 11.01–11.10, 14.04</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+const TIERS = {
+  citizens:{label:"Citizens & Villages", color:"var(--red)", desc:"Protecting families, the elderly and rural savers"},
+  economy:{label:"Economy & Jobs", color:"var(--gold)", desc:"Careers for youth, markets for Ghanaian firms"},
+  sovereignty:{label:"National Sovereignty", color:"var(--green)", desc:"Data, infrastructure and self-reliance"}
+};
+const RECORDS = [
+  ["03.14","5,000 cybersecurity jobs / workforce pipeline"],
+  ["05.10","Standardised technology procurement"],
+  ["11.01","Critical Information Infrastructure & data protection"],
+  ["11.02","Cybersecurity Fund"],
+  ["11.03",null],
+  ["11.04","Cybersecurity in the school curriculum"],
+  ["11.05",null],
+  ["11.06","Digital Forensics Lab & specialised cyber courts"],
+  ["11.07",null],
+  ["11.08",null],
+  ["11.09","Local cyber capability & sovereignty"],
+  ["11.10",null],
+  ["14.04","Energy & utility sector digital security"]
+];
+const recDesc = id => (RECORDS.find(r=>r[0]===id)||[])[1] || "Description to be confirmed";
+
+const P = [
+  {n:1, title:"Digital & Data Sovereignty", short:"Keep Ghana's strategic data under Ghanaian law.",
+   promise:"Ghana's most sensitive data, about our citizens and our state, will be held under Ghanaian law and protected by Ghanaian institutions.",
+   ids:["11.01","11.09"], tiers:["sovereignty"],
+   will:["Introduce a statutory framework for hosting sensitive government and citizen data in Ghana","Close the data-localisation gap left by the Data Protection Act, 2012","Set clear classification rules for which national datasets must stay in-country"],
+   why:"<b>The gap:</b> the Data Protection Act (2012) regulates personal data, but Ghana has no comprehensive data-localisation mandate. Sensitive datasets can be hosted on foreign servers outside immediate Ghanaian jurisdiction.",
+   measure:["Data-localisation legislation passed","Share of sensitive government datasets hosted under Ghanaian jurisdiction"]},
+  {n:2, title:"Sovereign Cloud & Strategic Infrastructure", short:"Local cloud and disaster recovery for the state.",
+   promise:"Government systems will run on trusted, Ghana-based cloud infrastructure and recover from Ghanaian backups.",
+   ids:["11.01","14.04"], tiers:["sovereignty"],
+   will:["Establish sovereign cloud hosting for sensitive state data","Build sovereign disaster-recovery capability for critical national systems","Make local hosting the default for new public digital services"],
+   why:"<b>Why it matters:</b> when critical systems depend on infrastructure abroad, Ghana's ability to recover from an attack or outage depends on another country's jurisdiction.",
+   measure:["Sovereign cloud capacity commissioned","Critical systems with tested sovereign disaster recovery"]},
+  {n:3, title:"Sustainable National Cybersecurity Financing", short:"A ring-fenced fund for national cyber defence.",
+   promise:"National cyber defence will have predictable, transparent and protected funding, not budgets that vary from year to year.",
+   ids:["11.02","05.10"], tiers:["sovereignty","citizens"],
+   will:["Ring-fence the Cybersecurity Fund in law","Fund public sensitisation, incident response and CII protection from it","Publish an annual, independently reviewed fund report"],
+   why:"<b>Why it matters:</b> Priorities 4, 5 and 7 all depend on steady funding. Ring-fencing builds on 2024 record 11.02 and gives delivery agencies certainty.",
+   measure:["Fund ring-fenced in legislation","Annual fund report published on schedule"]},
+  {n:4, title:"National Cyber Resilience & CII Protection", short:"Protect power, water, payments and telecoms.",
+   promise:"The systems Ghanaians depend on every day, including power, water, payments and telecoms, will be audited, defended and resilient.",
+   ids:["11.01","14.04"], tiers:["sovereignty","citizens"],
+   will:["Require regular cybersecurity audits for energy and utility operators","Strengthen enforcement of CSA Critical Information Infrastructure Directives","Protect national payment switches (GhIPSS) and telecom networks as systemic assets"],
+   why:"<b>Legal basis:</b> under the Cybersecurity Act, 2020 (Act 1038), disruption to energy grids, GhIPSS or telecom networks is a systemic national-security risk.",
+   measure:["Designated CII operators completing mandatory audits","Recovery time from major CII incidents"]},
+  {n:5, title:"Digital Economic Security & Protection of Citizens", short:"Stop MoMo fraud and bring scammers to justice.",
+   promise:"When a Ghanaian is defrauded, their money will be frozen fast, the fraudster will be traced, and justice will follow.",
+   ids:["11.02","11.06"], tiers:["citizens"],
+   will:["Introduce a rapid MoMo wallet-freeze protocol triggered by verified reports","Enforce mobile money agent registration and accountability","Run local-language fraud alerts on radio and through CSA's 292 and WhatsApp channels","Establish a National Digital Forensics Laboratory and specialised cybercrime courts","Update the Evidence Act so digital evidence holds up in court"],
+   why:"<b>The evidence:</b> PSP fraud cases rose 54%, from 15,673 to 24,124 (2024–2025, Bank of Ghana). In H1 2026 alone, 352 online investment scams cost citizens GH¢3,429,447 (CSA).",
+   measure:["PSP fraud cases year on year (BoG Fraud Report)","Share of reported MoMo fraud funds frozen","Cybercrime cases concluded in specialised courts"]},
+  {n:6, title:"Indigenous Cybersecurity Technology", short:"Buy Ghanaian. Build a domestic cyber industry.",
+   promise:"Government spending on cybersecurity will build Ghanaian companies, not only foreign ones.",
+   ids:["05.10","11.09"], tiers:["economy","sovereignty"],
+   will:["Set public-procurement quotas for Ghanaian cybersecurity firms","Use standardised technology procurement (05.10) to open tenders to local startups","Support local research and development, certification and scale-up"],
+   why:"<b>Why it matters:</b> agencies spend significant foreign exchange on imported security licences and hardware. A domestic market keeps cedis and skills in Ghana.",
+   measure:["Share of public cyber procurement awarded to Ghanaian firms","Foreign-exchange spend on imported security licences"]},
+  {n:7, title:"Cyber Workforce & Youth Employment", short:"5,000+ well-paid cyber careers for young Ghanaians.",
+   promise:"Cybersecurity will become one of the best career paths open to young Ghanaians, at home and in global remote work.",
+   ids:["03.14","11.04"], tiers:["economy","citizens"],
+   will:["Train and place 5,000+ cybersecurity professionals","Build industry–academia pipelines with universities and TVET institutions","Expand cybersecurity in the school curriculum (11.04)","Connect graduates to domestic enterprise roles and global remote work"],
+   why:"<b>The opportunity:</b> the 2024 commitment 03.14 set the 5,000-jobs target. 2028 turns it into a sustained pipeline that also staffs Priorities 4 and 5.",
+   measure:["Professionals trained and placed toward the 5,000+ target","Schools delivering the cybersecurity curriculum"]}
+];
+
+const $ = s => document.querySelector(s);
+const dots = tiers => `<span class="dots">${tiers.map(t=>`<i style="background:${TIERS[t].color}" title="${TIERS[t].label}"></i>`).join("")}</span>`;
+const tags = tiers => tiers.map(t=>`<span class="tag ${t}"><i></i>${TIERS[t].label}</span>`).join("");
+
+/* Text size */
+const sizeKey = "gh2028-text-size";
+function setSize(s){
+  document.documentElement.dataset.size = s;
+  document.querySelectorAll(".sizer button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.s===s));
+  try{ localStorage.setItem(sizeKey, s); }catch(e){}
+  requestAnimationFrame(drawLines);
+}
+document.querySelectorAll(".sizer button").forEach(b=>b.addEventListener("click",()=>setSize(b.dataset.s)));
+
+/* Glance */
+$("#glance").innerHTML = P.map(p=>`
+  <a class="gcard" href="#p${p.n}">
+    <span class="num">${p.n}</span>
+    <h3>${p.title}</h3>
+    <p>${p.short}</p>
+    <span class="foot">${dots(p.tiers)}<span class="go">Read more →</span></span>
+  </a>`).join("") + `
+  <a class="gcard vision" href="#connections">
+    <span class="num" style="color:var(--gold-2)">→</span>
+    <h3>Built on our record</h3>
+    <p>Every priority continues a commitment from the 2024 manifesto. See how they connect.</p>
+    <span class="foot" style="border-color:rgba(255,255,255,.15)"><span></span><span class="go" style="color:var(--gold-2)">View connections →</span></span>
+  </a>`;
+$("#legend").innerHTML = Object.values(TIERS).map(t=>`<span><i style="background:${t.color}"></i><b>${t.label}</b> · ${t.desc}</span>`).join("");
+
+/* Map */
+$("#colRec").innerHTML = RECORDS.map(([id,d])=>`
+  <button type="button" class="node rec ${d?"":"tbc"}" data-k="r:${id}" aria-pressed="false">
+    <span class="id">${id}</span><span class="tx">${d||"Awaiting mapping"}</span>
+  </button>`).join("");
+$("#colPri").innerHTML = P.map(p=>`
+  <button type="button" class="node pri" data-k="p:${p.n}" aria-pressed="false">
+    <span class="pn">${p.n}</span><span class="tx">${p.title}</span>
+  </button>`).join("");
+$("#colTier").innerHTML = Object.entries(TIERS).map(([k,t])=>`
+  <button type="button" class="node tier" data-k="t:${k}" style="--c:${t.color}" aria-pressed="false">
+    <span class="tt">${t.label}</span><span class="tx">${t.desc}</span>
+  </button>`).join("");
+
+const LINKS = [];
+P.forEach(p=>{
+  p.ids.forEach(id=>LINKS.push({a:"r:"+id, b:"p:"+p.n, p:p.n}));
+  p.tiers.forEach(t=>LINKS.push({a:"p:"+p.n, b:"t:"+t, p:p.n}));
+});
+
+let sel = null;
+function activeSets(){
+  if(!sel) return null;
+  const [type,id] = sel.split(":");
+  let pris;
+  if(type==="p") pris = P.filter(p=>p.n==id);
+  else if(type==="r") pris = P.filter(p=>p.ids.includes(id));
+  else pris = P.filter(p=>p.tiers.includes(id));
+  const nodes = new Set([sel]);
+  pris.forEach(p=>{
+    nodes.add("p:"+p.n);
+    if(type!=="t") p.tiers.forEach(t=>nodes.add("t:"+t));
+    if(type!=="r") p.ids.forEach(r=>nodes.add("r:"+r));
+  });
+  return {nodes, pris:new Set(pris.map(p=>p.n))};
+}
+function isLinkOn(l, act){
+  if(!act) return false;
+  const [type] = sel.split(":");
+  if(!act.pris.has(l.p)) return false;
+  if(type==="r" && l.a.startsWith("r:") && l.a!==sel) return false;
+  if(type==="t" && l.b.startsWith("t:") && l.b!==sel) return false;
+  return act.nodes.has(l.a) && act.nodes.has(l.b);
+}
+function drawLines(){
+  const map = $("#map"), svg = $("#mapSvg");
+  if(getComputedStyle(svg).display==="none"){ svg.innerHTML=""; return; }
+  const box = map.getBoundingClientRect();
+  svg.setAttribute("viewBox",`0 0 ${box.width} ${box.height}`);
+  const pt = (k,side) => {
+    const r = map.querySelector(`[data-k="${k}"]`).getBoundingClientRect();
+    return [ (side==="r"?r.right:r.left) - box.left, r.top + r.height/2 - box.top ];
+  };
+  const act = activeSets();
+  svg.innerHTML = LINKS.map(l=>{
+    const [x1,y1] = pt(l.a,"r"), [x2,y2] = pt(l.b,"l"), dx = (x2-x1)*.5;
+    return `<path class="${isLinkOn(l,act)?"on":""}" d="M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}"/>`;
+  }).join("");
+}
+function renderMap(){
+  const act = activeSets();
+  $("#map").classList.toggle("sel", !!sel);
+  $("#clearSel").hidden = !sel;
+  document.querySelectorAll("#map .node").forEach(n=>{
+    const k = n.dataset.k;
+    n.classList.toggle("on", !!act && act.nodes.has(k));
+    n.classList.toggle("focus", k===sel);
+    n.setAttribute("aria-pressed", k===sel);
+  });
+  drawLines(); renderReadout();
+}
+function renderReadout(){
+  const out = $("#readout");
+  if(!sel){ out.innerHTML = `<p class="empty"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9l5 12 1.8-5.2L21 14z"/><path d="M7.2 2.2 8 5.1M5.1 8l-2.9-.8M14 4.1 12 6M6 12l-1.9 2"/></svg>Select any item above to see a summary of its connections.</p>`; return; }
+  const [type,id] = sel.split(":");
+  if(type==="p"){
+    const p = P.find(x=>x.n==id);
+    out.innerHTML = `<span class="kicker">Priority ${p.n}</span><h3>${p.title}</h3><p>${p.promise}</p>
+      <div class="row">${p.ids.map(r=>`<span class="chip"><span class="id">${r}</span>${recDesc(r)}</span>`).join("")}</div>
+      <div class="row">${tags(p.tiers)}<a class="chip" href="#p${p.n}" style="margin-left:auto">Read the full priority →</a></div>`;
+  } else if(type==="r"){
+    const pris = P.filter(p=>p.ids.includes(id));
+    out.innerHTML = `<span class="kicker">2024 Record ${id}</span><h3>${recDesc(id)}</h3>` + (pris.length
+      ? `<p>Carried forward into ${pris.length} 2028 ${pris.length>1?"priorities":"priority"}:</p><div class="row">${pris.map(p=>`<a class="chip" href="#p${p.n}"><b>${p.n}</b> ${p.title}</a>`).join("")}</div>`
+      : `<p>This record has not yet been mapped to a 2028 priority. The secretariat will confirm what it covers and where it continues.</p>`);
+  } else {
+    const t = TIERS[id], pris = P.filter(p=>p.tiers.includes(id));
+    out.innerHTML = `<span class="kicker">Who It Serves</span><h3>${t.label}</h3><p>${t.desc}. ${pris.length} of the seven priorities serve this group.</p>
+      <div class="row">${pris.map(p=>`<a class="chip" href="#p${p.n}"><b>${p.n}</b> ${p.title}</a>`).join("")}</div>`;
+  }
+}
+document.querySelectorAll("#map .node").forEach(n=>n.addEventListener("click",()=>{ sel = sel===n.dataset.k ? null : n.dataset.k; renderMap(); }));
+$("#clearSel").addEventListener("click",()=>{ sel=null; renderMap(); });
+
+/* Detail */
+$("#plist").innerHTML = P.map(p=>`
+  <article class="pri-art" id="p${p.n}">
+    <div class="pri-head">
+      <div class="bignum">${p.n}</div>
+      <div>
+        <span class="kicker">Priority ${p.n} of 7</span>
+        <h3>${p.title}</h3>
+        <p class="promise">“${p.promise}”</p>
+        <div class="tags">${tags(p.tiers)}</div>
+      </div>
+    </div>
+    <div class="pri-body">
+      <div class="will">
+        <span class="lbl">What we will do</span>
+        <ol>${p.will.map(w=>`<li><span>${w}</span></li>`).join("")}</ol>
+      </div>
+      <aside class="side">
+        <div><span class="lbl">Builds on 2024 record</span>
+          <div class="recs">${p.ids.map(r=>`<div class="recitem"><span class="id">${r}</span><span>${recDesc(r)}</span></div>`).join("")}</div></div>
+        <div><span class="lbl">Why it matters</span><p class="why">${p.why}</p></div>
+        <div><span class="lbl">How we will measure progress</span><ul class="measure">${p.measure.map(m=>`<li>${m}</li>`).join("")}</ul></div>
+      </aside>
+    </div>
+  </article>`).join("");
+$("#rail").insertAdjacentHTML("beforeend", P.map(p=>`<a href="#p${p.n}" data-n="${p.n}"><b>${p.n}</b><span>${p.title}</span></a>`).join(""));
+
+if("IntersectionObserver" in window){
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){
+      document.querySelectorAll("#rail a").forEach(a=>a.classList.toggle("cur", a.dataset.n===e.target.id.slice(1)));
+    }});
+  },{rootMargin:"-40% 0px -55% 0px"});
+  document.querySelectorAll(".pri-art").forEach(a=>io.observe(a));
+}
+
+/* Continuity */
+$("#contBody").innerHTML = RECORDS.map(([id,d])=>{
+  const pris = P.filter(p=>p.ids.includes(id));
+  return `<tr>
+    <td class="id">${id}</td>
+    <td>${d || '<span class="muted"><i>Description to be confirmed by secretariat</i></span>'}</td>
+    <td>${pris.length ? `<span class="ps">${pris.map(p=>`<a href="#p${p.n}" title="${p.title}">${p.n}</a>`).join("")}</span>` : '<span class="muted">—</span>'}</td>
+    <td>${pris.length ? '<span class="st ok"><i></i>Carried forward</span>' : '<span class="st tbc"><i></i>Awaiting mapping</span>'}</td>
+  </tr>`;
+}).join("");
+
+/* Init */
+let saved = "m"; try{ saved = localStorage.getItem(sizeKey) || "m"; }catch(e){}
+setSize(saved);
+renderMap();
+window.addEventListener("resize", ()=>requestAnimationFrame(drawLines));
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(drawLines);
+</script>
+</body>
+</html>
