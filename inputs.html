@@ -125,6 +125,48 @@
   .stwrap{text-align:right}
   .stwrap small{display:block;color:var(--muted);font-size:.7rem;margin-top:5px}
 
+  /* Scope: agency + framework */
+  .scope{display:grid;grid-template-columns:minmax(260px,1fr) 2.6fr;gap:20px;align-items:stretch}
+  .agency{background:var(--navy);color:#fff;border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:14px}
+  .agency .kicker{color:var(--gold-2)}
+  .agency h3{font-family:var(--serif);font-size:1.55rem}
+  .agency p{color:#CBD5E1;font-size:.9rem}
+  .agency .badge{align-self:flex-start;border:1px solid rgba(251,191,36,.45);color:var(--gold-2);border-radius:999px;padding:4px 12px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .agency ul{display:grid;gap:8px;font-size:.86rem;color:#E2E8F0;margin-top:auto;padding-top:14px;border-top:1px solid var(--navy-3)}
+  .agency li{display:flex;gap:10px}
+  .agency li::before{content:"→";color:var(--gold-2);font-weight:800}
+  .fw{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .fwt{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:8px}
+  .fwt .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .fwt .n{font-family:var(--serif);font-weight:700;font-size:1.5rem;color:var(--red);line-height:1}
+  .fwt h4{font-size:1rem;font-weight:800}
+  .fwt p{color:var(--muted);font-size:.84rem;flex:1}
+  .cov{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .cov.strong{background:var(--green-soft);color:#166534}
+  .cov.partial{background:var(--gold-soft);color:#92400E}
+  .pchips{display:flex;gap:6px;flex-wrap:wrap}
+  .pchips a{font-size:.74rem;font-weight:750;text-decoration:none;background:var(--blue-soft);color:var(--navy);border:1px solid #D6DEEA;border-radius:7px;padding:2px 8px}
+  .pchips a:hover{border-color:var(--navy)}
+
+  /* Priority paper emphasis */
+  .mand.paper{border:2px solid var(--navy)}
+  .mand.paper .mhead{background:var(--blue-soft)}
+  .mand.paper .mnum{font-size:1.5rem;width:auto;background:var(--navy);color:#fff;border-radius:12px;padding:12px 12px;font-family:var(--sans);font-weight:900;letter-spacing:.02em}
+  .flag{display:inline-block;background:var(--red);color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:6px;padding:3px 8px;margin-left:8px;vertical-align:middle}
+
+  /* Policy development functions */
+  .pd{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .pdrow{display:grid;grid-template-columns:minmax(220px,1fr) 2fr;gap:20px;padding:18px 28px;border-bottom:1px solid var(--line);align-items:center}
+  .pdrow:last-child{border-bottom:0}
+  .pdrow h4{font-size:.98rem;font-weight:750}
+  .ichips{display:flex;gap:8px;flex-wrap:wrap}
+  .ichip{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:.82rem;font-weight:650;border:1px solid var(--line-2);border-radius:999px;padding:5px 12px;background:#fff}
+  .ichip:hover{border-color:var(--navy)}
+  .ichip i{width:9px;height:9px;border-radius:50%;flex:none}
+
+  @media (max-width:1060px){ .scope{grid-template-columns:1fr} .fw{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:640px){ .fw{grid-template-columns:1fr} .pdrow{grid-template-columns:1fr;gap:10px;padding:16px 20px} }
+
   footer{margin-top:88px;background:var(--navy);color:#94A3B8;font-size:.82rem}
   footer .wrap{padding-top:36px;padding-bottom:44px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
   footer a{color:#fff;font-weight:700}
@@ -209,6 +251,51 @@
 </header>
 
 <main>
+  <section id="scope">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Our Mandate</span>
+        <h2>The agency we oversee and the framework we cover</h2>
+        <p>The Terms of Reference assign the Sub-Committee one agency and six technology framework areas. Below, each area is checked against the seven 2028 priorities to show where coverage is strong and where gaps remain.</p>
+      </div>
+      <div class="scope">
+        <div class="agency">
+          <span class="badge">Agency responsibility</span>
+          <h3>Cyber Security Authority (CSA)</h3>
+          <p>The Sub-Committee is responsible for policy oversight of the CSA, the national regulator established under the Cybersecurity Act, 2020 (Act 1038).</p>
+          <ul>
+            <li>Priority Paper 1 is dedicated to the CSA</li>
+            <li>CSA data underpins our scam evidence</li>
+            <li>The 292 channel and CII Directives feed Priorities 4 &amp; 5</li>
+          </ul>
+        </div>
+        <div class="fw" id="fw"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="papers">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Priority Policy Papers</span>
+        <h2>The papers we must deliver first</h2>
+        <p>The Terms of Reference direct the Sub-Committee to prioritise these papers. They are listed ahead of all other inputs.</p>
+      </div>
+      <div class="mlist" id="plist"></div>
+    </div>
+  </section>
+
+  <section id="policydev">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Policy Development Duties</span>
+        <h2>How my inputs fulfil each duty</h2>
+        <p>Each Policy Development duty from the Terms of Reference, with the inputs that deliver it. The dot shows each input's current status. Click one to jump to it.</p>
+      </div>
+      <div class="pd" id="pd"></div>
+    </div>
+  </section>
+
   <section id="next">
     <div class="wrap">
       <div class="sh">
@@ -303,6 +390,51 @@ const M = [
    ]}
 ];
 
+M.forEach(m=>{ m.kicker = `Terms of Reference · Duty ${m.n}`; m.label = `Duty ${m.n}`; });
+
+const PAPERS = [
+  {n:"E5-S1", paper:true, label:"Priority Paper 1", kicker:"Priority Paper 1 · Standard Position Paper · Joint",
+   title:"Cybersecurity and the Cyber Security Authority",
+   tor:"Cybersecurity and the Cybersecurity Authority (Standard Position Paper / Paper ID: E5-S1 Joint)",
+   items:[
+     {id:"e1", t:"Confirm scope, co-authors & template", d:"Confirm what “Joint” means for E5-S1: which other sub-committee or desk co-authors it, who leads, the standard position-paper template, length and deadline.", s:"todo", links:[]},
+     {id:"e2", t:"Section: CSA mandate & institutional context", d:"The CSA's statutory functions under Act 1038, its governance and funding, and how it works with BoG, NCA and the Data Protection Commission.", s:"todo", links:[]},
+     {id:"e3", t:"Section: Threat landscape & evidence", d:"Mobile money fraud surge, online investment scams, CII risks. Uses the verified evidence pack.", s:"progress", links:[["Evidence","index.html#evidence"],["Evidence pack input","#item-4a"]]},
+     {id:"e4", t:"Section: Assessment of current delivery & gaps", d:"Where CSA delivery is strong and where capacity, funding, enforcement or coordination fall short. Draws on the 2024 commitment status review.", s:"todo", links:[["2024 status input","#item-2b"]]},
+     {id:"e5", t:"Section: Policy position across the six framework areas", d:"Our position on cyber defense, CII protection, workforce, resilience, sovereign cloud and incident response. The seven 2028 priorities supply most of it. Incident response and cyber defense need strengthening (see coverage above).", s:"progress", links:[["Framework coverage","#scope"],["Priorities in detail","manifesto.html#detail"]]},
+     {id:"e6", t:"Section: Legislative & regulatory recommendations", d:"Amendments and regulations needed, such as data localisation, Evidence Act update, ring-fenced fund, CII audit mandate and MoMo rapid-freeze rules.", s:"todo", links:[["Reform list input","#item-1b"]]},
+     {id:"e7", t:"Section: Implementation framework", d:"Sequencing, lead institutions, funding route and progress indicators for each recommendation.", s:"todo", links:[["Roadmap input","#item-8a"]]},
+     {id:"e8", t:"Executive summary, review & sign-off", d:"A one-page summary for leadership, circulated to co-authors and approved by the Sub-Committee chair.", s:"todo", links:[]}
+   ]},
+  {n:"P2", paper:true, label:"Priority Paper 2", kicker:"Priority Paper 2 · Within Scope of Authority",
+   title:"Other policy papers within our scope",
+   tor:"Other policy papers within the scope of authority.",
+   items:[
+     {id:"o1", t:"Sovereign Cloud Policy paper", d:"Framework area 5. Sovereign hosting of state data, data-localisation statute, SME compliance safeguards. Builds on Priorities 1 & 2.", s:"todo", links:[["Priority 2","manifesto.html#p2"]]},
+     {id:"o2", t:"National Incident Response paper", d:"Framework area 6. National and sectoral incident coordination, mandatory incident reporting, and citizen fraud response (292, MoMo freeze, forensics). Fills the gap noted above.", s:"todo", links:[["Priority 5","manifesto.html#p5"]]},
+     {id:"o3", t:"CII Protection & Cyber Resilience paper", d:"Framework areas 2 & 4. Mandatory audits, CII Directives enforcement, sovereign disaster recovery for power, water, payments and telecoms.", s:"todo", links:[["Priority 4","manifesto.html#p4"]]},
+     {id:"o4", t:"National Cyber Workforce paper", d:"Framework area 3. The 5,000+ pipeline, curriculum, industry–academia partnerships and talent retention.", s:"todo", links:[["Priority 7","manifesto.html#p7"]]}
+   ]}
+];
+PAPERS[1].kicker += " · Suggested list, confirm with chair";
+const GROUPS = [...PAPERS, ...M];
+
+const PNAME = {1:"Data Sovereignty",2:"Sovereign Cloud",3:"Cyber Financing",4:"CII Resilience",5:"Citizen Protection",6:"Indigenous Tech",7:"Cyber Workforce"};
+const FW = [
+  {n:1, name:"Cyber defense", pris:[4,6,3], cov:"partial", note:"Covered indirectly through CII protection, local technology and financing. No standalone national cyber-defense commitment yet."},
+  {n:2, name:"Critical infrastructure protection", pris:[4,2], cov:"strong", note:"Mandatory audits, CSA CII Directives, protection of GhIPSS, grids and telecoms."},
+  {n:3, name:"National cyber workforce", pris:[7], cov:"strong", note:"5,000+ professionals, school curriculum, industry–academia pipeline."},
+  {n:4, name:"Cyber resilience", pris:[4,2,3], cov:"strong", note:"Sovereign disaster recovery, recovery-time measures, ring-fenced funding."},
+  {n:5, name:"Sovereign cloud policy", pris:[2,1], cov:"strong", note:"Sovereign hosting for state data and a data-localisation statute."},
+  {n:6, name:"Incident response", pris:[5,4], cov:"partial", note:"Strong on citizen fraud response (292, MoMo freeze, forensics). National incident coordination and mandatory reporting are not yet explicit."}
+];
+const PD = [
+  ["Conduct policy research and analysis", ["2a","2c","3a","4a"]],
+  ["Develop position papers and policy briefs", ["e1","1c","4b","o1"]],
+  ["Draft reform proposals and implementation frameworks", ["1b","e7","8a"]],
+  ["Recommend legislative and regulatory improvements", ["e6","1b","2a"]]
+];
+
 const ST = {
   todo:{label:"To prepare", next:"progress", color:"var(--red)"},
   progress:{label:"In progress", next:"ready", color:"var(--gold)"},
@@ -313,7 +445,7 @@ let saved = {status:{}, notes:{}};
 try{ saved = JSON.parse(localStorage.getItem(KEY)) || saved; }catch(e){}
 const persist = () => { try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){} };
 const statusOf = it => saved.status[it.id] || it.s;
-const allItems = () => M.flatMap(m=>m.items.map(it=>({...it, m})));
+const allItems = () => GROUPS.flatMap(m=>m.items.map(it=>({...it, m})));
 let filter = "all";
 const $ = s => document.querySelector(s);
 const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -348,7 +480,7 @@ function renderSummary(){
   $("#nextList").innerHTML = next.length
     ? `<div class="next">${next.map(it=>`
         <div class="ncard">
-          <span class="from">Mandate ${it.m.n} · ${it.m.title}</span>
+          <span class="from">${it.m.label} · ${it.m.title}</span>
           <h3>${it.t}</h3>
           <p>${it.d}</p>
           <a href="#item-${it.id}">Go to input →</a>
@@ -358,6 +490,23 @@ function renderSummary(){
   const fdefs = [["all","All inputs",total],["todo","To prepare",c.todo],["progress","In progress",c.progress],["ready","Ready",c.ready]];
   $("#filters").innerHTML = fdefs.map(([k,l,n])=>`<button class="fbtn" type="button" data-f="${k}" aria-pressed="${filter===k}">${l}<span class="c">${n}</span></button>`).join("");
   document.querySelectorAll(".fbtn").forEach(b=>b.addEventListener("click",()=>{ filter=b.dataset.f; renderSummary(); applyFilter(); }));
+
+  const byId = Object.fromEntries(items.map(it=>[it.id,it]));
+  const dot = s => s==="ready"?"var(--green)":s==="progress"?"var(--gold)":"var(--red)";
+  $("#pd").innerHTML = PD.map(([duty,ids])=>`
+    <div class="pdrow"><h4>${duty}</h4>
+      <div class="ichips">${ids.map(id=>{ const it=byId[id]; return `<a class="ichip" href="#item-${id}" title="${ST[statusOf(it)].label}"><i style="background:${dot(statusOf(it))}"></i>${it.t}</a>`; }).join("")}</div>
+    </div>`).join("");
+}
+
+function renderFramework(){
+  $("#fw").innerHTML = FW.map(f=>`
+    <div class="fwt">
+      <div class="top"><span class="n">${f.n}</span><span class="cov ${f.cov}">${f.cov==="strong"?"Strong coverage":"Partial: gap"}</span></div>
+      <h4>${f.name}</h4>
+      <p>${f.note}</p>
+      <div class="pchips">${f.pris.map(n=>`<a href="manifesto.html#p${n}">P${n} ${PNAME[n]}</a>`).join("")}</div>
+    </div>`).join("");
 }
 
 function mandateBar(m){
@@ -367,13 +516,13 @@ function mandateBar(m){
 }
 
 function renderMandates(){
-  $("#mlist").innerHTML = M.map(m=>`
-    <article class="mand" id="m${m.n}">
+  const groupHTML = m=>`
+    <article class="mand${m.paper?" paper":""}" id="m${m.n}">
       <div class="mhead">
         <div class="mnum">${m.n}</div>
         <div>
-          <div class="torline">Terms of Reference · Duty ${m.n}</div>
-          <h3>${m.title}</h3>
+          <div class="torline">${m.kicker}</div>
+          <h3>${m.title}${m.n==="E5-S1"?'<span class="flag">Top priority</span>':""}</h3>
           <p class="q">“${m.tor}”</p>
         </div>
         <div class="mbar" id="bar${m.n}">${mandateBar(m)}</div>
@@ -393,7 +542,9 @@ function renderMandates(){
           <textarea data-id="${it.id}" placeholder="My notes, sources, owner or deadline…" aria-label="Notes for ${it.t}">${esc(saved.notes[it.id]||"")}</textarea>
         </div>`;}).join("")}
       </div>
-    </article>`).join("");
+    </article>`;
+  $("#plist").innerHTML = PAPERS.map(groupHTML).join("");
+  $("#mlist").innerHTML = M.map(groupHTML).join("");
 
   document.querySelectorAll(".status[data-id]").forEach(b=>b.addEventListener("click",()=>{
     const it = allItems().find(x=>x.id===b.dataset.id);
@@ -422,8 +573,8 @@ function applyFilter(){
 $("#exportBtn").addEventListener("click",()=>{
   const d = new Date(), items = allItems(), c = counts(items);
   let out = `MY INPUTS TO THE CYBERSECURITY & NATIONAL DIGITAL SOVEREIGNTY SUB-COMMITTEE\nExported: ${d.toLocaleString()}\nReady: ${c.ready} · In progress: ${c.progress} · To prepare: ${c.todo} (of ${items.length})\n`;
-  M.forEach(m=>{
-    out += `\n${m.n}. ${m.title.toUpperCase()}\n   ToR: ${m.tor}\n`;
+  GROUPS.forEach(m=>{
+    out += `\n${m.label}: ${m.title.toUpperCase()}\n   ToR: ${m.tor}\n`;
     m.items.forEach(it=>{
       out += `   [${ST[statusOf(it)].label}] ${it.t}\n`;
       const n = (saved.notes[it.id]||"").trim(); if(n) out += `      Notes: ${n.replace(/\n/g,"\n             ")}\n`;
@@ -436,7 +587,7 @@ $("#exportBtn").addEventListener("click",()=>{
   setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 });
 
-renderMandates(); renderSummary(); applyFilter();
+renderFramework(); renderMandates(); renderSummary(); applyFilter();
 </script>
 </body>
 </html>
