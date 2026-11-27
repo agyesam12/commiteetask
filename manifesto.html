@@ -261,6 +261,7 @@
       <a href="#detail">In Detail</a>
       <a href="#continuity">2024 Record</a>
       <a href="inputs.html">My Inputs</a>
+      <a href="data-governance.html">Data Governance</a>
       <a class="ext" href="index.html">Policy Explorer →</a>
     </nav>
     <div class="sizer" role="group" aria-label="Text size">
@@ -353,7 +354,7 @@
       <div class="sh">
         <span class="kicker">Continuity of Delivery</span>
         <h2>Where each 2024 commitment goes next</h2>
-        <p>Every baseline record is accounted for. Records marked “Awaiting mapping” will be confirmed by the sub-committee secretariat before the chapter is finalised.</p>
+        <p>All 13 records assigned to the Sub-Committee in the Manifesto Committee's base register, each carried into at least one 2028 priority. Descriptions follow the official register text.</p>
       </div>
       <div class="ttable">
         <table>
@@ -384,33 +385,20 @@
   </div>
 </footer>
 
+<script src="register.js"></script>
 <script>
 const TIERS = {
   citizens:{label:"Citizens & Villages", color:"var(--red)", desc:"Protecting families, the elderly and rural savers"},
   economy:{label:"Economy & Jobs", color:"var(--gold)", desc:"Careers for youth, markets for Ghanaian firms"},
   sovereignty:{label:"National Sovereignty", color:"var(--green)", desc:"Data, infrastructure and self-reliance"}
 };
-const RECORDS = [
-  ["03.14","5,000 cybersecurity jobs / workforce pipeline"],
-  ["05.10","Standardised technology procurement"],
-  ["11.01","Critical Information Infrastructure & data protection"],
-  ["11.02","Cybersecurity Fund"],
-  ["11.03",null],
-  ["11.04","Cybersecurity in the school curriculum"],
-  ["11.05",null],
-  ["11.06","Digital Forensics Lab & specialised cyber courts"],
-  ["11.07",null],
-  ["11.08",null],
-  ["11.09","Local cyber capability & sovereignty"],
-  ["11.10",null],
-  ["14.04","Energy & utility sector digital security"]
-];
+const RECORDS = window.REGISTER.committees.cyber.map(id=>[id, window.REGISTER.records[id].short]);
 const recDesc = id => (RECORDS.find(r=>r[0]===id)||[])[1] || "Description to be confirmed";
 
 const P = [
   {n:1, title:"Digital Sovereignty, National Data Governance & Strategic Information Assets", short:"National control over strategic information and citizens' data.",
    promise:"Ghana's most sensitive data, about our citizens and our state, will be held under Ghanaian law and protected by Ghanaian institutions.",
-   ids:["11.01","11.09"], tiers:["sovereignty"],
+   ids:["11.01","11.07","11.08","11.09"], tiers:["sovereignty","citizens"],
    focus:["Strategic national data governance","Protection of sensitive government and critical-sector information","Secure data exchange and interoperability","Privacy and digital rights","Responsible use of strategic data"],
    value:"Stronger national control over strategic information, better protection of citizens' data and reduced exposure of sensitive national assets.",
    will:["Introduce a statutory framework for hosting sensitive government and citizen data in Ghana","Set clear classification rules for sensitive government and critical-sector information, including what must stay in-country","Establish secure, interoperable data-exchange standards across government","Strengthen privacy and digital rights, and close the gaps left by the Data Protection Act, 2012","Set rules for the responsible use of strategic national data"],
@@ -418,7 +406,7 @@ const P = [
    measure:["Data-localisation legislation passed","Share of sensitive government datasets hosted under Ghanaian jurisdiction"]},
   {n:2, title:"Strategic Digital Infrastructure & Technology Security", short:"Secure cloud, telecoms and data centres, with trusted suppliers.",
    promise:"Ghana's cloud, telecommunications and data-centre infrastructure will be secure, reliable and under our operational control, built with trusted suppliers and local technical capacity.",
-   ids:["11.01","14.04","05.10"], tiers:["sovereignty"],
+   ids:["11.01","11.09","05.10"], tiers:["sovereignty"],
    focus:["Security of cloud, telecommunications and data-centre infrastructure","Security assurance for critical platforms and providers","Secure technology procurement and lifecycle management","Management of technology dependencies and vendor risks","Interoperability and local technical capacity"],
    value:"More secure and reliable digital infrastructure, reduced technology-related vulnerabilities and greater operational control over critical systems.",
    will:["Set security standards for cloud, telecommunications and data-centre infrastructure, including sovereign cloud hosting for sensitive state data","Introduce security assurance and certification for critical platforms and providers","Build security into technology procurement and lifecycle management, extending standardised procurement (05.10)","Assess and manage technology dependencies and vendor risks across critical systems","Build sovereign disaster recovery, interoperability and local technical capacity"],
@@ -426,31 +414,31 @@ const P = [
    measure:["Critical platforms and providers with completed security assurance","Critical systems with tested sovereign disaster recovery","Sovereign cloud capacity commissioned"]},
   {n:3, title:"Sustainable National Cybersecurity Financing", short:"A ring-fenced fund for national cyber defence.",
    promise:"National cyber defence will have predictable, transparent and protected funding, not budgets that vary from year to year.",
-   ids:["11.02","05.10"], tiers:["sovereignty","citizens"],
+   ids:["11.02"], tiers:["sovereignty","citizens"],
    will:["Ring-fence the Cybersecurity Fund in law","Fund public sensitisation, incident response and CII protection from it","Publish an annual, independently reviewed fund report"],
    why:"<b>Why it matters:</b> Priorities 4, 5 and 7 all depend on steady funding. Ring-fencing builds on 2024 record 11.02 and gives delivery agencies certainty.",
    measure:["Fund ring-fenced in legislation","Annual fund report published on schedule"]},
   {n:4, title:"National Cyber Resilience & CII Protection", short:"Protect power, water, payments and telecoms.",
    promise:"The systems Ghanaians depend on every day, including power, water, payments and telecoms, will be audited, defended and resilient.",
-   ids:["11.01","14.04"], tiers:["sovereignty","citizens"],
-   will:["Require regular cybersecurity audits for energy and utility operators","Strengthen enforcement of CSA Critical Information Infrastructure Directives","Protect national payment switches (GhIPSS) and telecom networks as systemic assets"],
+   ids:["11.01","11.03","14.04","11.10"], tiers:["sovereignty","citizens"],
+   will:["Set baseline security controls every agency must meet, enforced by the CSA (11.03)","Require regular cybersecurity audits, staff certification and mandatory training in energy and utility firms (14.04)","Provide cybersecurity support to Air Force and Navy modernisation without exposing operational detail (11.10)","Strengthen enforcement of CSA Critical Information Infrastructure Directives","Protect national payment switches (GhIPSS) and telecom networks as systemic assets"],
    why:"<b>Legal basis:</b> under the Cybersecurity Act, 2020 (Act 1038), disruption to energy grids, GhIPSS or telecom networks is a systemic national-security risk.",
    measure:["Designated CII operators completing mandatory audits","Recovery time from major CII incidents"]},
   {n:5, title:"Digital Economic Security & Protection of Citizens", short:"Stop MoMo fraud and bring scammers to justice.",
    promise:"When a Ghanaian is defrauded, their money will be frozen fast, the fraudster will be traced, and justice will follow.",
-   ids:["11.02","11.06"], tiers:["citizens"],
-   will:["Introduce a rapid MoMo wallet-freeze protocol triggered by verified reports","Enforce mobile money agent registration and accountability","Run local-language fraud alerts on radio and through CSA's 292 and WhatsApp channels","Establish a National Digital Forensics Laboratory and specialised cybercrime courts","Update the Evidence Act so digital evidence holds up in court"],
+   ids:["11.06","11.07","11.05"], tiers:["citizens"],
+   will:["Introduce a rapid MoMo wallet-freeze protocol triggered by verified reports","Implement the National Child Online Protection Framework, with fast takedown of child abuse material (11.07)","Set retention, access and oversight rules for footage from the 50,000 CCTV and body cameras (11.05)","Enforce mobile money agent registration and accountability","Run local-language fraud alerts on radio and through CSA's 292 and WhatsApp channels","Establish a National Digital Forensics Laboratory and specialised cybercrime courts","Update the Evidence Act so digital evidence holds up in court"],
    why:"<b>The evidence:</b> PSP fraud cases rose 54%, from 15,673 to 24,124 (2024–2025, Bank of Ghana). In H1 2026 alone, 352 online investment scams cost citizens GH¢3,429,447 (CSA).",
    measure:["PSP fraud cases year on year (BoG Fraud Report)","Share of reported MoMo fraud funds frozen","Cybercrime cases concluded in specialised courts"]},
   {n:6, title:"Indigenous Cybersecurity Technology", short:"Buy Ghanaian. Build a domestic cyber industry.",
    promise:"Government spending on cybersecurity will build Ghanaian companies, not only foreign ones.",
-   ids:["05.10","11.09"], tiers:["economy","sovereignty"],
+   ids:["05.10"], tiers:["economy","sovereignty"],
    will:["Set public-procurement quotas for Ghanaian cybersecurity firms","Use standardised technology procurement (05.10) to open tenders to local startups","Support local research and development, certification and scale-up"],
    why:"<b>Why it matters:</b> agencies spend significant foreign exchange on imported security licences and hardware. A domestic market keeps cedis and skills in Ghana.",
    measure:["Share of public cyber procurement awarded to Ghanaian firms","Foreign-exchange spend on imported security licences"]},
   {n:7, title:"Cyber Workforce & Youth Employment", short:"5,000+ well-paid cyber careers for young Ghanaians.",
    promise:"Cybersecurity will become one of the best career paths open to young Ghanaians, at home and in global remote work.",
-   ids:["03.14","11.04"], tiers:["economy","citizens"],
+   ids:["03.14","11.04","14.04"], tiers:["economy","citizens"],
    will:["Train and place 5,000+ cybersecurity professionals","Build industry–academia pipelines with universities and TVET institutions","Expand cybersecurity in the school curriculum (11.04)","Connect graduates to domestic enterprise roles and global remote work"],
    why:"<b>The opportunity:</b> the 2024 commitment 03.14 set the 5,000-jobs target. 2028 turns it into a sustained pipeline that also staffs Priorities 4 and 5.",
    measure:["Professionals trained and placed toward the 5,000+ target","Schools delivering the cybersecurity curriculum"]}

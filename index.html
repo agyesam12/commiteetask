@@ -145,9 +145,13 @@
   .status-hint{color:var(--muted);font-size:.74rem;margin-top:6px}
   textarea.note{width:100%;min-width:190px;min-height:62px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:.86rem;resize:vertical;background:#FCFCFD;color:var(--ink)}
   textarea.note:focus{outline:2px solid var(--gold);background:#fff}
-  .unmapped{margin-top:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;border-left:5px solid var(--gold)}
-  .unmapped b{display:block;margin-bottom:4px}
-  .unmapped p{color:var(--ink-2);font-size:.9rem}
+  table.reg{min-width:1150px}
+  .reg td{font-size:.86rem}
+  .regq{display:block;font-weight:700;color:var(--red);font-size:.88rem;border-left:3px solid var(--red);padding-left:8px}
+  .shared-dg{margin-top:6px;font-size:.7rem;font-weight:800;color:#fff;background:var(--navy);border-radius:6px;padding:2px 7px;display:inline-block}
+  .pchip{display:inline-block;font-weight:800;font-size:.78rem;background:var(--red-soft);color:var(--red);border-radius:6px;padding:2px 7px;margin:0 2px 4px 0;cursor:help}
+  .regsel{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;font-size:.84rem;font-weight:700;background:#fff}
+  .regsel.set{border-color:var(--green);background:var(--green-soft);color:#166534}
   .btn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font-weight:700;font-size:.85rem;color:var(--ink-2);display:inline-flex;gap:8px;align-items:center}
   .btn:hover{border-color:#94A3B8;color:var(--ink)}
   .btn.dark{background:var(--navy);color:#fff;border-color:var(--navy)}
@@ -224,9 +228,11 @@
       <a href="#evidence">1 · Evidence</a>
       <a href="#simulator">2 · Impact Simulator</a>
       <a href="#matrix">3 · Policy Matrix</a>
+      <a href="#register">3b · Record Register</a>
       <a href="#discussion">4 · Discussion</a>
       <a href="manifesto.html" style="margin-left:auto;color:#FBBF24">Manifesto Chapter →</a>
       <a href="inputs.html" style="color:#FBBF24">My Inputs →</a>
+      <a href="data-governance.html" style="color:#FBBF24">Data Governance →</a>
     </div>
   </nav>
 </header>
@@ -339,13 +345,30 @@
       </table>
     </div>
 
-    <div class="card unmapped">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-      <div style="flex:1;min-width:240px">
-        <b>2024 records not yet mapped: <span id="unmappedIds"></span></b>
-        <p>These Chapter 11 records are in the baseline but have no confirmed 2028 priority yet. The secretariat should confirm what each one covers and assign it during the session.</p>
+    <div class="sec-head" id="register" style="margin-top:40px">
+      <div>
+        <div class="sec-num">Section 03b · Standard Format</div>
+        <h2>2024 Record Register: Cybersecurity &amp; National Digital Sovereignty</h2>
+        <p>The 13 records assigned to this Sub-Committee in the Manifesto Committee's base register, in its standard columns. Commitment, dependency, question and partners are the official text. Record a decision and notes for each. <b id="regTally"></b></p>
       </div>
     </div>
+    <div class="card tbl-wrap">
+      <table class="reg">
+        <thead>
+          <tr>
+            <th style="width:9%">Record</th>
+            <th style="width:21%">Manifesto commitment / Policy</th>
+            <th style="width:15%">Implementation dependency</th>
+            <th style="width:16%">Committee question</th>
+            <th style="width:11%">2028 Priority</th>
+            <th style="width:12%">Committee decision</th>
+            <th>Committee notes</th>
+          </tr>
+        </thead>
+        <tbody id="regBody"></tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:.8rem;margin-top:10px">Source: SUB-COMMITTEE BASE POLICIES register. Proposed partners appear when you hover over a record ID. Records 11.01, 11.07, 11.08 and 11.09 are shared with the <a href="data-governance.html">Data Governance, Privacy &amp; Digital Rights Sub-Committee</a>.</p>
   </section>
 
   <!-- 4. DISCUSSION -->
@@ -375,6 +398,7 @@
   <p style="margin-top:12px">Internal working prototype for sub-committee deliberation. Not a published policy position.</p>
 </footer>
 
+<script src="register.js"></script>
 <script>
 /* ---------- Icons ---------- */
 const I = {
@@ -502,9 +526,9 @@ const personas = [
     pains:['Sensitive citizen and government data hosted on foreign servers','Cyber risk to ECG, GRIDCo, water, GhIPSS and banking systems','Foreign-exchange drain on imported security software and licences','No statutory data-localisation mandate beyond the Data Protection Act (2012)'],
     policies:[
       {code:'2028 · P1–P4, P6', name:'Data Sovereignty & Governance · Digital Infrastructure & Technology Security · Sustainable Cyber Fund · CII Resilience · Indigenous Cyber Tech'},
-      {code:'2024 · 11.01', name:'Critical Information Infrastructure protection'},
-      {code:'2024 · 11.09', name:'National cyber capability & local ecosystem'},
-      {code:'2024 · 14.04', name:'Energy & utility sector digital security'}
+      {code:'2024 · 11.01', name:'Protect digital infrastructure & citizen data; CII safeguards'},
+      {code:'2024 · 11.09', name:'Digital Ghana Embassy: national digital disaster recovery'},
+      {code:'2024 · 14.04', name:'Mandatory cyber training, certification & audits for energy firms'}
     ],
     outcomes:['Sovereign local hosting for sensitive state and citizen data','Mandatory cyber audits for energy and utility operators','Government procurement quotas for Ghanaian cybersecurity startups','Sovereign disaster recovery for critical national systems'],
     today:[
@@ -522,7 +546,6 @@ const personas = [
     resToday:'Strategic dependency', resWith:'Digital sovereignty & self-reliance'
   }
 ];
-// Note: the persona short descriptions for 11.01 and 11.09 are working labels; confirm against the 2024 manifesto text.
 
 function renderTabs(){
   const wrap = document.getElementById('personaTabs');
@@ -579,26 +602,18 @@ function renderPanel(){
 }
 
 /* ---------- Matrix ---------- */
-const recordInfo = {
-  '03.14':'5,000 cybersecurity jobs / workforce pipeline',
-  '05.10':'Standardised technology procurement',
-  '11.01':'Critical Information Infrastructure & data protection',
-  '11.02':'Cybersecurity Fund',
-  '11.04':'Cybersecurity in the school curriculum',
-  '11.06':'National Digital Forensics Lab & specialised cyber courts',
-  '11.09':'Local cyber capability & sovereignty',
-  '14.04':'Energy & utility sector digital security'
-};
-const allBaseline = ['03.14','05.10','11.01','11.02','11.03','11.04','11.05','11.06','11.07','11.08','11.09','11.10','14.04'];
+const REG = window.REGISTER;
+const recordInfo = Object.fromEntries(REG.committees.cyber.map(id=>[id, REG.records[id].short]));
+const allBaseline = REG.committees.cyber;
 
 const priorities = [
-  {n:1, name:'Digital Sovereignty, National Data Governance & Strategic Information Assets', desc:'Stronger national control over strategic information, better protection of citizens\' data and reduced exposure of sensitive national assets.', ids:['11.01','11.09'], tiers:['sovereignty'], status:'flagship'},
-  {n:2, name:'Strategic Digital Infrastructure & Technology Security', desc:'More secure and reliable digital infrastructure, reduced technology-related vulnerabilities and greater operational control over critical systems.', ids:['11.01','14.04','05.10'], tiers:['sovereignty'], status:'consolidate'},
-  {n:3, name:'Sustainable National Cybersecurity Financing', desc:'A ring-fenced, predictable and transparent fund for national cyber defence and sensitisation.', ids:['11.02','05.10'], tiers:['sovereignty','citizens'], status:'consolidate'},
-  {n:4, name:'National Cyber Resilience & CII Protection', desc:'Mandatory audits and resilience standards for energy grids, GhIPSS, telecoms, water and health (Act 1038, CSA CII Directives).', ids:['11.01','14.04'], tiers:['sovereignty','citizens'], status:'flagship'},
-  {n:5, name:'Digital Economic Security & Protection of Citizens', desc:'MoMo fraud rapid-freeze, agent accountability, local-language sensitisation via CSA 292, digital forensics and cyber courts.', ids:['11.02','11.06'], tiers:['citizens'], status:'flagship'},
-  {n:6, name:'Indigenous Cybersecurity Technology Development', desc:'Government procurement quotas and leverage to create a domestic market for Ghanaian cyber startups and cut forex drain.', ids:['05.10','11.09'], tiers:['economy','sovereignty'], status:'refine'},
-  {n:7, name:'Cyber Workforce & Youth Employment', desc:'Train 5,000+ cybersecurity professionals. Build industry–academia pipelines for domestic and global remote jobs.', ids:['03.14','11.04'], tiers:['economy','citizens'], status:'flagship'}
+  {n:1, name:'Digital Sovereignty, National Data Governance & Strategic Information Assets', desc:'Stronger national control over strategic information, better protection of citizens\' data and reduced exposure of sensitive national assets.', ids:['11.01','11.07','11.08','11.09'], tiers:['sovereignty','citizens'], status:'flagship'},
+  {n:2, name:'Strategic Digital Infrastructure & Technology Security', desc:'More secure and reliable digital infrastructure, reduced technology-related vulnerabilities and greater operational control over critical systems.', ids:['11.01','11.09','05.10'], tiers:['sovereignty'], status:'consolidate'},
+  {n:3, name:'Sustainable National Cybersecurity Financing', desc:'A ring-fenced, predictable and transparent fund for national cyber defence and sensitisation.', ids:['11.02'], tiers:['sovereignty','citizens'], status:'consolidate'},
+  {n:4, name:'National Cyber Resilience & CII Protection', desc:'Mandatory audits and resilience standards for energy grids, GhIPSS, telecoms, water and health (Act 1038, CSA CII Directives). Baseline controls for every agency and cyber support for defence modernisation.', ids:['11.01','11.03','14.04','11.10'], tiers:['sovereignty','citizens'], status:'flagship'},
+  {n:5, name:'Digital Economic Security & Protection of Citizens', desc:'MoMo fraud rapid-freeze, agent accountability, local-language sensitisation via CSA 292, digital forensics and cyber courts, child online protection, and safeguards for CCTV footage.', ids:['11.06','11.07','11.05'], tiers:['citizens'], status:'flagship'},
+  {n:6, name:'Indigenous Cybersecurity Technology Development', desc:'Government procurement quotas and leverage to create a domestic market for Ghanaian cyber startups and cut forex drain.', ids:['05.10'], tiers:['economy','sovereignty'], status:'refine'},
+  {n:7, name:'Cyber Workforce & Youth Employment', desc:'Train 5,000+ cybersecurity professionals. Build industry–academia pipelines for domestic and global remote jobs.', ids:['03.14','11.04','14.04'], tiers:['economy','citizens'], status:'flagship'}
 ];
 const tierMeta = {
   citizens:{label:'Protects Village/Citizens', icon:I.shield},
@@ -653,8 +668,33 @@ function renderTally(){
   priorities.forEach(p=>counts[getStatus(p)]++);
   document.getElementById('tally').innerHTML = 'Current recommendation:' + Object.entries(counts).map(([k,c])=>
     `<span class="status ${k}" style="cursor:default;padding:3px 10px">${c} × ${statusMeta[k].label}</span>`).join('');
-  const mapped = new Set(priorities.flatMap(p=>p.ids));
-  document.getElementById('unmappedIds').textContent = allBaseline.filter(id=>!mapped.has(id)).join(', ');
+}
+
+/* ---------- Standard register (13 records) ---------- */
+state.regDecision = state.regDecision || {}; state.regNotes = state.regNotes || {};
+const SHARED_DG = REG.committees.dg;
+function renderRegister(){
+  const body = document.getElementById('regBody');
+  body.innerHTML = allBaseline.map(id=>{
+    const r = REG.records[id], dec = state.regDecision[id] || 'Pending';
+    const pris = priorities.filter(p=>p.ids.includes(id));
+    return `<tr>
+      <td><span class="id" title="${escapeHtml(r.partners)}">${id}</span><div class="idsub">Class ${r.cls} · p. ${r.pages}</div>${SHARED_DG.includes(id)?'<div class="shared-dg">Shared with Data Governance</div>':''}</td>
+      <td><b style="display:block;font-size:.88rem;margin-bottom:4px">${r.short}</b><span class="pdesc" style="margin:0">${r.commitment}</span></td>
+      <td class="pdesc">${r.dependency}</td>
+      <td><span class="regq">${r.question}</span></td>
+      <td>${pris.map(p=>`<span class="pchip" title="${escapeHtml(p.name)}">P${p.n}</span>`).join(' ')}</td>
+      <td><select class="regsel ${dec!=='Pending'?'set':''}" data-id="${id}" aria-label="Decision for ${id}">${REG.decisions.map(d=>`<option ${d===dec?'selected':''}>${d}</option>`).join('')}</select></td>
+      <td><textarea class="note" data-rid="${id}" placeholder="Notes…" aria-label="Notes for record ${id}">${escapeHtml(state.regNotes[id]||'')}</textarea></td>
+    </tr>`;
+  }).join('');
+  body.querySelectorAll('.regsel').forEach(s=>s.addEventListener('change',()=>{ state.regDecision[s.dataset.id]=s.value; s.classList.toggle('set',s.value!=='Pending'); save(); renderRegTally(); }));
+  body.querySelectorAll('textarea[data-rid]').forEach(t=>t.addEventListener('input',()=>{ state.regNotes[t.dataset.rid]=t.value; save(); }));
+  renderRegTally();
+}
+function renderRegTally(){
+  const n = allBaseline.filter(id=>state.regDecision[id] && state.regDecision[id]!=='Pending').length;
+  document.getElementById('regTally').textContent = `Decisions recorded: ${n} of ${allBaseline.length}.`;
 }
 function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
@@ -666,7 +706,7 @@ const questions = [
    opts:[['Statutory deadline','Hard legal time limit enforced by BoG / CSA'],['Industry code','BoG-supervised voluntary standard first'],['Pilot first','Pilot in selected regions before national rollout']]},
   {id:'q2', title:'Local Data Hosting vs SME Compliance Costs',
    ask:'Should data localisation apply to all sensitive data, or start with government and CII data, so Ghanaian SMEs and startups don\'t face high compliance costs?',
-   links:'Links: Priorities 1, 2 & 6 · 2024 IDs 11.01, 11.09 · Data Protection Act 2012',
+   links:'Links: Priorities 1, 2 & 6 · 2024 IDs 11.01, 11.08, 11.09 · Data Protection Act 2012 (being replaced) · shared with Data Governance Sub-Committee',
    opts:[['State & CII first','Mandate for government and CII datasets only'],['Tiered by risk','Phased obligations by data sensitivity & firm size'],['Broad mandate','Localisation for all sensitive personal data']]},
   {id:'q3', title:'Tracking 2024 → 2028 Implementation',
    ask:'How will the party show voters measurable progress on 2024 commitments, and which body owns the public scorecard?',
@@ -699,14 +739,19 @@ function renderTallySafe(){ if(document.getElementById('tally')) renderTally(); 
 
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm('Reset all statuses, notes and discussion choices to defaults?')) return;
-  state = { status:{}, notes:{}, votes:{}, persona:state.persona, mode:state.mode };
-  store.set(KEY, state); renderMatrix(); renderDiscussion();
+  state = { status:{}, notes:{}, votes:{}, regDecision:{}, regNotes:{}, persona:state.persona, mode:state.mode };
+  store.set(KEY, state); renderMatrix(); renderRegister(); renderDiscussion();
 });
 document.getElementById('exportBtn').addEventListener('click',()=>{
   const d = new Date();
   let out = `GHANA 2028 MANIFESTO — CYBERSECURITY & DIGITAL SOVEREIGNTY\nSub-Committee Working Session Notes\nExported: ${d.toLocaleString()}\n\n== POLICY MATRIX ==\n`;
   priorities.forEach(p=>{
     out += `\nPriority ${p.n}: ${p.name}\n  2024 IDs: ${p.ids.join(', ')}\n  Status: ${statusMeta[getStatus(p)].label}\n  Notes: ${(state.notes[p.n]||'—').trim()}\n`;
+  });
+  out += `\n== 2024 RECORD REGISTER (STANDARD FORMAT) ==\n`;
+  allBaseline.forEach(id=>{
+    const r = REG.records[id];
+    out += `\n${id} | Class ${r.cls} | Pages ${r.pages}\n  Commitment: ${r.commitment}\n  Dependency: ${r.dependency}\n  Question: ${r.question}\n  Partners: ${r.partners}\n  Decision: ${state.regDecision[id]||'Pending'}\n  Notes: ${(state.regNotes[id]||'—').trim()}\n`;
   });
   out += `\n== DISCUSSION QUESTIONS ==\n`;
   questions.forEach((q,i)=>{
@@ -722,7 +767,7 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
 });
 
 /* ---------- Init ---------- */
-renderTabs(); renderPanel(); renderFilters(); renderMatrix(); renderDiscussion();
+renderTabs(); renderPanel(); renderFilters(); renderMatrix(); renderRegister(); renderDiscussion();
 </script>
 <!-- Chart.js from CDN (optional). If offline, a built-in bar chart is drawn instead. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" onload="drawChart()" onerror="drawFallbackChart()"></script>

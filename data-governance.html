@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Governance Workspace</title>
+<style>
+  :root{
+    --navy:#0F172A; --navy-2:#1E293B; --navy-3:#334155;
+    --red:#CE1126; --gold:#D97706; --gold-2:#FBBF24; --green:#15803D;
+    --red-soft:#FDF0F1; --gold-soft:#FEF6EA; --green-soft:#EDF7F0; --blue-soft:#EEF2F8;
+    --ink:#0F172A; --ink-2:#334155; --muted:#5B6B82; --line:#E2E8F0; --line-2:#CBD5E1;
+    --bg:#F6F7F9; --card:#FFFFFF;
+    --serif:Georgia,Cambria,"Iowan Old Style","Times New Roman",serif;
+    --sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:Consolas,"SF Mono",Menlo,monospace;
+    --radius:16px; --shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px rgba(15,23,42,.06);
+  }
+  html{font-size:19px;scroll-behavior:smooth;scroll-padding-top:84px}
+  html[data-size="l"]{font-size:21px}
+  html[data-size="xl"]{font-size:23px}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4{margin:0;line-height:1.2;text-wrap:balance}
+  p{margin:0;text-wrap:pretty}
+  ul,ol{margin:0;padding:0;list-style:none}
+  button,select{font:inherit;cursor:pointer;color:inherit}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+  .kicker{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+  .lbl{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px}
+
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+  .topbar .wrap{display:flex;align-items:center;gap:20px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:.86rem;white-space:nowrap;text-decoration:none}
+  .brand .mark{display:flex;flex-direction:column;width:6px;height:28px;border-radius:3px;overflow:hidden}
+  .brand .mark i{flex:1}
+  .toplinks{display:flex;gap:2px;margin-left:auto;overflow-x:auto}
+  .toplinks a{text-decoration:none;font-size:.82rem;font-weight:650;color:var(--ink-2);padding:8px 12px;border-radius:8px;white-space:nowrap}
+  .toplinks a:hover{background:var(--blue-soft);color:var(--ink)}
+  .toplinks a.cur{background:var(--navy);color:#fff}
+  .toplinks .sep{width:1px;background:var(--line-2);margin:6px 6px}
+  .sizer{display:flex;align-items:center;border:1.5px solid var(--line-2);border-radius:10px;overflow:hidden;flex:none}
+  .sizer button{border:0;background:#fff;padding:5px 10px;font-weight:800;color:var(--muted);line-height:1}
+  .sizer button+button{border-left:1px solid var(--line)}
+  .sizer button[aria-pressed="true"]{background:var(--navy);color:#fff}
+
+  /* Hero */
+  .hero{background:var(--navy);color:#fff}
+  .stripe{display:flex;height:6px}.stripe i{flex:1}
+  .hero .wrap{padding-top:60px;padding-bottom:52px}
+  .hero .kicker{color:var(--gold-2)}
+  .hero h1{font-family:var(--serif);font-size:2.8rem;font-weight:700;margin-top:14px;max-width:22ch;letter-spacing:-.01em}
+  .hero .lead{font-size:1.1rem;color:#D5DCE6;margin-top:18px;max-width:64ch}
+  .hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:6px 14px;font-size:.8rem;color:#E2E8F0}
+  .pill b{color:var(--gold-2)}
+  .figs{display:grid;grid-template-columns:repeat(4,1fr);margin-top:44px;border-top:1px solid rgba(255,255,255,.12)}
+  .fig{padding:24px 24px 0 0}
+  .fig+.fig{padding-left:24px;border-left:1px solid rgba(255,255,255,.12)}
+  .fig .n{font-family:var(--serif);font-size:2.1rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .fig .l{font-weight:700;margin-top:10px;font-size:.9rem;line-height:1.35}
+  .fig .s{color:#94A3B8;font-size:.74rem;margin-top:6px}
+  .fig a{color:#94A3B8}
+
+  .jump{background:#fff;border-bottom:1px solid var(--line)}
+  .jump .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+  .jump a{text-decoration:none;font-size:.8rem;font-weight:700;color:var(--ink-2);padding:7px 12px;border-radius:8px;white-space:nowrap}
+  .jump a:hover{background:var(--blue-soft);color:var(--ink)}
+  .jump a b{color:var(--red);margin-right:6px}
+
+  section{padding:76px 0 0}
+  .sh{max-width:800px;margin-bottom:30px}
+  .sh h2{font-family:var(--serif);font-size:2.05rem;font-weight:700;margin-top:10px}
+  .sh p{color:var(--ink-2);font-size:1.04rem;margin-top:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+  /* Assignment */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pillar{padding:24px;display:flex;flex-direction:column;gap:12px;border-top:5px solid var(--c)}
+  .pillar .pk{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+  .pillar h3{font-family:var(--serif);font-size:1.25rem}
+  .pillar .lead{font-size:.8rem;color:var(--muted)}
+  .pillar ul{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .pillar li a{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;text-decoration:none;font-size:.88rem;padding:8px 10px;border-radius:10px;border:1px solid var(--line)}
+  .pillar li a:hover{border-color:var(--navy);background:#FAFBFC}
+  .rid{font-family:var(--mono);font-weight:800;font-size:.76rem;background:var(--blue-soft);color:var(--navy);padding:2px 7px;border-radius:6px;border:1px solid #D6DEEA;white-space:nowrap}
+  .demand{margin-top:18px;padding:22px 26px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;background:var(--navy);color:#E2E8F0;border:0}
+  .demand .big{font-family:var(--serif);font-size:2.6rem;font-weight:700;color:var(--gold-2);line-height:1}
+  .demand b{color:#fff}
+  .demand ol{display:flex;gap:10px 28px;flex-wrap:wrap;margin-top:8px;font-size:.88rem;counter-reset:d}
+  .demand li{counter-increment:d}
+  .demand li::before{content:counter(d) ". ";color:var(--gold-2);font-weight:800}
+
+  /* Lenses */
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tab{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;gap:14px;align-items:center;transition:border-color .15s,box-shadow .15s}
+  .tab:hover{border-color:var(--line-2)}
+  .tab[aria-selected="true"]{border-color:var(--c);box-shadow:0 0 0 4px var(--cs),var(--shadow)}
+  .tab .ico{flex:none;width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:var(--cs);color:var(--c)}
+  .tab .t{font-weight:800;font-size:1.04rem;display:block}
+  .tab .s{color:var(--muted);font-size:.84rem;display:block}
+  .tab .n{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--c);display:block}
+  .situations{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px}
+  .sit{padding:0;overflow:hidden;display:flex;flex-direction:column}
+  .sit-h{padding:20px 24px 14px;border-left:5px solid var(--c)}
+  .sit-h .k{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+  .sit-h h3{font-family:var(--serif);font-size:1.22rem;margin-top:4px}
+  .sit-h p{color:var(--ink-2);font-size:.92rem;margin-top:8px}
+  .ev{margin:0 24px;padding:14px 16px;background:#FAFBFC;border:1px solid var(--line);border-radius:12px;font-size:.88rem}
+  .ev .lbl{margin-bottom:6px;color:var(--navy)}
+  .ev p+p{margin-top:8px}
+  .src{display:block;font-size:.74rem;color:var(--muted);margin-top:4px}
+  .src a{color:var(--muted)}
+  .sup{font-size:.68rem;font-weight:800;color:var(--navy);text-decoration:none;background:var(--blue-soft);border-radius:4px;padding:0 4px;margin-left:3px;vertical-align:1px}
+  .sit-f{padding:16px 24px 20px;display:flex;flex-direction:column;gap:10px;margin-top:auto}
+  .fix{font-size:.9rem;border-left:3px solid var(--green);padding-left:12px}
+  .fix b{color:var(--green)}
+  .watch{font-size:.82rem;background:var(--gold-soft);border:1px solid #F6D7A7;border-radius:10px;padding:10px 12px;color:#78350F}
+  .watch b{color:#92400E}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .chips .t{font-size:.72rem;font-weight:800;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-right:4px}
+  a.rid{text-decoration:none} a.rid:hover{border-color:var(--navy)}
+
+  /* Register */
+  .rtools{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .fbtn{border:1.5px solid var(--line-2);background:#fff;color:var(--ink-2);border-radius:999px;padding:8px 16px;font-weight:750;font-size:.84rem;display:inline-flex;gap:8px;align-items:center}
+  .fbtn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .fbtn .c{font-size:.72rem;background:rgba(100,116,139,.15);border-radius:999px;padding:1px 8px}
+  .fbtn[aria-pressed="true"] .c{background:rgba(255,255,255,.2)}
+  .tally{font-size:.88rem;color:var(--muted);font-weight:650}
+  .tally b{color:var(--ink)}
+  .reglist{display:flex;flex-direction:column;gap:26px}
+  .rec{overflow:hidden}
+  .rec[hidden]{display:none}
+  .rec-h{padding:26px 32px 22px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;border-bottom:1px solid var(--line)}
+  .bigid{font-family:var(--mono);font-weight:800;font-size:1.5rem;background:var(--navy);color:#fff;border-radius:12px;padding:10px 14px;line-height:1}
+  .rec-h .k{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--pc)}
+  .rec-h h3{font-family:var(--serif);font-size:1.45rem;margin-top:4px}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .bdg{font-size:.74rem;font-weight:750;border-radius:999px;padding:3px 11px;background:#F1F5F9;color:var(--ink-2)}
+  .bdg.shared{background:var(--navy);color:#fff}
+  .tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:.74rem;font-weight:750}
+  .tag i{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .tag.village{background:var(--red-soft);color:#A50E1F}
+  .tag.ordinary{background:var(--gold-soft);color:#92400E}
+  .tag.nation{background:var(--green-soft);color:#166534}
+  .official{display:grid;grid-template-columns:1fr 1fr;background:var(--blue-soft);border-bottom:1px solid var(--line)}
+  .official > div{padding:18px 32px}
+  .official > div:nth-child(odd){border-right:1px solid #D6DEEA}
+  .official > div:nth-child(n+3){border-top:1px solid #D6DEEA}
+  .official .lbl{color:var(--navy);margin-bottom:6px}
+  .official p{font-size:.92rem}
+  .official .q{background:#fff}
+  .official .q p{font-family:var(--serif);font-size:1.08rem;font-weight:700;color:var(--red)}
+  .offtag{grid-column:1 / -1;padding:8px 32px !important;font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-right:0 !important;background:#E5EBF4}
+  .rec-b{display:grid;grid-template-columns:1.35fr 1fr}
+  .answer{padding:26px 32px}
+  .answer .lbl{color:var(--green)}
+  .answer ol{display:flex;flex-direction:column;gap:12px;counter-reset:a}
+  .answer li{display:grid;grid-template-columns:28px 1fr;gap:12px;font-size:.96rem;counter-increment:a}
+  .answer li::before{content:counter(a);width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;font-weight:800;font-size:.74rem;display:grid;place-items:center;margin-top:2px}
+  .side{background:#FAFBFC;border-left:1px solid var(--line);padding:26px 28px;display:flex;flex-direction:column;gap:22px}
+  .side .evl li{font-size:.86rem;color:var(--ink-2)}
+  .side .evl li+li{margin-top:10px}
+  .risk{font-size:.88rem;color:var(--ink-2);border-left:3px solid var(--red);padding-left:12px}
+  .rec-f{display:grid;grid-template-columns:auto 1fr;gap:16px 24px;padding:18px 32px;border-top:1px solid var(--line);background:#fff;align-items:start}
+  .rec-f label{font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  .rec-f select{border:1.5px solid var(--line-2);border-radius:10px;padding:8px 12px;font-size:.9rem;font-weight:700;background:#fff;min-width:210px}
+  .rec-f select.set{border-color:var(--green);background:var(--green-soft);color:#166534}
+  .rec-f textarea{width:100%;min-height:46px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit;font-size:.88rem;resize:vertical;background:#FBFCFD}
+  .rec-f textarea:focus{outline:2px solid var(--gold);background:#fff}
+
+  /* Sequencing */
+  .phases{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative}
+  .phase{padding:24px;position:relative}
+  .phase+.phase{border-left:1px dashed var(--line-2)}
+  .phase .pn{display:inline-flex;align-items:center;gap:10px;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+  .phase .pn i{width:30px;height:30px;border-radius:50%;background:var(--c);color:#fff;font-style:normal;display:grid;place-items:center;font-size:.85rem}
+  .phase h3{font-family:var(--serif);font-size:1.2rem;margin-top:12px}
+  .phase .w{font-size:.78rem;color:var(--muted);margin-top:2px}
+  .phase ul{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .phase li{font-size:.88rem;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+  .forum{border-top:1px solid var(--line);padding:16px 24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#FAFBFC;font-size:.9rem;border-radius:0 0 var(--radius) var(--radius)}
+
+  /* Shared table */
+  .shared table{width:100%;border-collapse:collapse}
+  .shared th{text-align:left;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--navy);font-weight:800;padding:14px 20px}
+  .shared th:first-child{border-top-left-radius:var(--radius)} .shared th:last-child{border-top-right-radius:var(--radius)}
+  .shared td{padding:16px 20px;border-bottom:1px solid var(--line);font-size:.9rem;vertical-align:top}
+  .shared tr:last-child td{border-bottom:0}
+  .shared td.split{background:var(--green-soft);font-weight:600}
+  .shared .tw{overflow-x:auto}
+
+  /* Themes */
+  .themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .theme{padding:22px}
+  .theme h4{font-family:var(--serif);font-size:1.12rem}
+  .theme .r{font-size:.84rem;color:var(--muted);margin-top:6px}
+  .theme .me{font-size:.92rem;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .theme .me b{color:var(--green)}
+
+  .qs{padding:24px 28px}
+  .qs ol{display:grid;gap:12px;counter-reset:q}
+  .qs li{display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:.95rem;counter-increment:q}
+  .qs li::before{content:counter(q);width:28px;height:28px;border-radius:8px;background:var(--gold-soft);color:#92400E;font-weight:800;font-size:.8rem;display:grid;place-items:center}
+
+  .sources{padding:24px 28px}
+  .sources ol{display:grid;gap:10px;counter-reset:s}
+  .sources li{display:grid;grid-template-columns:34px 1fr;font-size:.84rem;color:var(--ink-2);counter-increment:s}
+  .sources li::before{content:"[" counter(s) "]";font-weight:800;color:var(--navy)}
+  .sources a{color:var(--navy);word-break:break-word}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:10px;padding:10px 16px;font-weight:750;font-size:.84rem;border:1.5px solid var(--line-2);background:#fff;text-decoration:none}
+  .btn:hover{border-color:var(--navy)}
+  .btn.dark{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  footer{margin-top:88px;background:var(--navy);color:#94A3B8;font-size:.82rem}
+  footer .wrap{padding-top:36px;padding-bottom:44px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+
+  @media (max-width:1000px){
+    .pillars,.tabs{grid-template-columns:1fr}
+    .situations{grid-template-columns:1fr}
+    .figs{grid-template-columns:repeat(2,1fr)}
+    .fig:nth-child(3){border-left:0;padding-left:0}
+    .phases{grid-template-columns:1fr} .phase+.phase{border-left:0;border-top:1px dashed var(--line-2)}
+    .rec-b{grid-template-columns:1fr} .side{border-left:0;border-top:1px solid var(--line)}
+  }
+  @media (max-width:760px){
+    html{font-size:17px} html[data-size="l"]{font-size:19px} html[data-size="xl"]{font-size:21px}
+    .wrap{padding:0 20px}
+    .hero h1{font-size:2.05rem}
+    .figs{grid-template-columns:1fr} .fig+.fig{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.12);margin-top:18px}
+    .official{grid-template-columns:1fr} .official > div{padding:14px 20px;border-right:0 !important} .official > div+div{border-top:1px solid #D6DEEA}
+    .rec-h{grid-template-columns:1fr;padding:22px 20px;gap:12px} .bigid{justify-self:start}
+    .answer,.side{padding:22px 20px} .rec-f{grid-template-columns:1fr;padding:16px 20px}
+    .demand{grid-template-columns:1fr}
+    .toplinks a:not(.cur){display:none} .toplinks .sep{display:none}
+  }
+  @media (max-width:520px){ .brand span.t{display:none} .wrap{padding:0 16px} }
+  @media print{
+    html{font-size:11pt}
+    .topbar,.jump,.filters,.sizer,.actions,.tabs{display:none !important}
+    body{background:#fff}
+    .hero{background:#fff;color:var(--ink);border-bottom:2px solid var(--ink)}
+    .hero .lead,.fig .s,.fig a{color:var(--ink-2)} .hero .kicker,.pill b{color:var(--red)} .pill{color:var(--ink-2);border-color:var(--line)}
+    .figs{border-color:var(--line)} .fig+.fig{border-color:var(--line)}
+    .card{box-shadow:none} .rec,.sit,.phase,.theme{break-inside:avoid}
+    .rec[hidden]{display:block}
+    .rec-f textarea{border:0;padding:0;background:none;min-height:0;resize:none}
+    footer{background:#fff;color:var(--ink-2)}
+  }
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></span>
+      <span class="t">Data Governance, Privacy &amp; Digital Rights</span>
+    </a>
+    <nav class="toplinks" aria-label="Pages">
+      <a class="cur" href="data-governance.html" aria-current="page">Data Governance</a>
+      <span class="sep" aria-hidden="true"></span>
+      <a href="index.html">Cyber: Explorer</a>
+      <a href="manifesto.html">Cyber: Manifesto</a>
+      <a href="inputs.html">Cyber: My Inputs</a>
+    </nav>
+    <div class="sizer" role="group" aria-label="Text size">
+      <button type="button" data-s="m" aria-label="Standard text" style="font-size:.78rem">A</button>
+      <button type="button" data-s="l" aria-label="Large text" style="font-size:.92rem">A</button>
+      <button type="button" data-s="xl" aria-label="Extra large text" style="font-size:1.06rem">A</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="stripe"><i style="background:var(--red)"></i><i style="background:#FCD116"></i><i style="background:var(--green)"></i></div>
+  <div class="wrap">
+    <span class="kicker">Sub-Committee Assignment · My Contribution Workspace</span>
+    <h1>Data Governance, Privacy &amp; Digital Rights</h1>
+    <p class="lead">Our task is to make nine 2024 manifesto commitments ready to implement. For each one we must answer the committee question, confirm the dependencies and partners, and record a decision. This page sets out my research-based answers, tested against three lives: my grandmother in the village, the ordinary Ghanaian, and Ghana as a nation.</p>
+    <div class="meta">
+      <span class="pill"><b>9</b> records · Class E</span>
+      <span class="pill"><b>3</b> pillars</span>
+      <span class="pill"><b>4</b> records shared with the Cyber Sub-Committee</span>
+      <span class="pill">Report compiled <b>26 Nov 2026</b></span>
+    </div>
+    <div class="figs" id="figs"></div>
+  </div>
+</header>
+
+<nav class="jump" aria-label="On this page">
+  <div class="wrap">
+    <a href="#assignment"><b>1</b>The Assignment</a>
+    <a href="#lenses"><b>2</b>Three Lives, Critical Situations</a>
+    <a href="#register"><b>3</b>Register &amp; My Positions</a>
+    <a href="#sequence"><b>4</b>Legal Sequencing</a>
+    <a href="#shared"><b>5</b>Shared with Cyber</a>
+    <a href="#themes"><b>6</b>Cross-Cutting Themes</a>
+    <a href="#questions"><b>7</b>Open Questions</a>
+    <a href="#sources"><b>§</b>Sources</a>
+  </div>
+</nav>
+
+<main>
+  <section id="assignment">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">1 · The Assignment</span>
+        <h2>Nine commitments across three pillars</h2>
+        <p>From the Sub-Committee Explanation Report and the POLICY register. Every record is Class E. Click a record to go to its full entry and my draft position.</p>
+      </div>
+      <div class="pillars" id="pillars"></div>
+      <div class="card demand">
+        <div class="big">4</div>
+        <div><b>What the Sub-Committee must produce for every record</b>
+          <ol><li>An answer to the committee question</li><li>Confirmed implementation dependencies</li><li>Confirmed delivery partners</li><li>A recorded decision and notes</li></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lenses">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">2 · Three Lives</span>
+        <h2>Critical situations, with evidence</h2>
+        <p>What actually goes wrong today for each group, the evidence that it happens, the records that answer it, and what has to change. Numbers in brackets link to the full source list.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="situations" id="situations" role="tabpanel"></div>
+    </div>
+  </section>
+
+  <section id="register">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">3 · Register &amp; My Positions</span>
+        <h2>Each record in the standard format, with my draft answer</h2>
+        <p>The blue panel is the official register text, unchanged. Below it is my proposed answer to the committee question, the evidence behind it, and the risk if we get it wrong. Decisions and notes are saved in this browser.</p>
+      </div>
+      <div class="rtools">
+        <div class="filters" id="filters"></div>
+        <div class="actions">
+          <span class="tally" id="tally"></span>
+          <button class="btn dark" type="button" id="exportBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>Export my submission</button>
+          <button class="btn" type="button" onclick="window.print()">Print</button>
+        </div>
+      </div>
+      <div class="reglist" id="reglist"></div>
+    </div>
+  </section>
+
+  <section id="sequence">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">4 · Legal Foundations First</span>
+        <h2>The order things must happen in</h2>
+        <p>The report's cross-cutting theme is right: interoperability, data exchange and monetisation all depend on legal reform first. This is my proposed sequence for the committee. The phases are proposals, not fixed dates.</p>
+      </div>
+      <div class="card">
+        <div class="phases" id="phases"></div>
+        <div class="forum"><span class="rid">01.12</span><span><b>Runs across all three phases:</b> the open stakeholder forum agrees and protects the core standards so each phase survives a change of government.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shared">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">5 · Shared with the Cyber Sub-Committee</span>
+        <h2>Four records, two lenses, one position</h2>
+        <p>Records 11.01, 11.07, 11.08 and 11.09 appear in both registers. As a member of both sub-committees I can propose a clean split, so the two committees don't produce conflicting positions.</p>
+      </div>
+      <div class="card shared"><div class="tw"><table>
+        <thead><tr><th style="width:24%">Record</th><th>Cyber lens</th><th>Data governance lens</th><th style="width:26%">Proposed split</th></tr></thead>
+        <tbody id="sharedBody"></tbody>
+      </table></div></div>
+    </div>
+  </section>
+
+  <section id="themes">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">6 · Cross-Cutting Themes</span>
+        <h2>The report's five themes, and my one-line position on each</h2>
+      </div>
+      <div class="themes" id="themeList"></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">7 · Open Questions</span>
+        <h2>What I need to clarify with the Sub-Committee</h2>
+      </div>
+      <div class="card qs"><ol>
+        <li>What format and deadline does the Sub-Committee want for decisions and notes? Is this register, completed, the expected submission?</li>
+        <li>Will the Sub-Committee accept a joint position with the Cyber Sub-Committee on the four shared records, using the split proposed in section 5?</li>
+        <li>Which member leads drafting for each pillar? Pillar A is led with the Presidency, NITA, NIA, Civil Service and Attorney General; Pillar B jointly with Finance and the Bank of Ghana; Pillar C jointly with CSA and security agencies.</li>
+        <li>What is the Party's stance on the current government's draft Data Protection Bill and Cybersecurity (Amendment) Bill? Our positions on 01.14 and 11.07 depend on it.</li>
+        <li>How should we handle the 2021–23 SIM registration audit findings, which occurred under the previous NPP administration? I suggest acknowledging the lesson openly and leading with the fix.</li>
+      </ol></div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="wrap">
+      <div class="sh">
+        <span class="kicker">Sources</span>
+        <h2>Evidence used on this page</h2>
+        <p>Most sources are Ghanaian news reports of official statements. Before any figure goes into a published paper, check it against the original BoG, CSA, NIA or DPC release.</p>
+      </div>
+      <div class="card sources"><ol id="srcList"></ol></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Working document for the Data Governance, Privacy &amp; Digital Rights Sub-Committee. Official text from the Sub-Committee Explanation Report and POLICY register; draft positions are my own, for committee deliberation.</span>
+    <span><a href="index.html" style="color:#fff;font-weight:700">Cyber Sub-Committee pages →</a></span>
+  </div>
+</footer>
+
+<script src="register.js"></script>
+<script>
+const R = window.REGISTER.records;
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const aid = id => "rec-" + id.replace(".","-");
+
+/* ---------- Evidence ---------- */
+const EV = {
+  csa26:{t:"GH¢209.7 million was lost to reported cyber incidents in January–September 2026, across 4,938 incidents. That is already more than the 4,604 incidents recorded in all of 2025.", s:"Cyber Security Authority, via Ghana News Agency (Oct 2026)", u:"https://gna.org.gh/2026/10/cybercrime-losses-hit-ghs209-7m-in-nine-months-csa/"},
+  bog:{t:"Payment Service Provider (mainly mobile money) fraud cases rose 54%, from 15,673 in 2024 to 24,124 in 2025.", s:"Bank of Ghana, 2025 Fraud Report, as quoted in the committee research brief", u:""},
+  sim:{t:"An NIA audit of about two million SIM records from the 2021–2023 registration exercise reportedly returned zero fingerprint matches against the national identity database.", s:"Reported NIA statement, via ModernGhana. Verify against NIA's official release.", u:"https://www.modernghana.com/blogs/1494113/ghana-spent-millions-on-a-national-id-systemso.html"},
+  simdpc:{t:"The Communications Minister said the Data Protection Commission was not involved in collecting or handling data from the recent SIM registration exercise, and raised concern about missing registration data.", s:"MyJoyOnline", u:"https://www.myjoyonline.com/60-days-in-still-no-trace-of-sim-registration-data-sam-george-criticises-reckless-handling/"},
+  phish:{t:"The CSA warned of malicious links impersonating the NIA that ask citizens needing GhanaCard corrections to submit personal information.", s:"CSA / CERT-GH alert", u:"https://csa.gov.gh/cert-gh-alert19.php"},
+  refund:{t:"The Bank of Ghana has said bank customers who lose money to fraud are refunded only after investigation shows the loss was not due to their own negligence. Our desk research found no binding refund rule for mobile money fraud.", s:"MyJoyOnline; committee desk research", u:"https://www.myjoyonline.com/bank-customers-who-lose-monies-to-fraud-will-have-refunds-bog/"},
+  ukapp:{t:"International benchmark: since October 2024 UK payment firms must reimburse victims of authorised push-payment fraud, with the cost shared 50:50 between the sending and receiving firms.", s:"UK Payment Systems Regulator", u:"https://www.psr.org.uk/our-work/app-scams/"},
+  loan:{t:"The CSA recorded about 130 cyberbullying reports from digital-loan-app users in 2024. Apps threatened to publish defaulters as 'fraudsters' to everyone in their contact list. The CSA later blacklisted dozens of apps for harassment and data abuse.", s:"Ghana News Agency; MyJoyOnline", u:"https://gna.org.gh/?p=374621", u2:"https://www.myjoyonline.com/csa-blacklists-40-loan-apps-for-harassment-and-data-abuse/"},
+  mtn:{t:"In April 2025 the Data Protection Commission opened a probe into a potential data breach at MTN Ghana. We found no published outcome.", s:"Citi Newsroom", u:"https://citinewsroom.com/2025/04/data-protection-commission-probes-mtn-ghana-over-potential-cybersecurity-breach/"},
+  dpc:{t:"The Data Protection Commission registered 2,575 data controllers in 2026, its highest annual figure. Registration is the gateway to enforcement.", s:"Ghana News Agency (Oct 2026)", u:"https://gna.org.gh/2026/10/dpc-strengthens-enforcement-after-registering-2575-data-controllers/"},
+  sext:{t:"Victims lost GH¢499,044 to online blackmail and sextortion in January–April 2025, up from GH¢103,663 in the same period of 2024.", s:"Cyber Security Authority, via MyJoyOnline", u:"https://www.myjoyonline.com/online-blackmail-and-sextortion-victims-lose-nearly-gh%C2%A2500k-in-4-months-csa/"},
+  csam:{t:"More than 51,000 CyberTipline reports in 2025 related to child sexual abuse material accessed, shared or produced from Ghana.", s:"NCMEC data presented by UNICEF Ghana, via Graphic Online", u:"https://www.graphic.com.gh/lifestyle/life/ghana-records-over-51-000-online-child-sexual-abuse-reports-in-2025-unicef.html"},
+  cybill:{t:"The draft Cybersecurity (Amendment) Bill (consultation 1 October–14 November 2025) drew warnings about content removal without judicial oversight and about licensing of content creators. Critics say licensing conflicts with Article 162(3) of the Constitution.", s:"Media Foundation for West Africa, via AllAfrica; Graphic Online", u:"https://allafrica.com/stories/202511200074.html", u2:"https://www.graphic.com.gh/news/politics/ghana-news-cybersecurity-bill-threat-to-freedom-of-speech-oppong-nkrumah.html"},
+  dpbill:{t:"A draft Data Protection Bill (consultation October 2025) would repeal Act 843 and create a Data Protection Authority. In March 2026 the government said a new bill would also cover AI, automated decision-making and cross-border data transfers.", s:"US trade.gov country summary; Ghana News Agency", u:"https://www.trade.gov/market-intelligence/ghana-information-technologies-data-protection", u2:"https://gna.org.gh/2026/03/govt-to-introduce-new-data-protection-bill-to-regulate-ai-cross-border-data-flows/"},
+  vra:{t:"In October 2024 the BlackSuit ransomware group claimed an attack on the Volta River Authority and said it stole 135 GB of data.", s:"Halcyon threat intelligence. This is a criminal group's claim; verify against official statements.", u:"https://halcyon.ai/attacks/volta-river-authority-hit-by-blacksuit-ransomware-attack"},
+  interpol:{t:"INTERPOL reported a ransomware attack on a Ghanaian financial institution that led to the theft of about US$120,000.", s:"INTERPOL, via GhanaWeb (Dec 2025)", u:"https://www.ghanaweb.com/GhanaHomePage/business/Ransomware-attack-on-Ghanaian-bank-led-to-US-120-000-theft-INTERPOL-2015389"},
+  estonia:{t:"Estonia keeps backups of its critical national registers in a 'data embassy' in Luxembourg. Under a 2017 agreement the data has the same inviolability as a physical embassy.", s:"e-Estonia (Government of Estonia)", u:"https://e-estonia.com/service/e-governance/data-embassy/"},
+  sweeney:{t:"Research benchmark: 87% of the US population could be uniquely identified from ZIP code, gender and date of birth alone. Removing names does not make data anonymous.", s:"L. Sweeney, 'Simple Demographics Often Identify People Uniquely', Carnegie Mellon University (2000)", u:"https://dataprivacylab.org/projects/identifiability/"},
+  manifesto:{t:"The 2024 manifesto promises that no public or private institution will ask for basic data again once a person has a GhanaCard (18 million+ registered). It also proposes Citizens Bureaux to help people who need assistance with digital services.", s:"NPP 2024 Manifesto, §5.6", u:""}
+};
+const EV_ORDER = Object.keys(EV);
+const evNum = k => EV_ORDER.indexOf(k)+1;
+const cite = k => `<a class="sup" href="#src-${k}" title="Source ${evNum(k)}">${evNum(k)}</a>`;
+
+/* ---------- Pillars ---------- */
+const PILLARS = [
+  {key:"A", name:"Digital Governance & Shared Government Services", c:"var(--navy)", ids:["01.12","01.14","01.15","01.16"], lead:"Lead: Presidency, NITA, NIA, Civil Service, Attorney General"},
+  {key:"B", name:"Financial Technology, Payments & Credit", c:"var(--gold)", ids:["04.07"], lead:"Joint: Finance, Bank of Ghana, payment providers, financial regulators"},
+  {key:"C", name:"Cybersecurity, Digital Rights & Public Security", c:"var(--red)", ids:["11.01","11.07","11.08","11.09"], lead:"Joint: CSA, National Security, Police, NITA, Justice, sector operators"}
+];
+const pillarOf = id => PILLARS.find(p=>p.ids.includes(id));
+const SHARED = window.REGISTER.committees.cyber;
+const TIERS = {village:"Grandmother in the village", ordinary:"Ordinary Ghanaian", nation:"Ghana as a nation"};
+
+/* ---------- My positions (draft) ---------- */
+const POS = {
+  "01.12":{tiers:["nation","ordinary"],
+    answer:["Lock in five core standards by cross-party agreement: the GhanaCard as foundational ID, the E-GIF interoperability standard, data protection and classification rules, the critical-infrastructure security baseline, and national disaster recovery (the Digital Ghana Embassy).",
+      "Give the forum a statutory footing, with published membership (parties, civil society, industry, academia, traditional authorities), published minutes and an annual public report.",
+      "Any change to a locked-in standard requires forum consultation and notice to Parliament before it takes effect.",
+      "Keep individual services (apps, portals) out of the lock-in. Only the standards underneath them need durable agreement."],
+    ev:["sim","cybill"], risk:"Without durable agreement, each government restarts registrations and platforms. Citizens pay twice and trust drops each time."},
+  "01.14":{tiers:["nation","ordinary","village"],
+    answer:["Sequence the laws before the services (see Legal Sequencing).",
+      "Data protection: take a clear Party position on the draft bill to replace Act 843. Insist on an independent authority, mandatory breach notification, clear cross-border transfer rules and meaningful penalties.",
+      "Data sharing: a law giving the lawful basis for once-only data exchange between agencies, with purpose limits and notification to the citizen.",
+      "Electronic Transactions Act, 2008 (Act 772): update e-signatures and trust services to support the digital trust framework (04.07).",
+      "Electronic Communications Act, 2008 (Act 775): align it with identity-verified SIM registration and breach reporting.",
+      "Align the Right to Information Act (Act 989) and Statistical Service Act (Act 1003) with the classification system (01.15)."],
+    ev:["dpbill","simdpc"], risk:"Launching once-only services before the lawful basis exists invites court challenges and makes every data exchange contestable."},
+  "01.15":{tiers:["nation","village"],
+    answer:["The head of each MDA is the accountable data owner for its datasets, with named data stewards managing them day to day.",
+      "NITA is custodian of shared infrastructure, not owner of the data held on it.",
+      "Use four classification tiers: Public, Internal, Confidential and Restricted. Personal data is Confidential by default.",
+      "The data owner authorises publication under RTI rules. Declassification follows a set schedule.",
+      "Publish a national register of government datasets showing what exists, who owns it and its tier."],
+    ev:["simdpc","manifesto"], risk:"If nobody owns a dataset, nobody answers when it leaks or is misused."},
+  "01.16":{tiers:["nation","ordinary"],
+    answer:["Phase 1: open and license non-personal data only, such as weather, transport, agriculture and aggregated statistics.",
+      "Never offer biometric, health, children's, security or financial data, even when described as anonymised.",
+      "Any dataset derived from personal data needs independent re-identification testing before release. Licences must prohibit re-identification.",
+      "Ring-fence revenue for digital initiatives and publish annual accounts.",
+      "Present it publicly as 'responsible data for development', not 'selling data'."],
+    ev:["sweeney","dpc"], risk:"One re-identification scandal would damage trust in the GhanaCard and every digital service. It is also an easy line of attack: 'they are selling citizens' data'."},
+  "04.07":{tiers:["village","ordinary"],
+    answer:["Presumption of reimbursement: victims of unauthorised transactions are refunded unless the provider proves gross negligence. The provider, not the victim, carries the burden of proof.",
+      "Share the cost between the sending and receiving providers, as the UK has done since 2024.",
+      "Set statutory deadlines for handling complaints and paying refunds, with an independent financial ombudsman for appeals.",
+      "License private trust providers and give them enforceable obligations for authentication, fraud detection and complaints.",
+      "Link to the Cyber Sub-Committee's rapid wallet-freeze protocol (2028 Priority 5)."],
+    ev:["bog","refund","ukapp"], risk:"If victims cannot get their money back, rural users return to cash, and the financial-inclusion gains of mobile money are lost."},
+  "11.01":{tiers:["nation","ordinary"],
+    answer:["Risk is owned by the board and chief executive of every organisation that runs critical infrastructure or holds citizen data. It cannot be delegated to the IT team.",
+      "The CSA sets and enforces a security baseline. Accredited independent auditors assure it every year.",
+      "Mandatory incident reporting to the CSA within a fixed time, and breach notification to the Data Protection Authority and to affected citizens.",
+      "Security clearance and least-privilege access for all staff handling sensitive citizen data.",
+      "Publish the outcomes of major breach investigations."],
+    ev:["vra","interpol","mtn"], risk:"Breaches stay hidden, citizens cannot protect themselves, and the same weaknesses are exploited again."},
+  "11.07":{tiers:["ordinary","village","nation"],
+    answer:["Content is removed only by court order or an independent review body, except child sexual abuse material and imminent threats to life, which need fast takedown.",
+      "No licensing of content creators (Article 162(3)). Online offences must be narrow and clearly defined.",
+      "Specific offences and fast removal for sextortion and non-consensual intimate images, with support services for victims.",
+      "Implement the National Child Online Protection Framework through schools, parents and platforms.",
+      "Every citizen can see, correct and dispute what is linked to their GhanaCard, as a digital identity right.",
+      "Regulators and platforms publish transparency reports on takedowns and government data requests."],
+    ev:["cybill","sext","csam","sim"], risk:"Either children stay unprotected, or 'protection' becomes a tool to silence critics. Either way, public trust is lost."},
+  "11.08":{tiers:["nation","ordinary"],
+    answer:["A law, not just a system: the IDMS needs a statutory basis listing which agencies may access it and for what purposes.",
+      "Judicial authorisation for access to an individual's personal data beyond the routine purposes listed in law.",
+      "Tamper-proof access logs, independently audited by the data protection regulator and reported to a parliamentary committee.",
+      "Retention limits, and a ban on use for political or non-security purposes.",
+      "Apply the same access and retention rules to footage from the 50,000 CCTV and body cameras (11.05)."],
+    ev:["cybill","simdpc"], risk:"Function creep: a security database turns into a surveillance tool, and public support for digital government collapses."},
+  "11.09":{tiers:["nation"],
+    answer:["Tier 1 scope: the national registers the state cannot function without, such as identity, births and deaths, land, tax, business registration, pensions and core payment-system data.",
+      "Set tiered recovery targets: hours for Tier 1 registers and days for other systems. The committee sets the exact numbers.",
+      "Sovereignty: a bilateral treaty giving the data diplomatic inviolability (the Estonia–Luxembourg model). Data is encrypted, and the keys are held only in Ghana.",
+      "Primary copies stay in Ghana. The embassy is a backup, not a move offshore.",
+      "Test recovery at least once a year and report the results to Parliament."],
+    ev:["estonia","vra"], risk:"One major attack or disaster could erase the records Ghanaians need to prove who they are and what they own."}
+};
+
+/* ---------- Lenses ---------- */
+const LENSES = [
+  {key:"village", n:"Lens 1", t:"Grandmother in the Village", s:"Rural, elderly, low digital literacy", c:"var(--red)", cs:"var(--red-soft)",
+   ico:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v6l-3 7M12 14l3 7M8 11h8"/><path d="M18 11v10"/></svg>',
+   sits:[
+    {t:"A SIM card in her name that she never registered", d:"Her GhanaCard details were used to register a SIM she has never seen. If that number is used for fraud, the trail leads back to her.", ev:["sim"], recs:["11.07","01.15","01.14"],
+     fix:"Biometric verification against the national register at every SIM registration. She can check, and dispute, every number linked to her GhanaCard, in person at a Citizens Bureau if needed.",
+     watch:"This audit concerns the 2021–23 exercise under the previous NPP administration. Expect opponents to raise it. Acknowledge the lesson and lead with the fix."},
+    {t:"Fraud empties her mobile money wallet. Who pays her back?", d:"A caller tricks her, or her SIM is swapped, and her remittances are gone. Today she must show it was not her fault, a burden she can rarely meet.", ev:["bog","refund"], recs:["04.07"],
+     fix:"Presumption of reimbursement, with the provider carrying the burden of proof and a fixed refund deadline. A complaints channel in local languages."},
+    {t:"Someone else fills in the forms for her", d:"Assisted digital services mean an agent or relative handles her GhanaCard data. Fake 'NIA' links already target people seeking card corrections.", ev:["manifesto","phish"], recs:["01.15","11.07"],
+     fix:"A code of conduct and access logging for assisted services. She receives an SMS, in a language she reads, each time her record is accessed or changed."}
+   ]},
+  {key:"ordinary", n:"Lens 2", t:"The Ordinary Ghanaian", s:"Traders, workers, youth, parents", c:"var(--gold)", cs:"var(--gold-soft)",
+   ico:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+   sits:[
+    {t:"A loan app shames him to everyone in his phone", d:"He misses one repayment, and the app messages his family, pastor and colleagues calling him a fraudster, using contacts it harvested at sign-up.", ev:["loan"], recs:["11.07","04.07","01.14"],
+     fix:"Ban harvesting contact lists for debt collection. Make data-protection registration a condition of a lending licence. Run joint BoG, DPC and CSA enforcement with real fines."},
+    {t:"His data leaks, and nobody tells him", d:"A telecom or company suffers a breach. He finds out, if at all, from social media, too late to protect his accounts.", ev:["mtn","dpc"], recs:["11.01","01.14"],
+     fix:"Mandatory breach notification to the regulator and to affected people within a fixed time, and published investigation outcomes."},
+    {t:"His daughter is targeted for sextortion", d:"A stranger grooms her online, obtains images, then demands money. The family is ashamed to report it.", ev:["sext","csam"], recs:["11.07"],
+     fix:"Implement the Child Online Protection Framework in schools. Fast takedown, specific offences for sextortion and intimate-image abuse, and confidential victim support."},
+    {t:"He speaks his mind online", d:"New content rules could let authorities remove posts or license creators without a court. Legitimate criticism is at risk alongside real harm.", ev:["cybill"], recs:["11.07","01.12"],
+     fix:"Removal by court order or independent review, no licensing of creators, narrow offences and published transparency reports."}
+   ]},
+  {key:"nation", n:"Lens 3", t:"Ghana as a Nation", s:"Sovereignty, registers, critical systems", c:"var(--green)", cs:"var(--green-soft)",
+   ico:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M12 3 2 8h20z"/></svg>',
+   sits:[
+    {t:"Ransomware hits a state utility", d:"Criminals encrypt systems and threaten to publish stolen data. Recovery depends on backups that may not exist or work.", ev:["vra","interpol","csa26"], recs:["11.01","11.09"],
+     fix:"Board-level risk ownership, independent annual assurance, mandatory incident reporting and tested recovery."},
+    {t:"The national registers have no protected copy", d:"A disaster or attack on the main data centre could erase identity, land and tax records with no sovereign backup.", ev:["estonia"], recs:["11.09"],
+     fix:"A Digital Ghana Embassy under a treaty granting inviolability, tiered recovery targets, and encryption keys held only in Ghana."},
+    {t:"A security database without limits", d:"Centralised security data (IDMS) and 50,000 cameras create a powerful capability. Without legal limits it can drift into surveillance.", ev:["cybill"], recs:["11.08","11.07"],
+     fix:"A statutory basis, judicial authorisation, tamper-proof logs and parliamentary oversight."},
+    {t:"Selling 'anonymised' data that isn't anonymous", d:"A data marketplace releases datasets with names removed, but individuals can still be re-identified from the remaining fields.", ev:["sweeney"], recs:["01.16"],
+     fix:"Non-personal data first, independent re-identification testing, and licences that prohibit re-identification."},
+    {t:"The legal ground keeps shifting", d:"Act 843 is being replaced, and the Cybersecurity Act amendments are contested. Services built on today's law may be unlawful tomorrow.", ev:["dpbill","cybill"], recs:["01.14","01.12"],
+     fix:"Settle the legal foundations first, and protect core standards through cross-party agreement."}
+   ]}
+];
+
+/* ---------- Sequencing ---------- */
+const PHASES = [
+  {n:1, c:"var(--red)", t:"Legal foundations", w:"Proposed: first year", items:[
+    ["01.14","Party position on the draft Data Protection Bill (replacing Act 843): independent authority, breach notification, cross-border rules"],
+    ["01.14","Data-sharing and interoperability law: lawful basis for once-only exchange"],
+    ["01.14","Electronic Transactions Act (Act 772) review: e-signatures and trust services"],
+    ["11.07","Rights safeguards in any cyber or content law: court oversight, no licensing of creators"]]},
+  {n:2, c:"var(--gold)", t:"Frameworks & accountability", w:"Proposed: years 1–2", items:[
+    ["01.15","Data classification and named dataset owners across MDAs"],
+    ["04.07","Digital trust framework and reimbursement rules"],
+    ["11.01","CII risk ownership, independent assurance and incident reporting"],
+    ["11.08","Statutory basis and oversight for the IDMS, before it goes live"]]},
+  {n:3, c:"var(--green)", t:"Services & sovereign infrastructure", w:"Proposed: year 2 onwards", items:[
+    ["01.14","Once-only services operate on a lawful basis"],
+    ["11.08","IDMS goes live under oversight"],
+    ["11.09","Digital Ghana Embassy: treaty, build and annual recovery tests"],
+    ["01.16","Data marketplace pilot with non-personal data only"]]}
+];
+
+/* ---------- Shared records ---------- */
+const SHARED_SPLIT = [
+  ["11.01","Infrastructure security, CII audits and incident response (2028 Priorities 2 & 4)","Citizen-data protection, breach notification, staff access controls","Cyber leads infrastructure security and incident response. Data Governance leads breach notification and citizen-data rules. A joint position on risk ownership."],
+  ["11.07","Child online protection enforcement, reporting channels, cybercrime (Priority 5)","Privacy, digital identity rights, free-expression and due-process safeguards","Data Governance leads rights safeguards and privacy. Cyber leads Child Online Protection operations and enforcement."],
+  ["11.08","Secure architecture, classification and access-logging technology","Legal access limits, judicial authorisation, independent oversight","Data Governance leads the legal and oversight framework. Cyber leads security architecture."],
+  ["11.09","Recovery architecture, replication and failover (Priority 2)","Which data is covered, sovereignty and the jurisdiction treaty","Data Governance defines scope and sovereignty terms. Cyber defines technical recovery targets and design."]
+];
+
+/* ---------- Themes ---------- */
+const THEMES = [
+  ["Accountability & liability","A named accountable entity for every failure mode: risk ownership, consumer reimbursement, access authorisation.","Every record needs a named owner. The provider, not the citizen, carries the burden of proof."],
+  ["Rights vs. security balance","Centralised security databases and content regulation paired with legal access limits, independent oversight and due process.","Security powers only with a court or independent body in the loop, and published transparency reports."],
+  ["Data sovereignty & resilience","Scope, recovery-time and jurisdictional sovereignty requirements for national data.","Primary data stays in Ghana. The Digital Ghana Embassy is a treaty-protected backup with keys held at home."],
+  ["Continuity & bipartisanship","Stakeholder forums and durable cross-party agreements protect digital investments from electoral-cycle disruption.","Lock in standards, not services, so no citizen has to re-register because the government changed."],
+  ["Legal foundations first","Interoperability, data exchange and monetisation all depend on prior legislative amendment and clear legal authority.","No service launches without its lawful basis. Laws are sequenced before the services that depend on them."]
+];
+
+/* ---------- State ---------- */
+const KEY = "gh2028-dg-v1";
+let st = {decision:{}, notes:{}, lens:"village"};
+try{ st = Object.assign(st, JSON.parse(localStorage.getItem(KEY))||{}); }catch(e){}
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(st)); }catch(e){} };
+let filter = "all";
+
+/* Text size */
+const sizeKey = "gh2028-text-size";
+function setSize(s){
+  document.documentElement.dataset.size = s;
+  document.querySelectorAll(".sizer button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.s===s));
+  try{ localStorage.setItem(sizeKey, s); }catch(e){}
+}
+document.querySelectorAll(".sizer button").forEach(b=>b.addEventListener("click",()=>setSize(b.dataset.s)));
+let sz="m"; try{ sz=localStorage.getItem(sizeKey)||"m"; }catch(e){} setSize(sz);
+
+const recChip = id => `<a class="rid" href="#${aid(id)}" title="${esc(R[id].short)}">${id}</a>`;
+
+/* ---------- Render ---------- */
+$("#figs").innerHTML = [
+  ["GH¢209.7M","Lost to reported cyber incidents, Jan–Sep 2026","csa26","#FF8A96"],
+  ["0 of ~2M","SIM records matched to fingerprints in an NIA audit of the 2021–23 exercise","sim","var(--gold-2)"],
+  ["51,000+","Child sexual abuse material reports linked to Ghana in 2025","csam","#FF8A96"],
+  ["2,575","Data controllers registered with the DPC in 2026","dpc","#6EE7A0"]
+].map(([n,l,k,c])=>`<div class="fig"><div class="n" style="color:${c}">${n}</div><div class="l">${l}</div><div class="s">${EV[k].s.split(",")[0].split(";")[0]} <a href="#src-${k}">[${evNum(k)}]</a></div></div>`).join("");
+
+$("#pillars").innerHTML = PILLARS.map(p=>`
+  <div class="card pillar" style="--c:${p.c}">
+    <span class="pk">Pillar ${p.key} · ${p.ids.length} record${p.ids.length>1?"s":""}</span>
+    <h3>${p.name}</h3>
+    <span class="lead">${p.lead}</span>
+    <ul>${p.ids.map(id=>`<li><a href="#${aid(id)}"><span class="rid">${id}</span><span>${R[id].short}</span></a></li>`).join("")}</ul>
+  </div>`).join("");
+
+function renderLens(){
+  $("#tabs").innerHTML = LENSES.map(l=>`
+    <button class="tab" role="tab" type="button" id="tab-${l.key}" aria-selected="${st.lens===l.key}" aria-controls="situations" data-k="${l.key}" style="--c:${l.c};--cs:${l.cs}">
+      <span class="ico">${l.ico}</span>
+      <span><span class="n">${l.n} · ${l.sits.length} situations</span><span class="t">${l.t}</span><span class="s">${l.s}</span></span>
+    </button>`).join("");
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{ st.lens=b.dataset.k; save(); renderLens(); }));
+  const l = LENSES.find(x=>x.key===st.lens) || LENSES[0];
+  $("#situations").setAttribute("aria-labelledby","tab-"+l.key);
+  $("#situations").innerHTML = l.sits.map((s,i)=>`
+    <article class="card sit" style="--c:${l.c}">
+      <div class="sit-h"><span class="k">Critical situation ${i+1}</span><h3>${s.t}</h3><p>${s.d}</p></div>
+      <div class="ev"><span class="lbl">Evidence</span>${s.ev.map(k=>`<p>${EV[k].t}${cite(k)}<span class="src">${EV[k].s}</span></p>`).join("")}</div>
+      <div class="sit-f">
+        <div class="chips"><span class="t">Answered by</span>${s.recs.map(recChip).join("")}</div>
+        <p class="fix"><b>What must change:</b> ${s.fix}</p>
+        ${s.watch?`<p class="watch"><b>Watch-out:</b> ${s.watch}</p>`:""}
+      </div>
+    </article>`).join("");
+}
+
+function renderFilters(){
+  const ids = window.REGISTER.committees.dg;
+  const defs = [["all","All records",ids.length]].concat(PILLARS.map(p=>[p.key,"Pillar "+p.key,p.ids.length]), [["shared","Shared with Cyber",ids.filter(i=>SHARED.includes(i)).length]]);
+  $("#filters").innerHTML = defs.map(([k,l,c])=>`<button class="fbtn" type="button" data-f="${k}" aria-pressed="${filter===k}">${l}<span class="c">${c}</span></button>`).join("");
+  document.querySelectorAll(".fbtn").forEach(b=>b.addEventListener("click",()=>{ filter=b.dataset.f; renderFilters(); applyFilter(); }));
+}
+function applyFilter(){
+  document.querySelectorAll(".rec").forEach(a=>{
+    const id = a.dataset.id;
+    a.hidden = !(filter==="all" || (filter==="shared" ? SHARED.includes(id) : pillarOf(id).key===filter));
+  });
+}
+function renderTally(){
+  const ids = window.REGISTER.committees.dg;
+  const n = ids.filter(id=>st.decision[id] && st.decision[id]!=="Pending").length;
+  $("#tally").innerHTML = `Decisions recorded: <b>${n} of ${ids.length}</b>`;
+}
+
+function renderRegister(){
+  $("#reglist").innerHTML = window.REGISTER.committees.dg.map(id=>{
+    const r = R[id], p = pillarOf(id), pos = POS[id], dec = st.decision[id] || "Pending";
+    return `
+    <article class="card rec" id="${aid(id)}" data-id="${id}" style="--pc:${p.c}">
+      <div class="rec-h">
+        <span class="bigid">${id}</span>
+        <div>
+          <span class="k">Pillar ${p.key} · ${p.name}</span>
+          <h3>${r.short}</h3>
+          <div class="badges">
+            <span class="bdg">Class ${r.cls}</span>
+            <span class="bdg">Manifesto p. ${r.pages}</span>
+            ${SHARED.includes(id)?'<span class="bdg shared">Shared with Cyber Sub-Committee</span>':""}
+            ${pos.tiers.map(t=>`<span class="tag ${t}"><i></i>${TIERS[t]}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+      <div class="official">
+        <div class="offtag">Official register text</div>
+        <div><span class="lbl">Manifesto commitment / Policy</span><p>${r.commitment}</p></div>
+        <div><span class="lbl">Implementation dependency</span><p>${r.dependency}</p></div>
+        <div class="q"><span class="lbl">Committee question</span><p>${r.question}</p></div>
+        <div><span class="lbl">Proposed partners</span><p>${r.partners}</p></div>
+      </div>
+      <div class="rec-b">
+        <div class="answer"><span class="lbl">My draft answer to the committee question</span>
+          <ol>${pos.answer.map(a=>`<li><span>${a}</span></li>`).join("")}</ol></div>
+        <aside class="side">
+          <div><span class="lbl">Evidence</span><ul class="evl">${pos.ev.map(k=>`<li>${EV[k].t}${cite(k)}</li>`).join("")}</ul></div>
+          <div><span class="lbl">Risk if we get it wrong</span><p class="risk">${pos.risk}</p></div>
+        </aside>
+      </div>
+      <div class="rec-f">
+        <div><label for="dec-${aid(id)}">Committee decision</label>
+          <select id="dec-${aid(id)}" data-id="${id}" class="${dec!=="Pending"?"set":""}">${window.REGISTER.decisions.map(d=>`<option ${d===dec?"selected":""}>${d}</option>`).join("")}</select></div>
+        <div><label for="note-${aid(id)}">Committee notes</label>
+          <textarea id="note-${aid(id)}" data-id="${id}" placeholder="Deliberation notes, agreed wording, owner, follow-ups…">${esc(st.notes[id]||"")}</textarea></div>
+      </div>
+    </article>`;}).join("");
+  document.querySelectorAll(".rec select").forEach(s=>s.addEventListener("change",()=>{
+    st.decision[s.dataset.id]=s.value; s.classList.toggle("set", s.value!=="Pending"); save(); renderTally();
+  }));
+  document.querySelectorAll(".rec textarea").forEach(t=>t.addEventListener("input",()=>{ st.notes[t.dataset.id]=t.value; save(); }));
+  applyFilter(); renderTally();
+}
+
+$("#phases").innerHTML = PHASES.map(ph=>`
+  <div class="phase" style="--c:${ph.c}">
+    <span class="pn"><i>${ph.n}</i>Phase ${ph.n}</span>
+    <h3>${ph.t}</h3><p class="w">${ph.w}</p>
+    <ul>${ph.items.map(([id,t])=>`<li>${recChip(id)}<span>${t}</span></li>`).join("")}</ul>
+  </div>`).join("");
+
+$("#sharedBody").innerHTML = SHARED_SPLIT.map(([id,c,d,s])=>`
+  <tr><td>${recChip(id)}<div style="margin-top:6px;font-weight:650">${R[id].short}</div></td><td>${c}</td><td>${d}</td><td class="split">${s}</td></tr>`).join("");
+
+$("#themeList").innerHTML = THEMES.map(([t,r,m])=>`
+  <div class="card theme"><h4>${t}</h4><p class="r">${r}</p><p class="me"><b>My position:</b> ${m}</p></div>`).join("");
+
+$("#srcList").innerHTML = EV_ORDER.map(k=>{
+  const e = EV[k];
+  const links = [e.u,e.u2].filter(Boolean).map(u=>`<a href="${u}" target="_blank" rel="noopener">${u}</a>`).join("<br>");
+  return `<li id="src-${k}"><span><b>${e.s}.</b> ${e.t}${links?"<br>"+links:""}</span></li>`;
+}).join("");
+
+/* Export */
+$("#exportBtn").addEventListener("click",()=>{
+  const d = new Date();
+  let out = `DATA GOVERNANCE, PRIVACY & DIGITAL RIGHTS SUB-COMMITTEE\nMember submission: register with draft positions\nExported: ${d.toLocaleString()}\n`;
+  window.REGISTER.committees.dg.forEach(id=>{
+    const r = R[id], p = POS[id];
+    out += `\n${"=".repeat(70)}\n${id} | Class ${r.cls} | Pages ${r.pages} | Pillar ${pillarOf(id).key}${SHARED.includes(id)?" | SHARED WITH CYBER":""}\n`;
+    out += `Commitment: ${r.commitment}\nImplementation dependency: ${r.dependency}\nCommittee question: ${r.question}\nProposed partners: ${r.partners}\n`;
+    out += `\nDraft answer:\n${p.answer.map((a,i)=>`  ${i+1}. ${a}`).join("\n")}\n`;
+    out += `Evidence:\n${p.ev.map(k=>`  - ${EV[k].t} [${EV[k].s}${EV[k].u?"; "+EV[k].u:""}]`).join("\n")}\n`;
+    out += `Risk if wrong: ${p.risk}\n`;
+    out += `Committee decision: ${st.decision[id]||"Pending"}\nCommittee notes: ${(st.notes[id]||"").trim()||"(none)"}\n`;
+  });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out],{type:"text/plain"}));
+  a.download = `data-governance-submission-${d.toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+
+renderLens(); renderFilters(); renderRegister();
+</script>
+</body>
+</html>
